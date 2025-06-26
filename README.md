@@ -8,6 +8,9 @@
 
 JoSan enhances your browsing experience with advanced content moderation capabilities. This extension uses AI-powered logic to filter and detect profanity, helping users maintain a safer and more respectful web environment.
 
+
+![image](https://github.com/user-attachments/assets/bc367ab3-ba3a-416b-9c48-201129e8a316)
+
 ---
 
 ## ✨ Features
