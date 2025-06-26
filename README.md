@@ -91,19 +91,21 @@ npm run dev
 yarn dev
 ```
 
-1. **Load the extension in your browser**
+4. **Load the extension in your browser**
 
-### ✅ Chrome
+    ✅ Chrome
+    - Visit `chrome://extensions/`
+    - Enable **Developer mode**
+    - Click **Load unpacked**
+    - Select the `dist` folder
 
-- Visit `chrome://extensions/`
-- Enable **Developer mode**
-- Click **Load unpacked**
-- Select the `dist` folder
+5. **The extension should now be installed and ready for testing**
+
 ---
 
 ### 📦 For Production
 
-1. Download the latest `.zip` or `.crx` from the [Releases](https://github.com/your-username/josan/releases) page
+1. Download the latest `.zip` or `.crx` from the [Releases](https://github.com/shinjitsue/JoSan/tree/main/release) page
 2. Install manually:
 
 ### Chrome:
@@ -197,4 +199,4 @@ This project is licensed under the **GNU General Public License v3.0**. See the 
 
 ## 📬 Contact
 
-For inquiries or feedback, feel free to contact the authors or [open an issue](https://github.com/your-username/josan/issues) on the repository.
+For inquiries or feedback, feel free to contact the authors or [open an issue](https://github.com/shinjitsue/JoSan/issues) on the repository.
