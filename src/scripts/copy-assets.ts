@@ -35,10 +35,7 @@ if (!fs.existsSync(dataDir)) {
 
 const profanityListSource = path.join(rootDir, "public/data/en.txt");
 if (fs.existsSync(profanityListSource)) {
-  fs.copyFileSync(
-    profanityListSource,
-    path.join(dataDir, "profanity-list.txt")
-  );
+  fs.copyFileSync(profanityListSource, path.join(dataDir, "en.txt"));
   console.log("Profanity list copied to dist/data/");
 }
 
