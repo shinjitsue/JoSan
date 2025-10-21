@@ -42,11 +42,5 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     sendResponse({ success: true });
   }
 
-  if (message.action === "updateFilterStrength" && message.strength) {
-    filter
-      .updateFilterStrength(message.strength)
-      .then(() => sendResponse({ success: true }))
-      .catch((error) => sendResponse({ success: false, error }));
-    return true;
-  }
+  return true;
 });
