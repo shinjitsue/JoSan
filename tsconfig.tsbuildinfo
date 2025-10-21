@@ -1,0 +1,1 @@
+{"root":["./src/vite-env.d.ts","./src/background/index.ts","./src/content/filterProcessor.ts","./src/content/index.ts","./src/options/Options.tsx","./src/options/index.tsx","./src/popup/Popup.tsx","./src/popup/index.tsx","./src/scripts/copy-assets.ts"],"errors":true,"version":"5.8.3"}
