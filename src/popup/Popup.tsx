@@ -7,19 +7,16 @@ function Popup() {
     pagesScanned: 0,
     lastScan: "",
   });
-  const [filterStrength, setFilterStrength] = useState("medium");
 
   // Load settings when component mounts
   useEffect(() => {
-    chrome.storage.sync.get(
+    chrome.storage.local.get(
       {
         enabled: true,
-        filterStrength: "medium",
         stats: { blockedWords: 0, pagesScanned: 0, lastScan: "" },
       },
       (items) => {
         setIsEnabled(items.enabled);
-        setFilterStrength(items.filterStrength);
         if (items.stats) setStats(items.stats);
       }
     );
@@ -29,7 +26,7 @@ function Popup() {
   const toggleFilter = () => {
     const newState = !isEnabled;
     setIsEnabled(newState);
-    chrome.storage.sync.set({ enabled: newState });
+    chrome.storage.local.set({ enabled: newState });
 
     // Send message to content script to update filter state
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -42,38 +39,8 @@ function Popup() {
     });
   };
 
-  // Change filter strength
-  const handleStrengthChange = (strength: string) => {
-    setFilterStrength(strength);
-    chrome.storage.sync.set({ filterStrength: strength });
-
-    // Send message to content script to update filter strength
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs[0]?.id) {
-        chrome.tabs.sendMessage(tabs[0].id, {
-          action: "updateFilterStrength",
-          strength: strength,
-        });
-      }
-    });
-  };
-
   const openOptions = () => {
     chrome.runtime.openOptionsPage();
-  };
-
-  // Get appropriate badge color based on filter strength
-  const getStrengthBadgeColor = (strength: string) => {
-    switch (strength) {
-      case "low":
-        return "bg-blue-500";
-      case "medium":
-        return "bg-yellow-500";
-      case "high":
-        return "bg-red-500";
-      default:
-        return "bg-gray-500";
-    }
   };
 
   return (
@@ -84,9 +51,9 @@ function Popup() {
           <h1 className="text-xl font-bold flex items-center">
             JoSan Filter
             <span
-              className={`ml-2 w-2 h-2 rounded-full ${getStrengthBadgeColor(
-                filterStrength
-              )}`}
+              className={`ml-2 w-2 h-2 rounded-full ${
+                isEnabled ? "bg-green-500" : "bg-gray-500"
+              }`}
             ></span>
           </h1>
           <p className="text-sm text-gray-600 dark:text-gray-300">
@@ -118,40 +85,6 @@ function Popup() {
 
       {/* Divider */}
       <div className="border-t border-gray-200 dark:border-gray-700 my-3"></div>
-
-      {/* Filter Strength */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-2 flex items-center">
-          Filter Strength
-          <span
-            className={`ml-2 px-2 py-1 rounded-full text-xs text-white ${getStrengthBadgeColor(
-              filterStrength
-            )}`}
-          >
-            {filterStrength.toUpperCase()}
-          </span>
-        </label>
-        <div className="flex space-x-2">
-          {["low", "medium", "high"].map((strength) => (
-            <button
-              key={strength}
-              onClick={() => handleStrengthChange(strength)}
-              className={`px-3 py-1.5 rounded capitalize text-sm focus:outline-none transition-colors flex items-center ${
-                filterStrength === strength
-                  ? "bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 border-2 border-blue-500"
-                  : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-              }`}
-            >
-              <span
-                className={`w-2 h-2 rounded-full mr-2 ${getStrengthBadgeColor(
-                  strength
-                )}`}
-              ></span>
-              {strength}
-            </button>
-          ))}
-        </div>
-      </div>
 
       {/* Stats */}
       <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 mb-4">
@@ -185,15 +118,6 @@ function Popup() {
             }`}
           ></span>
           <span className="text-sm">{isEnabled ? "Active" : "Inactive"}</span>
-          {isEnabled && (
-            <span
-              className={`ml-2 px-2 py-1 rounded-full text-xs text-white ${getStrengthBadgeColor(
-                filterStrength
-              )}`}
-            >
-              {filterStrength}
-            </span>
-          )}
         </div>
       </div>
 

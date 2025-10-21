@@ -5,8 +5,6 @@ interface Settings {
   enabled: boolean;
   theme: string;
   customWords: string[];
-  defaultWordList: boolean;
-  filterStrength: string;
 }
 
 function Options() {
@@ -14,30 +12,23 @@ function Options() {
     enabled: true,
     theme: "light",
     customWords: [] as string[],
-    defaultWordList: true,
-    filterStrength: "medium", // low, medium, high
   });
   const [newWord, setNewWord] = useState("");
   const [saved, setSaved] = useState(false);
 
   // Load settings when component mounts
   useEffect(() => {
-    chrome.storage.sync.get(
+    chrome.storage.local.get(
       {
         enabled: true,
         theme: "light",
         customWords: [],
-        defaultWordList: true,
-        filterStrength: "medium",
       },
       (items) => {
-        // Type assertion to ensure the items match our Settings interface
         const typedSettings: Settings = {
           enabled: items.enabled as boolean,
           theme: items.theme as string,
           customWords: items.customWords as string[],
-          defaultWordList: items.defaultWordList as boolean,
-          filterStrength: items.filterStrength as string,
         };
         setSettings(typedSettings);
       }
@@ -45,7 +36,7 @@ function Options() {
   }, []);
 
   const handleSave = () => {
-    chrome.storage.sync.set(settings, () => {
+    chrome.storage.local.set(settings, () => {
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     });
@@ -103,41 +94,13 @@ function Options() {
         </div>
 
         <div>
-          <label className="block mb-2">Filter Strength</label>
-          <select
-            value={settings.filterStrength}
-            onChange={(e) =>
-              setSettings({ ...settings, filterStrength: e.target.value })
-            }
-            className="w-full p-2 border rounded"
-          >
-            <option value="low">Low - Filter only severe profanity</option>
-            <option value="medium">Medium - Standard filtering</option>
-            <option value="high">High - Strict filtering</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block mb-2">Use default profanity list</label>
-          <input
-            type="checkbox"
-            checked={settings.defaultWordList}
-            onChange={() =>
-              setSettings({
-                ...settings,
-                defaultWordList: !settings.defaultWordList,
-              })
-            }
-          />
-        </div>
-
-        <div>
           <label className="block mb-2">Custom Words to Filter</label>
           <div className="flex space-x-2 mb-2">
             <input
               type="text"
               value={newWord}
               onChange={(e) => setNewWord(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && addCustomWord()}
               className="flex-1 p-2 border rounded"
               placeholder="Add a word to filter"
             />

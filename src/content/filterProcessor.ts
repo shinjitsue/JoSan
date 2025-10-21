@@ -1,8 +1,8 @@
 export class FilterProcessor {
-  private profanityList: string[] = [];
+  private profanitySet: Set<string> = new Set();
+  private profanityRegex: RegExp | null = null;
   private isEnabled = true;
   private isInitialized = false;
-  private filterStrength = "medium";
   private stats = {
     blockedWords: 0,
     pagesScanned: 0,
@@ -15,37 +15,59 @@ export class FilterProcessor {
 
   async loadSettings(): Promise<void> {
     try {
-      const result = await chrome.storage.sync.get({
+      // Load profanity list from external file
+      const response = await fetch(chrome.runtime.getURL("data/en.txt"));
+      const text = await response.text();
+      const words = text
+        .split("\n")
+        .map((w) => w.trim().toLowerCase())
+        .filter((w) => w.length > 0);
+
+      this.profanitySet = new Set(words);
+
+      // Load settings from storage
+      const result = await chrome.storage.local.get({
         enabled: true,
         customWords: [] as string[],
-        defaultWordList: true,
-        filterStrength: "medium",
         stats: { blockedWords: 0, pagesScanned: 0, lastScan: "" },
       });
 
       this.isEnabled = result.enabled;
-      this.filterStrength = result.filterStrength;
       this.stats = result.stats;
 
-      // Load appropriate word list based on filter strength
-      this.profanityList = result.defaultWordList
-        ? [...this.getDefaultProfanityList(this.filterStrength)]
-        : [];
-
+      // Add custom words to the set
       if (result.customWords.length > 0) {
-        this.profanityList.push(...result.customWords);
+        result.customWords.forEach((w: string) =>
+          this.profanitySet.add(w.toLowerCase())
+        );
       }
 
+      // Compile regex once for performance
+      this.compileRegex();
       this.isInitialized = true;
+
+      console.log(`Loaded ${this.profanitySet.size} profanity words`);
     } catch (error) {
       console.error("Failed to load settings:", error);
     }
   }
 
+  private compileRegex(): void {
+    if (this.profanitySet.size === 0) {
+      this.profanityRegex = null;
+      return;
+    }
+
+    const escapedWords = Array.from(this.profanitySet)
+      .map((w) => this.escapeRegExp(w))
+      .join("|");
+
+    this.profanityRegex = new RegExp(`\\b(${escapedWords})\\b`, "gi");
+  }
+
   processPage(): void {
     if (!this.isEnabled || !this.isInitialized) return;
 
-    // Update stats
     this.stats.pagesScanned += 1;
     this.stats.lastScan = new Date().toLocaleString();
     this.saveStats();
@@ -64,12 +86,10 @@ export class FilterProcessor {
     if (node.nodeType === Node.TEXT_NODE) {
       this.filterText(node);
     } else if (node.nodeType === Node.ELEMENT_NODE) {
-      // Skip script, style elements
       const element = node as Element;
       const tagName = element.tagName.toLowerCase();
       if (tagName === "script" || tagName === "style") return;
 
-      // Process child nodes
       element.childNodes.forEach((child) => {
         this.processNode(child);
       });
@@ -77,105 +97,49 @@ export class FilterProcessor {
   }
 
   filterText(textNode: Node): void {
+    if (!this.profanityRegex) return;
+
     const originalText = textNode.nodeValue || "";
-    let filteredText = originalText;
-    let blockedCount = 0;
+    const matches = originalText.match(this.profanityRegex);
 
-    this.profanityList.forEach((word) => {
-      // Case insensitive replace
-      const regex = new RegExp(`\\b${this.escapeRegExp(word)}\\b`, "gi");
-      const matches = originalText.match(regex);
-      if (matches) {
-        blockedCount += matches.length;
-      }
-
-      filteredText = filteredText.replace(regex, (match) =>
+    if (matches) {
+      const filteredText = originalText.replace(this.profanityRegex, (match) =>
         "*".repeat(match.length)
       );
-    });
 
-    if (filteredText !== originalText) {
       textNode.nodeValue = filteredText;
-      // Update stats
-      this.stats.blockedWords += blockedCount;
+      this.stats.blockedWords += matches.length;
       this.saveStats();
     }
   }
 
   private saveStats(): void {
-    chrome.storage.sync.set({ stats: this.stats });
+    chrome.storage.local.set({ stats: this.stats });
   }
 
   private escapeRegExp(string: string): string {
     return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   }
 
-  private getDefaultProfanityList(strength: string): string[] {
-    // Base list for all strengths
-    const baseList = ["shit", "fuck", "damn", "bitch", "crap", "ass"];
-
-    // Add more words based on filter strength
-    if (strength === "medium") {
-      return [
-        ...baseList,
-        "bastard",
-        "hell",
-        "piss",
-        "whore",
-        "dick",
-        // Add more medium-level words
-      ];
-    }
-
-    if (strength === "high") {
-      return [
-        ...baseList,
-        "bastard",
-        "hell",
-        "piss",
-        "whore",
-        "dick",
-        // Medium words included
-        "bloody",
-        "cunt",
-        "bollocks",
-        "bugger",
-        "wanker",
-        "pussy",
-        "cock",
-        // Add more high-level words
-      ];
-    }
-
-    // Return base list for "low" strength
-    return baseList;
-  }
-
-  // Method to update filter state dynamically
   updateFilterState(enabled: boolean): void {
     this.isEnabled = enabled;
   }
 
-  // Method to update filter strength dynamically
-  async updateFilterStrength(strength: string): Promise<void> {
-    this.filterStrength = strength;
+  async addCustomWord(word: string): Promise<void> {
+    const result = await chrome.storage.local.get({ customWords: [] });
+    const customWords = [...result.customWords, word];
 
-    const result = await chrome.storage.sync.get({
-      customWords: [] as string[],
-      defaultWordList: true,
-    });
+    await chrome.storage.local.set({ customWords });
+    this.profanitySet.add(word.toLowerCase());
+    this.compileRegex();
+  }
 
-    // Reload word list based on new strength
-    if (result.defaultWordList) {
-      this.profanityList = [...this.getDefaultProfanityList(strength)];
-      if (result.customWords.length > 0) {
-        this.profanityList.push(...result.customWords);
-      }
-    }
+  async removeCustomWord(word: string): Promise<void> {
+    const result = await chrome.storage.local.get({ customWords: [] });
+    const customWords = result.customWords.filter((w: string) => w !== word);
 
-    // Re-process current page with new settings
-    if (this.isEnabled) {
-      this.processPage();
-    }
+    await chrome.storage.local.set({ customWords });
+    this.profanitySet.delete(word.toLowerCase());
+    this.compileRegex();
   }
 }
