@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "JoSan Extension",
-  "version": "1.0.0",
-  "description": "AI-powered content moderation that intelligently detects and filters profanity in English.",
+  "version": "2.0.0",
+  "description": "AI-powered content moderation that intelligently detects and filters profanity, harassment, and hate speech using context-aware analysis.",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
@@ -59,7 +59,8 @@
     "*://*.quora.com/*",
     "*://*.threads.net/*",
     "*://*.discord.com/*",
-    "*://*.bsky.app/*"
+    "*://*.bsky.app/*",
+    "https://api.groq.com/*"
   ],
   "web_accessible_resources": [
     {
