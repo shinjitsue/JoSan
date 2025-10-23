@@ -1,137 +1,231 @@
+import { PlatformDetector } from "./utils/PlatformDetector";
+import { ProfanityLoader } from "./utils/ProfanityLoader";
+import { PrivacyFilter } from "./utils/PrivacyFilter";
+import { StatisticsManager } from "./utils/StatisticsManager";
+import { FEED_SELECTORS } from "./config/SelectorConfig";
+
 export class FilterProcessor {
+  // State properties
   private profanitySet: Set<string> = new Set();
   private profanityRegex: RegExp | null = null;
   private isEnabled = true;
   private isInitialized = false;
-  private stats = {
-    blockedWords: 0,
-    pagesScanned: 0,
-    lastScan: "",
-  };
+  private enabledPlatforms: string[] = [];
+  private currentPlatform = "";
+  private statsManager = new StatisticsManager();
 
   constructor() {
-    this.loadSettings();
+    console.log("[JoSan FilterProcessor] Instance created");
   }
 
+  // Initialization & Configuration
   async loadSettings(): Promise<void> {
     try {
-      // Load profanity list from external file
-      const response = await fetch(chrome.runtime.getURL("data/en.txt"));
-      const text = await response.text();
-      const words = text
-        .split("\n")
-        .map((w) => w.trim().toLowerCase())
-        .filter((w) => w.length > 0);
+      console.log("[JoSan] Loading settings...");
 
-      this.profanitySet = new Set(words);
+      // Load profanity list
+      this.profanitySet = await ProfanityLoader.loadWordList();
+      console.log(
+        `[JoSan] Loaded ${this.profanitySet.size} base profanity words`
+      );
 
       // Load settings from storage
       const result = await chrome.storage.local.get({
         enabled: true,
         customWords: [] as string[],
         stats: { blockedWords: 0, pagesScanned: 0, lastScan: "" },
+        enabledPlatforms: [
+          "facebook",
+          "twitter",
+          "instagram",
+          "reddit",
+          "linkedin",
+          "tiktok",
+          "youtube",
+          "tumblr",
+          "quora",
+          "threads",
+          "discord",
+          "bluesky",
+        ],
       });
 
       this.isEnabled = result.enabled;
-      this.stats = result.stats;
+      this.statsManager.loadStats(result.stats);
+      this.enabledPlatforms = result.enabledPlatforms;
 
-      // Add custom words to the set
-      if (result.customWords.length > 0) {
+      // Detect current platform
+      this.currentPlatform = PlatformDetector.detect();
+      console.log(`[JoSan] Current platform: ${this.currentPlatform}`);
+
+      // Check if current platform is enabled
+      if (!this.enabledPlatforms.includes(this.currentPlatform)) {
+        console.log(
+          `[JoSan] Platform '${this.currentPlatform}' is disabled. Filter will not run.`
+        );
+        this.isEnabled = false;
+        this.isInitialized = true;
+        return;
+      }
+
+      // Add custom words
+      if (result.customWords && result.customWords.length > 0) {
         result.customWords.forEach((w: string) =>
           this.profanitySet.add(w.toLowerCase())
         );
+        console.log(`[JoSan] Added ${result.customWords.length} custom words`);
       }
 
-      // Compile regex once for performance
-      this.compileRegex();
+      // Compile regex
+      this.profanityRegex = ProfanityLoader.compileRegex(this.profanitySet);
       this.isInitialized = true;
 
-      console.log(`Loaded ${this.profanitySet.size} profanity words`);
+      console.log(
+        `[JoSan] Loaded ${this.profanitySet.size} total profanity words for ${this.currentPlatform}`
+      );
+      console.log(`[JoSan] Filter enabled: ${this.isEnabled}`);
     } catch (error) {
-      console.error("Failed to load settings:", error);
+      console.error("[JoSan] Failed to load settings:", error);
+      this.isInitialized = false;
     }
   }
 
-  private compileRegex(): void {
-    if (this.profanitySet.size === 0) {
-      this.profanityRegex = null;
+  // State Getters
+  isFilterEnabled(): boolean {
+    return this.isEnabled && this.isInitialized;
+  }
+
+  // Main Processing Entry Point
+  processPage(): void {
+    if (!this.isEnabled || !this.isInitialized) {
+      console.log(
+        `[JoSan] Skipping page process - enabled: ${this.isEnabled}, initialized: ${this.isInitialized}`
+      );
       return;
     }
 
-    const escapedWords = Array.from(this.profanitySet)
-      .map((w) => this.escapeRegExp(w))
-      .join("|");
+    if (!chrome.runtime?.id) {
+      console.warn(
+        "[JoSan] Extension context invalidated, stopping processing"
+      );
+      return;
+    }
 
-    this.profanityRegex = new RegExp(`\\b(${escapedWords})\\b`, "gi");
+    if (!this.enabledPlatforms.includes(this.currentPlatform)) {
+      console.log(`[JoSan] Platform '${this.currentPlatform}' is disabled`);
+      return;
+    }
+
+    console.log(`[JoSan] Processing page on ${this.currentPlatform}...`);
+
+    this.statsManager.incrementPagesScanned();
+    this.processFeedAreas();
   }
 
-  processPage(): void {
-    if (!this.isEnabled || !this.isInitialized) return;
+  // DOM Processing Methods
+  private processFeedAreas(): void {
+    try {
+      const feedContainers = FEED_SELECTORS.map((selector) => {
+        try {
+          return Array.from(document.querySelectorAll(selector));
+        } catch {
+          return [];
+        }
+      }).flat();
 
-    this.stats.pagesScanned += 1;
-    this.stats.lastScan = new Date().toLocaleString();
-    this.saveStats();
+      console.log(`[JoSan] Found ${feedContainers.length} feed containers`);
 
-    this.processNode(document.body);
-  }
+      if (feedContainers.length === 0) {
+        console.log(
+          "[JoSan] No feed containers found, processing body with exclusions"
+        );
+        this.processNodeSafely(document.body);
+        return;
+      }
 
-  processNodes(nodes: NodeList): void {
-    if (!this.isEnabled || !this.isInitialized) return;
-    nodes.forEach((node) => {
-      this.processNode(node);
-    });
-  }
-
-  processNode(node: Node): void {
-    if (node.nodeType === Node.TEXT_NODE) {
-      this.filterText(node);
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      const element = node as Element;
-      const tagName = element.tagName.toLowerCase();
-      if (tagName === "script" || tagName === "style") return;
-
-      element.childNodes.forEach((child) => {
-        this.processNode(child);
+      feedContainers.forEach((container) => {
+        this.processNodeSafely(container);
       });
+
+      console.log(`[JoSan] Processed ${feedContainers.length} feed containers`);
+    } catch (error) {
+      console.error("[JoSan] Error processing feed areas:", error);
     }
   }
 
+  // Safe Node Processing with Privacy Checks
+  private processNodeSafely(node: Node): void {
+    try {
+      if (PrivacyFilter.isPrivateContent(node)) {
+        return;
+      }
+      this.processNode(node);
+    } catch (error) {
+      console.error("[JoSan] Error processing node safely:", error);
+    }
+  }
+
+  // Recursive Node Processing
+  processNode(node: Node): void {
+    try {
+      if (node.nodeType === Node.TEXT_NODE) {
+        this.filterText(node);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        const element = node as Element;
+        const tagName = element.tagName.toLowerCase();
+
+        if (tagName === "script" || tagName === "style") return;
+        if (PrivacyFilter.isPrivateContent(element)) return;
+
+        element.childNodes.forEach((child) => {
+          this.processNode(child);
+        });
+      }
+    } catch (error) {
+      console.error("[JoSan] Error processing node:", error);
+    }
+  }
+
+  // Text Filtering Logic
   filterText(textNode: Node): void {
     if (!this.profanityRegex) return;
 
-    const originalText = textNode.nodeValue || "";
-    const matches = originalText.match(this.profanityRegex);
+    try {
+      const originalText = textNode.nodeValue || "";
+      if (!originalText.trim()) return;
 
-    if (matches) {
-      const filteredText = originalText.replace(this.profanityRegex, (match) =>
-        "*".repeat(match.length)
-      );
+      const matches = originalText.match(this.profanityRegex);
 
-      textNode.nodeValue = filteredText;
-      this.stats.blockedWords += matches.length;
-      this.saveStats();
+      if (matches) {
+        const filteredText = originalText.replace(
+          this.profanityRegex,
+          (match) => "*".repeat(match.length)
+        );
+
+        textNode.nodeValue = filteredText;
+        this.statsManager.incrementBlockedWords(matches.length);
+
+        console.log(`[JoSan] Blocked ${matches.length} word(s):`, matches);
+      }
+    } catch (error) {
+      console.error("[JoSan] Error filtering text:", error);
     }
   }
 
-  private saveStats(): void {
-    chrome.storage.local.set({ stats: this.stats });
-  }
-
-  private escapeRegExp(string: string): string {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  }
-
+  // State Update Methods
   updateFilterState(enabled: boolean): void {
     this.isEnabled = enabled;
+    console.log(`[JoSan] Filter state updated: ${enabled}`);
   }
 
+  // Custom Word Management
   async addCustomWord(word: string): Promise<void> {
     const result = await chrome.storage.local.get({ customWords: [] });
     const customWords = [...result.customWords, word];
 
     await chrome.storage.local.set({ customWords });
     this.profanitySet.add(word.toLowerCase());
-    this.compileRegex();
+    this.profanityRegex = ProfanityLoader.compileRegex(this.profanitySet);
   }
 
   async removeCustomWord(word: string): Promise<void> {
@@ -140,6 +234,6 @@ export class FilterProcessor {
 
     await chrome.storage.local.set({ customWords });
     this.profanitySet.delete(word.toLowerCase());
-    this.compileRegex();
+    this.profanityRegex = ProfanityLoader.compileRegex(this.profanitySet);
   }
 }

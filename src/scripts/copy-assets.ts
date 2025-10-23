@@ -27,12 +27,13 @@ if (fs.existsSync(sourceIconsDir)) {
   });
 }
 
-// Create data directory and copy profanity list
+// Create data directory
 const dataDir = path.join(rootDir, "dist/data");
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
+// Copy profanity list file
 const profanityListSource = path.join(rootDir, "public/data/en.txt");
 if (fs.existsSync(profanityListSource)) {
   fs.copyFileSync(profanityListSource, path.join(dataDir, "en.txt"));

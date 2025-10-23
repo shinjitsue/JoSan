@@ -8,7 +8,6 @@
 
 JoSan enhances your browsing experience with advanced content moderation capabilities. This extension uses AI-powered logic to filter and detect profanity, helping users maintain a safer and more respectful web environment.
 
-
 ![image](https://github.com/user-attachments/assets/bc367ab3-ba3a-416b-9c48-201129e8a316)
 
 ---
@@ -23,6 +22,7 @@ JoSan enhances your browsing experience with advanced content moderation capabil
 - 🌐 Uses Chrome Extension APIs
 - 🧩 Includes a **popup** interface and **options** page
 - 🔧 Modular and maintainable project structure
+- 🔒 **Privacy-first design** - filters only public feeds, never private messages
 
 ---
 
@@ -41,13 +41,14 @@ JoSan enhances your browsing experience with advanced content moderation capabil
 ```
 josan/
 ├── public/         # Static assets
-│ └── icons/        # Extension icons (PNG, SVG)
+│   ├── icons/      # Extension icons (PNG, SVG)
+│   └── data/       # Profanity word lists
 ├── src/            # Source code
-│ ├── background/   # Background scripts
-│ ├── content/      # Content scripts that run in web pages
-│ ├── popup/        # Popup components
-│ ├── options/      # Options page components
-│ └── scripts/      # Utility functions and helpers
+│   ├── background/ # Background scripts
+│   ├── content/    # Content scripts that run in web pages
+│   ├── popup/      # Popup components
+│   ├── options/    # Options page components
+│   └── scripts/    # Utility functions and helpers
 ├── dist/           # Production-ready build output
 ├── release/        # Final packaged builds (.crx) for distribution
 ├── manifest.json   # Extension manifest (v3)
@@ -93,11 +94,12 @@ yarn dev
 
 4. **Load the extension in your browser**
 
-    ✅ Chrome
-    - Visit `chrome://extensions/`
-    - Enable **Developer mode**
-    - Click **Load unpacked**
-    - Select the `dist` folder
+   ✅ Chrome
+
+   - Visit `chrome://extensions/`
+   - Enable **Developer mode**
+   - Click **Load unpacked**
+   - Select the `dist` folder
 
 5. **The extension should now be installed and ready for testing**
 
@@ -118,12 +120,12 @@ yarn dev
 
 ## 📜 Scripts
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start development mode |
-| `npm run build` | Build the project for production |
+| Command           | Description                          |
+| ----------------- | ------------------------------------ |
+| `npm run dev`     | Start development mode               |
+| `npm run build`   | Build the project for production     |
 | `npm run preview` | Preview the production build locally |
-| `npm run lint` | Run ESLint for code quality checks |
+| `npm run lint`    | Run ESLint for code quality checks   |
 
 ---
 
@@ -154,23 +156,23 @@ We welcome contributions!
 
 1. Fork the repo
 2. Create a new branch:
-    
-    ```bash
-    git checkout -b feature/amazing-feature
-    ```
-    
+
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+
 3. Commit your changes:
-    
-    ```bash
-    git commit -m "Add amazing feature"
-    ```
-    
+
+   ```bash
+   git commit -m "Add amazing feature"
+   ```
+
 4. Push to GitHub:
-    
-    ```bash
-    git push origin feature/amazing-feature
-    ```
-    
+
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+
 5. Open a Pull Request ✅
 
 ---
@@ -194,6 +196,70 @@ This project is licensed under the **GNU General Public License v3.0**. See the 
 - [TypeScript](https://www.typescriptlang.org/)
 - [Vite](https://vitejs.dev/)
 - [Tailwind CSS](https://tailwindcss.com/)
+
+---
+
+## 🛡️ Privacy & Security
+
+**JoSan is designed with privacy as the top priority:**
+
+- 🔒 **Public Feeds Only**: Filters only public social media feeds and comments
+- 💻 **100% Local Processing**: All filtering happens on your device
+- 🚫 **Zero Data Collection**: No tracking, no analytics, no external servers
+- 🔐 **Minimal Permissions**: Only accesses specific social media domains
+- 🚷 **Private Content Protected**: Automatically excludes:
+  - Direct messages (DMs)
+  - Private conversations
+  - Chat/inbox areas
+  - Input fields and forms
+  - Password fields
+
+See [SECURITY.md](./SECURITY.md) for detailed security information.
+
+## 🌐 Supported Platforms
+
+JoSan actively filters profanity on **12 major social media platforms**:
+
+### ✅ Currently Supported
+
+| Platform  | Filtered Areas               | Private Areas Excluded       |
+| --------- | ---------------------------- | ---------------------------- |
+| Facebook  | News Feed, Posts, Comments   | Messenger, DMs               |
+| Twitter/X | Timeline, Tweets, Replies    | Direct Messages              |
+| Instagram | Feed, Stories, Comments      | Instagram Direct             |
+| Reddit    | Posts, Comments, Subreddits  | Chat, Private Messages       |
+| LinkedIn  | Feed, Posts, Comments        | LinkedIn Messaging           |
+| TikTok    | For You Page, Comments       | TikTok Messages              |
+| YouTube   | Comments, Community Posts    | Private Messages             |
+| Tumblr    | Dashboard, Posts, Reblogs    | Tumblr Messaging             |
+| Quora     | Answers, Comments, Spaces    | Quora Messages               |
+| Threads   | Feed, Threads, Replies       | Threads DMs                  |
+| Discord   | Public Servers/Channels Only | Direct Messages, Group Chats |
+| BlueSky   | Feed, Posts, Replies         | Private Messages             |
+
+### 🎯 Filter Scope
+
+**What JoSan Filters:**
+
+- ✅ Public posts and status updates
+- ✅ Comments and replies
+- ✅ Public timelines and feeds
+- ✅ Community content
+- ✅ Public channel messages (Discord only)
+
+**What JoSan NEVER Filters:**
+
+- ❌ Direct messages (DMs)
+- ❌ Private conversations
+- ❌ Chat/inbox areas
+- ❌ Input fields you're typing in
+- ❌ Password fields
+- ❌ Forms and text editors
+- ❌ Private channels (Discord)
+
+### 🔧 Platform Selection
+
+Users can enable/disable filtering for each platform individually through the **Options** page. Disabled platforms will not be filtered at all, giving you complete control over where JoSan is active.
 
 ---
 

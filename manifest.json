@@ -18,12 +18,49 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": [
+        "*://*.facebook.com/*",
+        "*://*.twitter.com/*",
+        "*://*.x.com/*",
+        "*://*.instagram.com/*",
+        "*://*.reddit.com/*",
+        "*://*.linkedin.com/*",
+        "*://*.tiktok.com/*",
+        "*://*.youtube.com/*",
+        "*://*.tumblr.com/*",
+        "*://*.quora.com/*",
+        "*://*.threads.net/*",
+        "*://*.discord.com/*",
+        "*://*.bsky.app/*"
+      ],
       "js": ["content.js"],
-      "run_at": "document_end"
+      "run_at": "document_end",
+      "exclude_globs": [
+        "*://*/messages/*",
+        "*://*/inbox/*",
+        "*://*/chat/*",
+        "*://*/dm/*",
+        "*://*/direct/*",
+        "*://*/conversations/*"
+      ]
     }
   ],
   "permissions": ["storage"],
+  "host_permissions": [
+    "*://*.facebook.com/*",
+    "*://*.twitter.com/*",
+    "*://*.x.com/*",
+    "*://*.instagram.com/*",
+    "*://*.reddit.com/*",
+    "*://*.linkedin.com/*",
+    "*://*.tiktok.com/*",
+    "*://*.youtube.com/*",
+    "*://*.tumblr.com/*",
+    "*://*.quora.com/*",
+    "*://*.threads.net/*",
+    "*://*.discord.com/*",
+    "*://*.bsky.app/*"
+  ],
   "web_accessible_resources": [
     {
       "resources": ["data/en.txt"],

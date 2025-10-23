@@ -31,14 +31,26 @@ function Popup() {
     // Send message to content script to update filter state
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs[0]?.id) {
-        chrome.tabs.sendMessage(tabs[0].id, {
-          action: "updateFilterState",
-          enabled: newState,
-        });
+        chrome.tabs.sendMessage(
+          tabs[0].id,
+          {
+            action: "updateFilterState",
+            enabled: newState,
+          },
+          (response) => {
+            if (chrome.runtime.lastError) {
+              console.log(
+                "[JoSan Popup] Content script not ready:",
+                chrome.runtime.lastError.message
+              );
+            } else {
+              console.log("[JoSan Popup] Filter state updated:", response);
+            }
+          }
+        );
       }
     });
   };
-
   const openOptions = () => {
     chrome.runtime.openOptionsPage();
   };
