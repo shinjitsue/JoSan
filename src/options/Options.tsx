@@ -1,17 +1,31 @@
 import { useState, useEffect } from "react";
 
-// Define the settings type
 interface Settings {
   enabled: boolean;
   theme: string;
   customWords: string[];
+  filterFeedsOnly: boolean;
+  enabledPlatforms: string[];
 }
 
 function Options() {
   const [settings, setSettings] = useState<Settings>({
     enabled: true,
     theme: "light",
-    customWords: [] as string[],
+    customWords: [],
+    filterFeedsOnly: true,
+    enabledPlatforms: [
+      "facebook",
+      "twitter",
+      "instagram",
+      "reddit",
+      "linkedin",
+      "tiktok",
+      "youtube",
+      "pinterest",
+      "tumblr",
+      "quora",
+    ],
   });
   const [newWord, setNewWord] = useState("");
   const [saved, setSaved] = useState(false);
@@ -23,12 +37,27 @@ function Options() {
         enabled: true,
         theme: "light",
         customWords: [],
+        filterFeedsOnly: true,
+        enabledPlatforms: [
+          "facebook",
+          "twitter",
+          "instagram",
+          "reddit",
+          "linkedin",
+          "tiktok",
+          "youtube",
+          "pinterest",
+          "tumblr",
+          "quora",
+        ],
       },
       (items) => {
         const typedSettings: Settings = {
           enabled: items.enabled as boolean,
           theme: items.theme as string,
           customWords: items.customWords as string[],
+          filterFeedsOnly: items.filterFeedsOnly as boolean,
+          enabledPlatforms: items.enabledPlatforms as string[],
         };
         setSettings(typedSettings);
       }
@@ -39,6 +68,9 @@ function Options() {
     chrome.storage.local.set(settings, () => {
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
+
+      // Notify user to reload tabs
+      console.log("[JoSan] Settings saved. Please reload affected tabs.");
     });
   };
 
@@ -137,10 +169,96 @@ function Options() {
         </button>
 
         {saved && (
-          <div className="text-green-500 mt-2">
-            Settings saved successfully!
+          <div className="bg-green-50 border border-green-200 rounded-lg p-3 mt-2">
+            <p className="text-green-700 font-medium">
+              ✓ Settings saved successfully!
+            </p>
+            <p className="text-sm text-green-600 mt-1">
+              Please reload social media tabs for changes to take effect.
+            </p>
           </div>
         )}
+      </div>
+
+      <h1 className="text-2xl font-bold mb-6 mt-8">JoSan Privacy & Security</h1>
+
+      <div className="space-y-6">
+        {/* Privacy Notice */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 className="font-semibold text-blue-900 mb-2">🔒 Privacy First</h3>
+          <ul className="text-sm text-blue-800 space-y-1">
+            <li>✓ Filters only public social media feeds</li>
+            <li>✓ Never accesses private messages or DMs</li>
+            <li>✓ All processing happens locally on your device</li>
+            <li>✓ No data sent to external servers</li>
+          </ul>
+        </div>
+
+        {/* Filter Scope */}
+        <div className="border rounded-lg p-4">
+          <label className="flex items-center">
+            <input
+              type="checkbox"
+              checked={settings.filterFeedsOnly}
+              onChange={() =>
+                setSettings({
+                  ...settings,
+                  filterFeedsOnly: !settings.filterFeedsOnly,
+                })
+              }
+              className="mr-2"
+            />
+            <span className="font-medium">Filter Feeds Only (Recommended)</span>
+          </label>
+          <p className="text-sm text-gray-600 mt-2">
+            When enabled, JoSan will only filter public social media feeds and
+            timelines, excluding private messages, input fields, and personal
+            content.
+          </p>
+        </div>
+
+        {/* Platform Selection */}
+        <div>
+          <h3 className="font-medium mb-3">Active on Platforms:</h3>
+          <p className="text-sm text-gray-600 mb-3">
+            Select which social media platforms should have profanity filtering
+            enabled. Disabled platforms will not be filtered.
+          </p>
+          <div className="space-y-2">
+            {[
+              "facebook",
+              "twitter",
+              "instagram",
+              "reddit",
+              "linkedin",
+              "tiktok",
+              "youtube",
+              "tumblr",
+              "quora",
+              "threads",
+              "discord",
+              "bluesky",
+            ].map((platform) => (
+              <label key={platform} className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={settings.enabledPlatforms.includes(platform)}
+                  onChange={(e) => {
+                    const newPlatforms = e.target.checked
+                      ? [...settings.enabledPlatforms, platform]
+                      : settings.enabledPlatforms.filter((p) => p !== platform);
+                    setSettings({
+                      ...settings,
+                      enabledPlatforms: newPlatforms,
+                    });
+                  }}
+                  className="mr-2"
+                />
+                <span className="capitalize">{platform}</span>
+              </label>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
