@@ -209,13 +209,22 @@ export class FilterProcessor {
       }
 
       if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.nodeValue || "";
+        if (text.trim().length > 5) {
+          console.log(
+            `[JoSan] Processing text node: "${text.substring(0, 50)}..."`
+          );
+        }
         this.filterTextNode(node);
       } else if (node.nodeType === Node.ELEMENT_NODE) {
         const element = node as Element;
         const tagName = element.tagName.toLowerCase();
 
         if (tagName === "script" || tagName === "style") return;
-        if (PrivacyFilter.isPrivateContent(element)) return;
+        if (PrivacyFilter.isPrivateContent(element)) {
+          console.log("[JoSan] Skipping private content");
+          return;
+        }
 
         element.childNodes.forEach((child) => {
           this.processNode(child);
@@ -385,6 +394,10 @@ export class FilterProcessor {
   updateFilterState(enabled: boolean): void {
     this.isEnabled = enabled;
     console.log(`[JoSan] Filter state updated: ${enabled}`);
+  }
+
+  getStats() {
+    return this.statsManager.getStats();
   }
 
   // Custom Word Management

@@ -166,7 +166,26 @@ window.addEventListener("beforeunload", () => {
     observer.disconnect();
     console.log("[JoSan] Observer disconnected");
   }
+
+  if (filter && chrome?.runtime?.id) {
+    try {
+      const stats = filter.getStats?.();
+      if (stats) {
+        chrome.storage.local.set({ stats });
+      }
+    } catch (error) {
+      console.debug("[JoSan] Could not save stats on unload:", error);
+    }
+  }
 });
+
+if (typeof chrome !== "undefined" && chrome.runtime) {
+  chrome.runtime.onSuspend?.addListener(() => {
+    console.log("[JoSan] Extension suspending, cleaning up...");
+    if (observer) observer.disconnect();
+    filter = null;
+  });
+}
 
 // Export for debugging (optional)
 declare global {
