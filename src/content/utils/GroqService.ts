@@ -6,11 +6,48 @@ interface GroqClassification {
   reason?: string;
 }
 
+interface CacheEntry {
+  result: GroqClassification;
+  timestamp: number;
+}
+
 export class GroqService {
   private static readonly API_URL =
     "https://api.groq.com/openai/v1/chat/completions";
   private static apiKey: string = "";
   private static isValidated: boolean = false;
+
+  // Caching mechanism
+  private static cache = new Map<string, CacheEntry>();
+  private static readonly CACHE_TTL = 5 * 60 * 1000;
+  private static readonly MAX_CACHE_SIZE = 500;
+
+  // Helper method to generate cache key
+  private static getCacheKey(text: string): string {
+    return text.trim().toLowerCase().substring(0, 200);
+  }
+
+  // Cache cleanup method
+  private static cleanCache(): void {
+    const now = Date.now();
+    const entries = Array.from(this.cache.entries());
+
+    // Remove expired entries
+    entries.forEach(([key, entry]) => {
+      if (now - entry.timestamp > this.CACHE_TTL) {
+        this.cache.delete(key);
+      }
+    });
+
+    // If still too large, remove oldest entries
+    if (this.cache.size > this.MAX_CACHE_SIZE) {
+      const sortedEntries = entries
+        .sort((a, b) => a[1].timestamp - b[1].timestamp)
+        .slice(0, this.cache.size - this.MAX_CACHE_SIZE);
+
+      sortedEntries.forEach(([key]) => this.cache.delete(key));
+    }
+  }
 
   static setApiKey(key: string): void {
     this.apiKey = key;
@@ -58,7 +95,15 @@ export class GroqService {
       return null;
     }
 
-    // : Check rate limit before making request
+    // Check cache first
+    const cacheKey = this.getCacheKey(text);
+    const cached = this.cache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+      console.log("[JoSan AI] Using cached result");
+      return cached.result;
+    }
+
+    // Check rate limit before making request
     const stats = await UsageTracker.getStats();
     if (UsageTracker.isRateLimitExceeded(stats.requestsThisMinute)) {
       console.warn(
@@ -67,7 +112,7 @@ export class GroqService {
       return null;
     }
 
-    // : Warn if approaching rate limit
+    // Warn if approaching rate limit
     if (UsageTracker.isRateLimitApproaching(stats.requestsThisMinute)) {
       console.warn(
         `[JoSan] Approaching rate limit (${stats.requestsThisMinute}/30 per minute)`
@@ -86,21 +131,16 @@ export class GroqService {
           messages: [
             {
               role: "system",
-              content: `You are a content moderation AI. Classify the given text into one of three categories:
-- "clean": Harmless, respectful text
-- "mild": Emotional, frustrated, or mildly offensive but not abusive
-- "toxic": Harassment, insults, hate speech, or severe profanity
-
-Respond ONLY with a JSON object in this format:
-{"classification": "clean|mild|toxic", "confidence": 0.0-1.0, "reason": "brief explanation"}`,
+              content: `Classify text as: clean, mild, toxic. Reply JSON only: {"classification":"clean|mild|toxic","confidence":0.0-1.0,"reason":"brief"}`,
             },
             {
               role: "user",
-              content: `Classify this text: "${text}"`,
+              content: text.substring(0, 200),
             },
           ],
-          temperature: 0.3,
-          max_tokens: 100,
+          temperature: 0.1,
+          max_tokens: 50,
+          top_p: 0.9,
         }),
       });
 
@@ -109,7 +149,6 @@ Respond ONLY with a JSON object in this format:
           console.error("[JoSan AI] Invalid API key");
           this.isValidated = false;
         } else if (response.status === 429) {
-          // : Handle rate limit error from API
           console.error("[JoSan AI] Rate limit exceeded (429 from Groq API)");
         }
         throw new Error(`Groq API error: ${response.status}`);
@@ -128,6 +167,13 @@ Respond ONLY with a JSON object in this format:
       // Parse JSON response
       const result = JSON.parse(content) as GroqClassification;
 
+      // Cache the result
+      this.cache.set(cacheKey, {
+        result,
+        timestamp: Date.now(),
+      });
+      this.cleanCache();
+
       console.log(
         `[JoSan AI] Classification: ${result.classification} (${result.confidence})`
       );
@@ -143,6 +189,23 @@ Respond ONLY with a JSON object in this format:
   ): Promise<Map<string, GroqClassification>> {
     const results = new Map<string, GroqClassification>();
 
+    // Check cache first
+    const uncachedTexts: string[] = [];
+    texts.forEach((text) => {
+      const cacheKey = this.getCacheKey(text);
+      const cached = this.cache.get(cacheKey);
+      if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+        results.set(text, cached.result);
+      } else {
+        uncachedTexts.push(text);
+      }
+    });
+
+    if (uncachedTexts.length === 0) {
+      console.log("[JoSan] All results from cache");
+      return results;
+    }
+
     // Respect per-minute rate limit
     const stats = await UsageTracker.getStats();
     const remainingRequests =
@@ -156,8 +219,8 @@ Respond ONLY with a JSON object in this format:
     // Limit batch size to remaining requests
     const maxBatchSize = Math.min(5, remainingRequests);
 
-    for (let i = 0; i < texts.length; i += maxBatchSize) {
-      const batch = texts.slice(i, i + maxBatchSize);
+    for (let i = 0; i < uncachedTexts.length; i += maxBatchSize) {
+      const batch = uncachedTexts.slice(i, i + maxBatchSize);
       const promises = batch.map(async (text) => {
         const result = await this.classifyText(text);
         if (result) {

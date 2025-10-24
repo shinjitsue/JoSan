@@ -3,13 +3,13 @@ interface UsageStats {
   requestsToday: number;
   lastResetDate: string;
   requestHistory: { date: string; count: number }[];
-  requestsThisMinute: number; //
-  lastMinuteReset: string; //
+  requestsThisMinute: number;
+  lastMinuteReset: string;
 }
 
 export class UsageTracker {
   private static readonly STORAGE_KEY = "groqUsageStats";
-  private static readonly FREE_TIER_DAILY_LIMIT = 14400; // Groq free tier
+  private static readonly FREE_TIER_DAILY_LIMIT = 14400;
   private static readonly FREE_TIER_PER_MINUTE = 30;
 
   static async getStats(): Promise<UsageStats> {
@@ -19,7 +19,7 @@ export class UsageTracker {
         requestsToday: 0,
         lastResetDate: new Date().toISOString().split("T")[0],
         requestHistory: [],
-        requestsThisMinute: 0, //
+        requestsThisMinute: 0,
         lastMinuteReset: new Date().toISOString().slice(0, 16), //  (YYYY-MM-DDTHH:MM)
       },
     });
@@ -62,7 +62,7 @@ export class UsageTracker {
     const stats = await this.getStats();
     stats.totalRequests += 1;
     stats.requestsToday += 1;
-    stats.requestsThisMinute += 1; //
+    stats.requestsThisMinute += 1;
     await chrome.storage.local.set({ [this.STORAGE_KEY]: stats });
   }
 
@@ -72,8 +72,8 @@ export class UsageTracker {
       requestsToday: 0,
       lastResetDate: new Date().toISOString().split("T")[0],
       requestHistory: [],
-      requestsThisMinute: 0, //
-      lastMinuteReset: new Date().toISOString().slice(0, 16), //
+      requestsThisMinute: 0,
+      lastMinuteReset: new Date().toISOString().slice(0, 16),
     };
     await chrome.storage.local.set({ [this.STORAGE_KEY]: emptyStats });
   }
@@ -108,7 +108,7 @@ export class UsageTracker {
 
   // : Check if rate limit is approaching
   static isRateLimitApproaching(requestsThisMinute: number): boolean {
-    return requestsThisMinute >= this.FREE_TIER_PER_MINUTE * 0.8; // 80% threshold
+    return requestsThisMinute >= this.FREE_TIER_PER_MINUTE * 0.8;
   }
 
   // : Check if rate limit is exceeded
@@ -117,9 +117,9 @@ export class UsageTracker {
   }
 
   static estimateCost(totalRequests: number): { tokens: number; cost: string } {
-    // Groq pricing: $0.05 per 1M input tokens, $0.08 per 1M output tokens
-    // Estimate ~200 tokens per request (100 input + 100 output)
-    const avgTokensPerRequest = 200;
+    // Updated: Optimized to ~100 tokens per request (was 200)
+    // System prompt: ~40 tokens, User input: ~35 tokens, Response: ~25 tokens
+    const avgTokensPerRequest = 100;
     const totalTokens = totalRequests * avgTokensPerRequest;
 
     // Free tier first 100k requests, then paid
