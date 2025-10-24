@@ -89,6 +89,26 @@ export class GroqService {
     }
   }
 
+  private static parseAIResponse(content: string): GroqClassification | null {
+    try {
+      // Try direct parse first
+      return JSON.parse(content) as GroqClassification;
+    } catch {
+      // Extract JSON if wrapped in extra text
+      const jsonMatch = content.match(/\{[^}]+\}/);
+      if (jsonMatch) {
+        try {
+          return JSON.parse(jsonMatch[0]) as GroqClassification;
+        } catch {
+          console.error("[JoSan AI] Failed to parse extracted JSON");
+          return null;
+        }
+      }
+      console.error("[JoSan AI] No valid JSON in response");
+      return null;
+    }
+  }
+
   static async classifyText(text: string): Promise<GroqClassification | null> {
     if (!this.apiKey) {
       console.warn("[JoSan] Groq API key not configured");
@@ -131,7 +151,14 @@ export class GroqService {
           messages: [
             {
               role: "system",
-              content: `Classify text as: clean, mild, toxic. Reply JSON only: {"classification":"clean|mild|toxic","confidence":0.0-1.0,"reason":"brief"}`,
+              content: `You are a content classifier. Respond ONLY with valid JSON. Do not add any explanation before or after the JSON.
+
+Format: {"classification":"clean|mild|toxic","confidence":0.0-1.0,"reason":"brief"}
+
+Classifications:
+- clean: Normal, harmless content
+- mild: Emotional/frustrated but not abusive
+- toxic: Harassment, insults, hate speech`,
             },
             {
               role: "user",
@@ -164,8 +191,11 @@ export class GroqService {
         throw new Error("No response from Groq API");
       }
 
-      // Parse JSON response
-      const result = JSON.parse(content) as GroqClassification;
+      // Use the safe parser
+      const result = this.parseAIResponse(content);
+      if (!result) {
+        return null;
+      }
 
       // Cache the result
       this.cache.set(cacheKey, {
