@@ -205,16 +205,10 @@ export class FilterProcessor {
   processNode(node: Node): void {
     try {
       if (this.processedNodes.has(node)) {
-        return; // Skip already processed nodes
+        return;
       }
 
       if (node.nodeType === Node.TEXT_NODE) {
-        const text = node.nodeValue || "";
-        if (text.trim().length > 5) {
-          console.log(
-            `[JoSan] Processing text node: "${text.substring(0, 50)}..."`
-          );
-        }
         this.filterTextNode(node);
       } else if (node.nodeType === Node.ELEMENT_NODE) {
         const element = node as Element;
