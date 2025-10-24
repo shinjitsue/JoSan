@@ -2,6 +2,9 @@ export const FEED_SELECTORS = [
   // Facebook
   'div[role="feed"]',
   'div[data-pagelet*="FeedUnit"]',
+  'div[data-pagelet*="MainFeed"]',
+  'div[class*="x1yztbdb"]',
+  'div[data-visualcompletion="ignore-dynamic"]',
 
   // Twitter/X
   'article[data-testid="tweet"]',
@@ -55,22 +58,34 @@ export const FEED_SELECTORS = [
 ];
 
 export const PRIVATE_SELECTORS = [
-  // Messages/DMs
-  '[data-testid*="message"]',
-  '[class*="message"]',
-  '[class*="chat"]',
-  '[class*="dm"]',
-  '[aria-label*="message"]',
-  '[aria-label*="conversation"]',
+  // Facebook Private Areas
+  '[aria-label="Messenger"]',
+  '[aria-label*="Send a message to"]',
+  '[data-pagelet="Messenger"]',
+  'div[data-pagelet*="MessengerDotCom"]',
+  '[role="complementary"][aria-label*="Messenger"]',
 
-  // Discord specific private areas
-  '[class*="privateChannels"]',
+  // Twitter/X DMs - Specific selectors
+  '[data-testid="DMDrawer"]',
+  '[data-testid="DMConversationEntry"]',
   '[aria-label*="Direct Messages"]',
-  '[data-list-id="private-channels"]',
 
-  // Threads DMs
-  '[class*="direct"]',
-  '[aria-label*="Direct"]',
+  // Instagram Direct - Specific selectors
+  'section[class*="x1qjc9v5"][role="main"]', // DM section
+  '[aria-label*="Direct messages"]',
+
+  // Reddit Chat/Messages - Specific selectors
+  'shreddit-async-loader[bundlename="chat"]',
+  '[routename="chat"]',
+
+  // LinkedIn Messaging - Specific selectors
+  "section.msg-overlay-list-bubble",
+  'aside[aria-label*="Messaging"]',
+
+  // Discord Private Channels - Specific selectors
+  '[class*="privateChannels"]',
+  '[data-list-id="private-channels"]',
+  'li[class*="channel"][class*="private"]',
 
   // Input fields
   'input[type="password"]',
@@ -82,8 +97,13 @@ export const PRIVATE_SELECTORS = [
   "form",
   '[role="textbox"]',
 
-  // Private areas
+  // Inbox/Message areas
+  '[data-pagelet*="inbox"]',
   '[data-testid*="inbox"]',
-  '[class*="inbox"]',
-  '[class*="direct"]',
+  'div[aria-label*="Inbox"]',
+  'div[aria-label*="Messages"]',
+
+  // Generic chat UI
+  '[role="dialog"][aria-label*="chat"]',
+  '[role="dialog"][aria-label*="message"]',
 ];
