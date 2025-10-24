@@ -6,8 +6,8 @@ interface UsageStats {
   requestsToday: number;
   lastResetDate: string;
   requestHistory: { date: string; count: number }[];
-  requestsThisMinute: number; //
-  lastMinuteReset: string; //
+  requestsThisMinute: number;
+  lastMinuteReset: string;
 }
 
 function UsageDashboard() {
@@ -16,8 +16,8 @@ function UsageDashboard() {
     requestsToday: 0,
     lastResetDate: "",
     requestHistory: [],
-    requestsThisMinute: 0, //
-    lastMinuteReset: "", //
+    requestsThisMinute: 0,
+    lastMinuteReset: "",
   });
   const [refreshKey, setRefreshKey] = useState(0);
 

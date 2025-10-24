@@ -25,6 +25,7 @@ export class FilterProcessor {
     filterMild: false,
     filterToxic: true,
   };
+  private readonly MIN_TEXT_LENGTH = 10;
 
   // Track processed nodes to avoid reprocessing
   private processedNodes = new WeakSet<Node>();
@@ -227,6 +228,25 @@ export class FilterProcessor {
     }
   }
 
+  // Heuristic to skip unnecessary AI checks
+  private shouldSkipAICheck(text: string): boolean {
+    // Skip if too short (likely not meaningful)
+    if (text.length < this.MIN_TEXT_LENGTH) return true;
+
+    // Skip if mostly emojis/special chars (not worth AI check)
+    const alphanumericRatio =
+      (text.match(/[a-zA-Z0-9]/g) || []).length / text.length;
+    if (alphanumericRatio < 0.3) return true;
+
+    // Skip if URL-heavy
+    const urlPattern = /(https?:\/\/[^\s]+)/g;
+    const urlMatches = text.match(urlPattern) || [];
+    if (urlMatches.length > 2 || urlMatches.join("").length > text.length * 0.5)
+      return true;
+
+    return false;
+  }
+
   // Two-stage filtering: Regex → AI
   private async filterTextNode(textNode: Node): Promise<void> {
     if (!this.profanityRegex) return;
@@ -242,6 +262,13 @@ export class FilterProcessor {
         // Found profanity via regex
 
         if (this.filterSettings.useAI) {
+          // Check if text is worth AI processing
+          if (this.shouldSkipAICheck(originalText)) {
+            console.log("[JoSan] Skipping AI check (low-value text)");
+            this.applyRegexFilter(textNode, originalText, regexMatches);
+            return;
+          }
+
           // Stage 2: AI context check for flagged content
           console.log("[JoSan] Suspicious text found, checking with AI...");
           const classification = await GroqService.classifyText(originalText);
