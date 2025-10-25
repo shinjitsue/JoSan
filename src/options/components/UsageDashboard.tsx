@@ -188,7 +188,7 @@ function UsageDashboard() {
           <div className="text-2xl font-bold text-purple-600">
             {(tokens / 1000).toFixed(1)}K
           </div>
-          <div className="text-xs text-gray-400 mt-1">~200 per request</div>
+          <div className="text-xs text-gray-400 mt-1">~150 per request</div>
         </div>
       </div>
 
@@ -200,8 +200,9 @@ function UsageDashboard() {
           <span className="ml-2 text-sm text-gray-500">USD (if paid tier)</span>
         </div>
         <p className="text-xs text-gray-500 mt-2">
-          First 100K requests are free. Estimates based on Groq pricing: $0.05
-          per 1M input tokens, $0.08 per 1M output tokens.
+          Free tier: First 100K requests/day. Estimates based on Groq pricing:
+          $0.05 per 1M input tokens, $0.08 per 1M output tokens
+          (Llama-3.1-8B-Instant).
         </p>
       </div>
 

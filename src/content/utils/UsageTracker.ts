@@ -117,22 +117,32 @@ export class UsageTracker {
   }
 
   static estimateCost(totalRequests: number): { tokens: number; cost: string } {
-    // Updated: Optimized to ~100 tokens per request (was 200)
-    // System prompt: ~40 tokens, User input: ~35 tokens, Response: ~25 tokens
-    const avgTokensPerRequest = 100;
-    const totalTokens = totalRequests * avgTokensPerRequest;
+    // Llama-3.1-8B-Instant token breakdown based on actual GroqService prompts:
+    // System prompt: ~70 tokens (JSON classifier instructions)
+    // User input: ~50 tokens average (max 200 chars sent)
+    // Output: ~30 tokens (JSON response with classification/confidence/reason)
+    const avgInputTokensPerRequest = 120; // System + User
+    const avgOutputTokensPerRequest = 30;
 
-    // Free tier first 100k requests, then paid
-    const freeTokens = 100000 * avgTokensPerRequest;
-    const paidTokens = Math.max(0, totalTokens - freeTokens);
+    const totalInputTokens = totalRequests * avgInputTokensPerRequest;
+    const totalOutputTokens = totalRequests * avgOutputTokensPerRequest;
 
-    // Average cost calculation ($0.065 per 1M tokens average)
-    const costPerMillion = 0.065;
-    const estimatedCost = (paidTokens / 1000000) * costPerMillion;
+    // Groq pricing for Llama-3.1-8B-Instant
+    // Free tier: First 100K requests per day OR 30 requests/minute (whichever hits first)
+    // After free tier: $0.05 per 1M input tokens, $0.08 per 1M output tokens
+
+    // Note: This is cumulative cost estimate if ALL requests were paid
+    // In reality, free tier applies per-day, so actual cost is much lower
+    const inputCostPerMillion = 0.05;
+    const outputCostPerMillion = 0.08;
+
+    const inputCost = (totalInputTokens / 1_000_000) * inputCostPerMillion;
+    const outputCost = (totalOutputTokens / 1_000_000) * outputCostPerMillion;
+    const totalCost = inputCost + outputCost;
 
     return {
-      tokens: totalTokens,
-      cost: estimatedCost.toFixed(4),
+      tokens: totalInputTokens + totalOutputTokens,
+      cost: totalCost.toFixed(4),
     };
   }
 }
