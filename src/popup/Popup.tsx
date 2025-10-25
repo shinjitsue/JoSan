@@ -2,21 +2,50 @@ import { useState, useEffect } from "react";
 
 function Popup() {
   const [isEnabled, setIsEnabled] = useState(true);
+  const [theme, setTheme] = useState<"light" | "dark" | "system">("system");
   const [stats, setStats] = useState({
     blockedWords: 0,
     pagesScanned: 0,
     lastScan: "",
   });
 
+  // Apply theme based on settings
+  useEffect(() => {
+    const applyTheme = () => {
+      const root = document.documentElement;
+
+      if (theme === "system") {
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+          .matches
+          ? "dark"
+          : "light";
+        root.classList.toggle("dark", systemTheme === "dark");
+      } else {
+        root.classList.toggle("dark", theme === "dark");
+      }
+    };
+
+    applyTheme();
+
+    if (theme === "system") {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const handler = () => applyTheme();
+      mediaQuery.addEventListener("change", handler);
+      return () => mediaQuery.removeEventListener("change", handler);
+    }
+  }, [theme]);
+
   // Load settings when component mounts
   useEffect(() => {
     chrome.storage.local.get(
       {
         enabled: true,
+        theme: "system",
         stats: { blockedWords: 0, pagesScanned: 0, lastScan: "" },
       },
       (items) => {
         setIsEnabled(items.enabled);
+        setTheme(items.theme);
         if (items.stats) setStats(items.stats);
       }
     );
@@ -56,7 +85,7 @@ function Popup() {
   };
 
   return (
-    <div className="w-80 p-4 bg-white dark:bg-gray-800 text-gray-800 dark:text-white">
+    <div className="w-80 p-4 bg-white dark:bg-gray-800 text-gray-800 dark:text-white transition-colors duration-200">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
