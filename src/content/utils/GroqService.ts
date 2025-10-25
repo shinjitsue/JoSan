@@ -95,18 +95,69 @@ export class GroqService {
       return JSON.parse(content) as GroqClassification;
     } catch {
       // Extract JSON if wrapped in extra text
-      const jsonMatch = content.match(/\{[^}]+\}/);
+      const jsonMatch = content.match(/\{[\s\S]*?\}/);
       if (jsonMatch) {
         try {
           return JSON.parse(jsonMatch[0]) as GroqClassification;
-        } catch {
-          console.error("[JoSan AI] Failed to parse extracted JSON");
-          return null;
+        } catch (parseError) {
+          console.error(
+            "[JoSan AI] Failed to parse extracted JSON:",
+            parseError
+          );
         }
       }
+
+      const fallback = this.extractClassificationFallback(content);
+      if (fallback) {
+        console.warn("[JoSan AI] Using fallback extraction");
+        return fallback;
+      }
+
       console.error("[JoSan AI] No valid JSON in response");
       return null;
     }
+  }
+
+  // Fallback extraction from partial or malformed responses
+  private static extractClassificationFallback(
+    content: string
+  ): GroqClassification | null {
+    const lowerContent = content.toLowerCase();
+
+    // Try to find classification keywords
+    let classification: "clean" | "mild" | "toxic" | null = null;
+
+    if (
+      lowerContent.includes("toxic") ||
+      lowerContent.includes("harassment") ||
+      lowerContent.includes("hate speech")
+    ) {
+      classification = "toxic";
+    } else if (
+      lowerContent.includes("mild") ||
+      lowerContent.includes("frustrated") ||
+      lowerContent.includes("emotional")
+    ) {
+      classification = "mild";
+    } else if (
+      lowerContent.includes("clean") ||
+      lowerContent.includes("harmless") ||
+      lowerContent.includes("normal")
+    ) {
+      classification = "clean";
+    }
+
+    if (!classification) return null;
+
+    // Try to extract confidence (look for numbers between 0-1)
+    const confidenceMatch = content.match(/\b0?\.\d+\b/);
+    const confidence = confidenceMatch ? parseFloat(confidenceMatch[0]) : 0.7;
+
+    return {
+      classification,
+      confidence: Math.min(Math.max(confidence, 0), 1),
+      reason: "Extracted from partial response",
+    };
   }
 
   static async classifyText(text: string): Promise<GroqClassification | null> {
@@ -151,7 +202,7 @@ export class GroqService {
           messages: [
             {
               role: "system",
-              content: `You are a content classifier. Respond ONLY with valid JSON. Do not add any explanation before or after the JSON.
+              content: `You are a JSON-only content classifier.
 
 Format: {"classification":"clean|mild|toxic","confidence":0.0-1.0,"reason":"brief"}
 
@@ -166,8 +217,9 @@ Classifications:
             },
           ],
           temperature: 0.1,
-          max_tokens: 50,
+          max_tokens: 100,
           top_p: 0.9,
+          response_format: { type: "json_object" },
         }),
       });
 
