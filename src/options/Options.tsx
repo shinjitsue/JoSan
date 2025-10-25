@@ -7,11 +7,12 @@ import { AISettings } from "./components/AISettings";
 import { PlatformSettings } from "./components/PlatformSettings";
 import { CustomWords } from "./components/CustomWords";
 import { PrivacySettings } from "./components/PrivacySettings";
+import { ThemeSettings } from "./components/ThemeSettings";
 import UsageDashboard from "./components/UsageDashboard";
 
 interface Settings {
   enabled: boolean;
-  theme: string;
+  theme: "light" | "dark" | "system";
   customWords: string[];
   filterFeedsOnly: boolean;
   enabledPlatforms: string[];
@@ -24,7 +25,7 @@ interface Settings {
 function Options() {
   const [settings, setSettings] = useState<Settings>({
     enabled: true,
-    theme: "light",
+    theme: "system",
     customWords: [],
     filterFeedsOnly: true,
     enabledPlatforms: [
@@ -48,11 +49,38 @@ function Options() {
   });
   const [saved, setSaved] = useState(false);
 
+  // Apply theme to document
+  useEffect(() => {
+    const applyTheme = () => {
+      const root = document.documentElement;
+
+      if (settings.theme === "system") {
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+          .matches
+          ? "dark"
+          : "light";
+        root.classList.toggle("dark", systemTheme === "dark");
+      } else {
+        root.classList.toggle("dark", settings.theme === "dark");
+      }
+    };
+
+    applyTheme();
+
+    // Listen for system theme changes if using system theme
+    if (settings.theme === "system") {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const handler = () => applyTheme();
+      mediaQuery.addEventListener("change", handler);
+      return () => mediaQuery.removeEventListener("change", handler);
+    }
+  }, [settings.theme]);
+
   useEffect(() => {
     chrome.storage.local.get(
       {
         enabled: true,
-        theme: "light",
+        theme: "system",
         customWords: [],
         filterFeedsOnly: true,
         enabledPlatforms: [
@@ -96,12 +124,12 @@ function Options() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 transition-colors duration-200">
       <div className="max-w-5xl mx-auto p-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent">
               JoSan Settings
             </h1>
             <Button onClick={handleSave} size="lg" className="gap-2">
@@ -116,9 +144,9 @@ function Options() {
 
         {/* Success Message */}
         {saved && (
-          <Alert className="mb-6 border-green-200 bg-green-50">
-            <CheckCircle className="h-4 w-4 text-green-600" />
-            <AlertDescription className="text-green-800">
+          <Alert className="mb-6 border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950">
+            <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+            <AlertDescription className="text-green-800 dark:text-green-200">
               <p className="font-medium">Settings saved successfully!</p>
               <p className="text-sm mt-1">
                 Please reload social media tabs for changes to take effect.
@@ -132,6 +160,11 @@ function Options() {
           <BasicSettings
             enabled={settings.enabled}
             onEnabledChange={(enabled) => updateSetting("enabled", enabled)}
+          />
+
+          <ThemeSettings
+            theme={settings.theme}
+            onThemeChange={(theme) => updateSetting("theme", theme)}
           />
 
           <AISettings
