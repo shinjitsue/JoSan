@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "../components/ui/button";
 import { Alert, AlertDescription } from "../components/ui/alert";
-import { CheckCircle, RefreshCw } from "lucide-react";
+import { CheckCircle, RefreshCw, Sparkles } from "lucide-react";
 import { BasicSettings } from "./components/BasicSettings";
 import { AISettings } from "./components/AISettings";
 import { PlatformSettings } from "./components/PlatformSettings";
@@ -67,7 +67,6 @@ function Options() {
 
     applyTheme();
 
-    // Listen for system theme changes if using system theme
     if (settings.theme === "system") {
       const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
       const handler = () => applyTheme();
@@ -103,7 +102,33 @@ function Options() {
         groqApiKey: "",
       },
       (items) => {
-        setSettings(items as Settings);
+        // Sanitize enabledPlatforms
+        const raw = items.enabledPlatforms;
+        const enabledPlatforms = Array.isArray(raw)
+          ? Array.from(
+              new Set(
+                raw.filter(
+                  (p: unknown) => typeof p === "string" && p.trim().length > 0
+                )
+              )
+            )
+          : [
+              "facebook",
+              "twitter",
+              "instagram",
+              "reddit",
+              "linkedin",
+              "tiktok",
+              "youtube",
+              "tumblr",
+              "quora",
+              "threads",
+              "discord",
+              "bluesky",
+            ];
+
+        // Apply sanitized settings
+        setSettings({ ...(items as Settings), enabledPlatforms } as Settings);
       }
     );
   }, []);
@@ -120,34 +145,56 @@ function Options() {
     key: K,
     value: Settings[K]
   ) => {
+    // Ensure enabledPlatforms stays unique
+    if (key === "enabledPlatforms") {
+      const unique = Array.isArray(value)
+        ? Array.from(new Set((value as unknown as string[]).filter(Boolean)))
+        : value;
+      setSettings({ ...settings, [key]: unique } as Settings);
+      return;
+    }
+
     setSettings({ ...settings, [key]: value });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 transition-colors duration-200">
-      <div className="max-w-5xl mx-auto p-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400 bg-clip-text text-transparent">
-              JoSan Settings
-            </h1>
-            <Button onClick={handleSave} size="lg" className="gap-2">
-              <RefreshCw className="h-4 w-4" />
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-950 dark:via-indigo-950/20 dark:to-gray-950 transition-colors duration-300">
+      <div className="max-w-6xl mx-auto px-6 py-10">
+        {/* Modern Header */}
+        <div className="mb-10">
+          <div className="flex items-center justify-between mb-4">
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg shadow-indigo-500/20">
+                  <Sparkles className="h-6 w-6 text-white" />
+                </div>
+                <h1 className="text-5xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-400 bg-clip-text text-transparent">
+                  JoSan Settings
+                </h1>
+              </div>
+              <p className="text-muted-foreground ml-16 text-lg">
+                Configure your intelligent content moderation preferences
+              </p>
+            </div>
+            <Button
+              onClick={handleSave}
+              size="lg"
+              className="gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+            >
+              <RefreshCw className="h-5 w-5" />
               Save Changes
             </Button>
           </div>
-          <p className="text-muted-foreground">
-            Configure your profanity filtering preferences
-          </p>
         </div>
 
         {/* Success Message */}
         {saved && (
-          <Alert className="mb-6 border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950">
-            <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+          <Alert className="mb-8 border-green-500/50 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 shadow-lg">
+            <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
             <AlertDescription className="text-green-800 dark:text-green-200">
-              <p className="font-medium">Settings saved successfully!</p>
+              <p className="font-semibold text-base">
+                Settings saved successfully!
+              </p>
               <p className="text-sm mt-1">
                 Please reload social media tabs for changes to take effect.
               </p>
@@ -155,8 +202,8 @@ function Options() {
           </Alert>
         )}
 
-        {/* Settings Sections */}
-        <div className="space-y-6">
+        {/* Settings Grid */}
+        <div className="grid gap-8">
           <BasicSettings
             enabled={settings.enabled}
             onEnabledChange={(enabled) => updateSetting("enabled", enabled)}

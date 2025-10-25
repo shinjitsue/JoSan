@@ -65,21 +65,23 @@ export function AISettings({
   };
 
   return (
-    <Card className="border-purple-200 bg-gradient-to-br from-purple-50 to-blue-50">
+    <Card className="border-2 border-indigo-200 dark:border-indigo-800 shadow-lg hover:shadow-xl transition-shadow duration-300 bg-gradient-to-br from-white via-indigo-50/30 to-purple-50/30 dark:from-gray-900 dark:via-indigo-950/20 dark:to-purple-950/20">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-purple-600" />
+        <CardTitle className="flex items-center gap-3 text-2xl">
+          <div className="p-2 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30">
+            <Sparkles className="h-5 w-5 text-white" />
+          </div>
           AI-Powered Context Analysis
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-base">
           Use Llama-3.1 8B via Groq for intelligent content classification
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* AI Toggle */}
-        <div className="flex items-center justify-between">
-          <div className="space-y-0.5">
-            <label htmlFor="ai-toggle" className="font-medium">
+        <div className="flex items-center justify-between p-4 rounded-xl bg-white dark:bg-gray-900/50 shadow-sm">
+          <div className="space-y-1">
+            <label htmlFor="ai-toggle" className="font-semibold text-lg">
               Enable AI Double-Check
             </label>
             <p className="text-sm text-muted-foreground">
@@ -96,8 +98,8 @@ export function AISettings({
         {useAI && (
           <>
             {/* API Key Section */}
-            <div className="space-y-3 rounded-lg border bg-white p-4">
-              <label className="text-sm font-medium">
+            <div className="space-y-4 rounded-xl border-2 bg-white dark:bg-gray-900/50 p-6 shadow-sm">
+              <label className="text-base font-semibold flex items-center gap-2">
                 Groq API Key <span className="text-red-500">*</span>
               </label>
 
@@ -162,9 +164,9 @@ export function AISettings({
               </p>
 
               {/* Privacy Notice */}
-              <Alert>
+              <Alert className="border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/30">
                 <AlertDescription>
-                  <p className="font-medium mb-2">🔒 Your API Key is Safe</p>
+                  <p className="font-semibold mb-2">🔒 Your API Key is Safe</p>
                   <ul className="space-y-1 text-sm">
                     <li>• Stored locally in your browser only</li>
                     <li>• Never sent to JoSan servers</li>
@@ -175,8 +177,10 @@ export function AISettings({
             </div>
 
             {/* Filter Classifications */}
-            <div className="space-y-3 rounded-lg border bg-white p-4">
-              <h3 className="font-medium">Filter These AI Classifications:</h3>
+            <div className="space-y-4 rounded-xl border-2 bg-white dark:bg-gray-900/50 p-6 shadow-sm">
+              <h3 className="font-semibold text-lg">
+                Filter These AI Classifications:
+              </h3>
 
               <div className="space-y-3">
                 <label className="flex items-center justify-between cursor-pointer">
