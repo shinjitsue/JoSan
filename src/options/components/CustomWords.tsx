@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { X, Plus, List } from "lucide-react";
+import { Kbd } from "@/components/ui/kbd";
 
 interface CustomWordsProps {
   customWords: string[];
@@ -62,7 +63,8 @@ export function CustomWords({
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
-            Press Enter or click Add to include the word in your filter list
+            Press Enter <Kbd>⏎</Kbd> or click Add to include the word in your
+            filter list
           </p>
         </div>
 

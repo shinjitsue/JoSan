@@ -91,4 +91,75 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Custom Scrollbar Styles */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(239 84% 67%) transparent;
+  }
+
+  .dark * {
+    scrollbar-color: hsl(239 70% 35%) transparent;
+  }
+
+  /* Webkit Scrollbar (Chrome, Safari, Edge) */
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 4px;
+  }
+
+  .dark *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, hsl(239 84% 67%), hsl(262 83% 58%));
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, hsl(239 84% 60%), hsl(262 83% 50%));
+  }
+
+  .dark *::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, hsl(239 70% 35%), hsl(262 65% 30%));
+  }
+
+  .dark *::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, hsl(239 75% 45%), hsl(262 70% 40%));
+  }
+}
+
+/* Heartbeat Pulse Animation */
+@keyframes heartbeat {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  14% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+  28% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  42% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.heartbeat-pulse {
+  animation: heartbeat 2s ease-in-out infinite;
 }
