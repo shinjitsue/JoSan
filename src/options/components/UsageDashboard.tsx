@@ -29,6 +29,7 @@ function UsageDashboard() {
     lastMinuteReset: "",
   });
   const [refreshKey, setRefreshKey] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
     loadStats();
@@ -41,8 +42,21 @@ function UsageDashboard() {
   }, [refreshKey]);
 
   const loadStats = async () => {
+    const startTime = Date.now();
     const usageStats = await UsageTracker.getStats();
     setStats(usageStats);
+
+    const elapsed = Date.now() - startTime;
+    const remaining = Math.max(0, 500 - elapsed);
+
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, remaining);
+  };
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    setRefreshKey((prev) => prev + 1);
   };
 
   const handleReset = async () => {
@@ -118,12 +132,15 @@ function UsageDashboard() {
             <span>Groq API Usage Dashboard</span>
           </div>
           <Button
-            onClick={() => setRefreshKey((prev) => prev + 1)}
+            onClick={handleRefresh}
             variant="outline"
             size="sm"
             className="gap-2"
+            disabled={isRefreshing}
           >
-            <RefreshCw className="h-4 w-4" />
+            <RefreshCw
+              className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+            />
             Refresh
           </Button>
         </CardTitle>
