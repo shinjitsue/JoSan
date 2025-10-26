@@ -14,7 +14,7 @@ export function StatsGrid({ blockedWords, pagesScanned }: StatsGridProps) {
           <p className="text-xs font-medium text-muted-foreground">Blocked</p>
         </div>
         <p className="text-2xl font-bold text-red-600 dark:text-red-400">
-          {blockedWords}
+          {blockedWords.toLocaleString()}
         </p>
       </div>
 
@@ -24,7 +24,7 @@ export function StatsGrid({ blockedWords, pagesScanned }: StatsGridProps) {
           <p className="text-xs font-medium text-muted-foreground">Scanned</p>
         </div>
         <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-          {pagesScanned}
+          {pagesScanned.toLocaleString()}
         </p>
       </div>
     </div>

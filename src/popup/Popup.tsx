@@ -87,7 +87,7 @@ function Popup() {
 
   return (
     <div className="w-96 bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-950 dark:via-indigo-950/20 dark:to-gray-950 transition-colors duration-300">
-      {/* Header section with border-bottom */}
+      {/* Header section */}
       <div className="p-6 border-b-2 border-indigo-100 dark:border-indigo-900/50">
         <Header useAI={settings.useAI} isEnabled={settings.isEnabled} />
         <FilterToggle isEnabled={settings.isEnabled} onToggle={toggleFilter} />
