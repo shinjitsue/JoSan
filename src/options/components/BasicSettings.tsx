@@ -19,27 +19,34 @@ export function BasicSettings({
 }: BasicSettingsProps) {
   return (
     <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between text-2xl">
-          <div className="flex items-center gap-3">
-            <div
-              className={`p-2 rounded-xl ${
+      <CardHeader className="relative">
+        {/* Switch in absolute position - top right */}
+        <div className="absolute top-6 right-6 mt-5">
+          <Switch
+            size="3xl"
+            checked={enabled}
+            onCheckedChange={onEnabledChange}
+          />
+        </div>
+
+        {/* Title without flex justify-between */}
+        <CardTitle className="flex items-center gap-3 text-2xl pr-16">
+          <div
+            className={`p-2 rounded-xl ${
+              enabled
+                ? "bg-indigo-100 dark:bg-indigo-900/30"
+                : "bg-gray-100 dark:bg-gray-800"
+            }`}
+          >
+            <Power
+              className={`h-5 w-5 ${
                 enabled
-                  ? "bg-indigo-100 dark:bg-indigo-900/30"
-                  : "bg-gray-100 dark:bg-gray-800"
+                  ? "text-indigo-600 dark:text-indigo-400"
+                  : "text-gray-400"
               }`}
-            >
-              <Power
-                className={`h-5 w-5 ${
-                  enabled
-                    ? "text-indigo-600 dark:text-indigo-400"
-                    : "text-gray-400"
-                }`}
-              />
-            </div>
-            <span>Filter Status</span>
+            />
           </div>
-          <Switch checked={enabled} onCheckedChange={onEnabledChange} />
+          <span>Filter Status</span>
         </CardTitle>
         <CardDescription className="text-base">
           Enable or disable content filtering globally
