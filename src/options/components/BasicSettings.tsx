@@ -255,9 +255,6 @@ export function BasicSettings({
           <div className="grid grid-cols-2 gap-4">
             {/* Words Blocked Card  */}
             <div className="relative p-6 rounded-xl border-2 border-red-100 dark:border-red-900/50 bg-gradient-to-br from-red-50/50 to-pink-50/50 dark:from-red-950/20 dark:to-pink-950/20 hover:shadow-md transition-shadow duration-300 overflow-hidden group">
-              {/* Large decorative background icon */}
-              <Shield className="absolute right-2 top-1/2 -translate-y-1/2 h-32 w-32 text-red-100 dark:text-red-900/30 opacity-20 group-hover:opacity-30 transition-opacity duration-300" />
-
               {/* Content */}
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-3">
@@ -273,13 +270,12 @@ export function BasicSettings({
                 </p>
                 <p className="text-xs text-muted-foreground">Total filtered</p>
               </div>
+              {/* Background Icon */}
+              <Shield className="absolute -right-4 -bottom-4 h-32 w-32 text-red-200/20 dark:text-red-800/10 rotate-12" />
             </div>
 
             {/* Pages Scanned Card */}
             <div className="relative p-6 rounded-xl border-2 border-blue-100 dark:border-blue-900/50 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-950/20 dark:to-indigo-950/20 hover:shadow-md transition-shadow duration-300 overflow-hidden group">
-              {/* Large decorative background icon */}
-              <Scan className="absolute right-2 top-1/2 -translate-y-1/2 h-32 w-32 text-blue-100 dark:text-blue-900/30 opacity-20 group-hover:opacity-30 transition-opacity duration-300" />
-
               {/* Content */}
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-3">
@@ -299,6 +295,8 @@ export function BasicSettings({
                     : "No scans yet"}
                 </p>
               </div>
+              {/* Background Icon */}
+              <Scan className="absolute -right-4 -bottom-4 h-32 w-32 text-blue-200/20 dark:text-blue-800/10 rotate-12" />
             </div>
           </div>
 

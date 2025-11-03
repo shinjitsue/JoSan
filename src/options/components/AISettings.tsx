@@ -181,15 +181,13 @@ export function AISettings({
               </p>
 
               {/* Privacy Notice */}
-              <Alert className="border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/30 hover:shadow-lg transition-all duration-300">
-                <AlertDescription>
+              <Alert className="border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/30 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+                <AlertDescription className="relative">
                   <p className="font-semibold mb-2 flex items-center gap-2">
-                    <span className="text-lg heartbeat-pulse">
-                      <Lock className="h-5 w-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
-                    </span>
+                    <Lock className="h-5 w-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
                     Your API Key is Safe
                   </p>
-                  <ul className="space-y-1 text-sm">
+                  <ul className="space-y-1 text-sm relative z-10">
                     <li className="ps-3 hover:translate-x-1 transition-transform duration-200">
                       • Stored locally in your browser only
                     </li>
@@ -200,6 +198,8 @@ export function AISettings({
                       • Direct communication with Groq API
                     </li>
                   </ul>
+                  {/* Background Icon */}
+                  <Lock className="absolute -right-5 -bottom-5 h-24 w-24 text-indigo-200/20 dark:text-indigo-800/10 rotate-12" />
                 </AlertDescription>
               </Alert>
             </div>
