@@ -59,10 +59,44 @@ export class UsageTracker {
   }
 
   static async incrementUsage(): Promise<void> {
-    const stats = await this.getStats();
+    const result = await chrome.storage.local.get([this.STORAGE_KEY]);
+    const stats = result[this.STORAGE_KEY] || {
+      totalRequests: 0,
+      requestsToday: 0,
+      lastResetDate: new Date().toISOString().split("T")[0],
+      requestHistory: [],
+      requestsThisMinute: 0,
+      lastMinuteReset: new Date().toISOString().slice(0, 16),
+    };
+
+    // Check and reset if needed
+    const today = new Date().toISOString().split("T")[0];
+    if (stats.lastResetDate !== today) {
+      if (stats.requestsToday > 0) {
+        stats.requestHistory.push({
+          date: stats.lastResetDate,
+          count: stats.requestsToday,
+        });
+        if (stats.requestHistory.length > 30) {
+          stats.requestHistory = stats.requestHistory.slice(-30);
+        }
+      }
+      stats.requestsToday = 0;
+      stats.lastResetDate = today;
+    }
+
+    const currentMinute = new Date().toISOString().slice(0, 16);
+    if (stats.lastMinuteReset !== currentMinute) {
+      stats.requestsThisMinute = 0;
+      stats.lastMinuteReset = currentMinute;
+    }
+
+    // Increment counters
     stats.totalRequests += 1;
     stats.requestsToday += 1;
     stats.requestsThisMinute += 1;
+
+    // Write atomically
     await chrome.storage.local.set({ [this.STORAGE_KEY]: stats });
   }
 

@@ -6,6 +6,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { ChartSpline } from "lucide-react";
 
 interface RequestHistoryCardProps {
   requestHistory: { date: string; count: number }[];
@@ -34,7 +35,7 @@ export function RequestHistoryCard({
   return (
     <DashboardCard>
       <h3 className="font-semibold mb-4 flex items-center gap-2">
-        <span>📈</span>
+        <ChartSpline className="h-4 w-4 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
         Recent History (Last 7 Days)
       </h3>
 
@@ -44,6 +45,20 @@ export function RequestHistoryCard({
           data={chartData}
           margin={{ left: 12, right: 12 }}
         >
+          <defs>
+            <linearGradient id="colorRequests" x1="0" y1="0" x2="0" y2="1">
+              <stop
+                offset="5%"
+                stopColor="hsl(var(--chart-1))"
+                stopOpacity={0.8}
+              />
+              <stop
+                offset="95%"
+                stopColor="hsl(var(--chart-1))"
+                stopOpacity={0.1}
+              />
+            </linearGradient>
+          </defs>
           <CartesianGrid vertical={false} />
           <XAxis
             dataKey="date"
@@ -59,9 +74,10 @@ export function RequestHistoryCard({
           <Area
             dataKey="requests"
             type="natural"
-            fill="var(--color-requests)"
-            fillOpacity={0.4}
-            stroke="var(--color-requests)"
+            fill="url(#colorRequests)"
+            fillOpacity={1}
+            stroke="hsl(var(--chart-1))"
+            strokeWidth={2}
             stackId="a"
           />
         </AreaChart>

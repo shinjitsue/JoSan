@@ -26,6 +26,7 @@ import {
   ChartNoAxesCombined,
   AlertTriangle,
   XCircle,
+  Info,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -304,14 +305,17 @@ export function BasicSettings({
           {/* Additional Stats Info */}
           {stats.blockedWords > 0 && (
             <div className="p-4 rounded-lg bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 border-2 border-indigo-100 dark:border-indigo-900/50 hover:shadow-md transition-all duration-300">
-              <p className="text-sm text-muted-foreground">
-                <span className="font-semibold text-foreground">
-                  {(
-                    stats.blockedWords / Math.max(stats.pagesScanned, 1)
-                  ).toFixed(1)}
-                </span>{" "}
-                words filtered per page on average
-              </p>
+              <div className="flex items-center gap-2">
+                <Info className="h-4 w-4 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-semibold text-foreground">
+                    {(
+                      stats.blockedWords / Math.max(stats.pagesScanned, 1)
+                    ).toFixed(1)}
+                  </span>{" "}
+                  words filtered per page on average
+                </p>
+              </div>
             </div>
           )}
         </div>
