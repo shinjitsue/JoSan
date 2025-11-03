@@ -9,7 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { X, Plus, List } from "lucide-react";
+import { X, Plus, List, Lightbulb } from "lucide-react";
 import { Kbd } from "@/components/ui/kbd";
 
 interface CustomWordsProps {
@@ -115,15 +115,20 @@ export function CustomWords({
         </div>
 
         {/* Info Alert */}
-        <div className="rounded-xl bg-blue-50 dark:bg-blue-950/30 border-2 border-blue-200 dark:border-blue-800 p-4">
-          <p className="text-sm text-blue-900 dark:text-blue-200 font-medium mb-2">
-            💡 Pro Tip
+        <div className="rounded-xl bg-blue-50 dark:bg-blue-950/30 border-2 border-blue-200 dark:border-blue-800 p-4 relative overflow-hidden">
+          <p className="text-sm text-blue-900 dark:text-blue-200 font-medium mb-2 flex items-center gap-2">
+            <Lightbulb className="h-4 w-4 flex-shrink-0" />
+            Pro Tip
           </p>
-          <ul className="space-y-1 text-sm text-blue-800 dark:text-blue-300">
-            <li>• Custom words are added to the base profanity list</li>
-            <li>• Words are case-insensitive</li>
-            <li>• Filtered across all enabled platforms</li>
+          <ul className="space-y-1 text-sm text-blue-800 dark:text-blue-300 relative z-10">
+            <li className="ps-6">
+              • Custom words are added to the base profanity list
+            </li>
+            <li className="ps-6">• Words are case-insensitive</li>
+            <li className="ps-6">• Filtered across all enabled platforms</li>
           </ul>
+          {/* Background Icon */}
+          <Lightbulb className="absolute -right-4 -bottom-4 h-24 w-24 text-blue-200/10 dark:text-blue-800/20 rotate-12" />
         </div>
       </CardContent>
     </Card>
