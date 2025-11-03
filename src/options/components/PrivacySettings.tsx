@@ -9,15 +9,7 @@ import { Switch } from "../../components/ui/switch";
 import { Alert, AlertDescription } from "../../components/ui/alert";
 import { Shield, Lock, Eye, Database, ShieldCheck } from "lucide-react";
 
-interface PrivacySettingsProps {
-  filterFeedsOnly: boolean;
-  onFilterFeedsOnlyChange: (value: boolean) => void;
-}
-
-export function PrivacySettings({
-  filterFeedsOnly,
-  onFilterFeedsOnlyChange,
-}: PrivacySettingsProps) {
+export function PrivacySettings() {
   return (
     <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardHeader>
@@ -52,24 +44,26 @@ export function PrivacySettings({
         </Alert>
 
         {/* Filter Feeds Only Toggle */}
-        <div className="rounded-xl border-2 bg-white dark:bg-gray-900/50 p-6 shadow-sm">
+        <div className="rounded-xl border-2 bg-white dark:bg-gray-900/50 p-6 shadow-sm opacity-75">
           <div className="flex items-center justify-between">
             <div className="space-y-2 flex-1">
               <label
                 htmlFor="feeds-only"
-                className="font-semibold text-lg cursor-pointer"
+                className="font-semibold text-lg flex items-center gap-2"
               >
-                Filter Feeds Only (Recommended)
+                Filter Feeds Only (Always Enabled)
               </label>
               <p className="text-sm text-muted-foreground pr-4">
                 Only filter public content, exclude private messages and input
-                fields
+                fields.
               </p>
             </div>
             <Switch
               id="feeds-only"
-              checked={filterFeedsOnly}
-              onCheckedChange={onFilterFeedsOnlyChange}
+              checked={true}
+              onCheckedChange={() => {}}
+              disabled={true}
+              className="cursor-not-allowed pointer-events-none"
             />
           </div>
         </div>

@@ -265,12 +265,7 @@ function Options() {
             }
           />
 
-          <PrivacySettings
-            filterFeedsOnly={settings.filterFeedsOnly}
-            onFilterFeedsOnlyChange={(value) =>
-              updateSetting("filterFeedsOnly", value)
-            }
-          />
+          <PrivacySettings />
         </div>
       </div>
     </div>

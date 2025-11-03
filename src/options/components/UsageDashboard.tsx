@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BarChart3, RefreshCw } from "lucide-react";
+import { BarChart3, Lightbulb, RefreshCw } from "lucide-react";
 import { RateLimitCard } from "./dashboard/RateLimitCard";
 import { DailyUsageCard } from "./dashboard/DailyUsageCard";
 import { TotalStatsGrid } from "./dashboard/TotalStatsGrid";
@@ -84,7 +84,8 @@ function UsageDashboard() {
 
         <div className="flex items-center justify-between pt-2">
           <p className="text-xs text-muted-foreground flex items-center gap-2">
-            💡 Auto-refreshes every 10 seconds
+            <Lightbulb className="h-3 w-3 flex-shrink-0" /> Auto-refreshes every
+            10 seconds
           </p>
           <Button
             onClick={handleReset}

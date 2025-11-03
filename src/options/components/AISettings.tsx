@@ -188,13 +188,13 @@ export function AISettings({
                     Your API Key is Safe
                   </p>
                   <ul className="space-y-1 text-sm relative z-10">
-                    <li className="ps-3 hover:translate-x-1 transition-transform duration-200">
+                    <li className="ps-6 hover:translate-x-1 transition-transform duration-200">
                       • Stored locally in your browser only
                     </li>
-                    <li className="ps-3 hover:translate-x-1 transition-transform duration-200">
+                    <li className="ps-6 hover:translate-x-1 transition-transform duration-200">
                       • Never sent to JoSan servers
                     </li>
-                    <li className="ps-3 hover:translate-x-1 transition-transform duration-200">
+                    <li className="ps-6 hover:translate-x-1 transition-transform duration-200">
                       • Direct communication with Groq API
                     </li>
                   </ul>
