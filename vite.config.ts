@@ -14,6 +14,15 @@ export default defineConfig({
       },
       output: {
         entryFileNames: "[name].js",
+        manualChunks: {
+          "vendor-charts": ["recharts"],
+
+          "vendor-ui": [
+            "@radix-ui/react-alert-dialog",
+            "@radix-ui/react-slot",
+            "@radix-ui/react-switch",
+          ],
+        },
       },
     },
   },

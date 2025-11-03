@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Button } from "../components/ui/button";
 import { Alert, AlertDescription } from "../components/ui/alert";
-import { CheckCircle, RefreshCw, Sparkles } from "lucide-react";
+import { CheckCircle, RefreshCw, Sparkles, Loader2 } from "lucide-react";
 import { BasicSettings } from "./components/BasicSettings";
 import { AISettings } from "./components/AISettings";
 import { PlatformSettings } from "./components/PlatformSettings";
 import { CustomWords } from "./components/CustomWords";
 import { PrivacySettings } from "./components/PrivacySettings";
 import { ThemeSettings } from "./components/ThemeSettings";
-import UsageDashboard from "./components/UsageDashboard";
+
+const UsageDashboard = lazy(() => import("./components/UsageDashboard"));
 
 interface Settings {
   enabled: boolean;
@@ -229,7 +230,20 @@ function Options() {
             onApiKeyChange={(apiKey) => updateSetting("groqApiKey", apiKey)}
           />
 
-          {settings.useAI && settings.groqApiKey && <UsageDashboard />}
+          {settings.useAI && settings.groqApiKey && (
+            <Suspense
+              fallback={
+                <div className="rounded-xl border-2 bg-white dark:bg-gray-900/50 p-12 shadow-sm flex items-center justify-center">
+                  <Loader2 className="h-8 w-8 animate-spin text-indigo-600 dark:text-indigo-400" />
+                  <span className="ml-3 text-muted-foreground">
+                    Loading dashboard...
+                  </span>
+                </div>
+              }
+            >
+              <UsageDashboard />
+            </Suspense>
+          )}
 
           <PlatformSettings
             enabledPlatforms={settings.enabledPlatforms}
