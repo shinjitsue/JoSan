@@ -191,6 +191,8 @@ export class GroqService {
     }
 
     try {
+      await UsageTracker.incrementUsage();
+
       const response = await fetch(this.API_URL, {
         method: "POST",
         headers: {
@@ -233,9 +235,6 @@ Classifications:
         throw new Error(`Groq API error: ${response.status}`);
       }
 
-      // Track successful API call
-      await UsageTracker.incrementUsage();
-
       const data = await response.json();
       const content = data.choices[0]?.message?.content;
 
@@ -243,7 +242,6 @@ Classifications:
         throw new Error("No response from Groq API");
       }
 
-      // Use the safe parser
       const result = this.parseAIResponse(content);
       if (!result) {
         return null;

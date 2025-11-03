@@ -86,15 +86,15 @@ export function useDashboardLogic() {
 
   const getWarningMessage = () => {
     if (warningLevel === "critical")
-      return "⚠️ Critical: Approaching daily limit!";
+      return "Critical: Approaching daily limit!";
     if (warningLevel === "warning") return "⚡ Warning: High usage today";
-    return "✅ Usage is healthy";
+    return "Usage is healthy";
   };
 
   const getMinuteWarningMessage = () => {
-    if (minuteWarningLevel === "critical") return "🚨 Rate limit critical!";
+    if (minuteWarningLevel === "critical") return "Rate limit critical!";
     if (minuteWarningLevel === "warning") return "⚡ Approaching rate limit";
-    return "✅ Rate limit OK";
+    return "Rate limit OK";
   };
 
   const getWarningTextColor = () => {

@@ -1,10 +1,11 @@
 import { DashboardCard } from "./DashboardCard";
+import { Link } from "lucide-react";
 
 export function QuickLinksCard() {
   return (
     <DashboardCard>
       <h3 className="font-semibold mb-4 flex items-center gap-2">
-        <span>🔗</span>
+        <Link className="h-4 w-4 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
         Groq Console
       </h3>
       <div className="space-y-2">

@@ -18,6 +18,7 @@ import {
   CheckCircle,
   XCircle,
   Sparkles,
+  Lock,
 } from "lucide-react";
 import { GroqService } from "@/content/utils/GroqService";
 
@@ -183,17 +184,19 @@ export function AISettings({
               <Alert className="border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/30 hover:shadow-lg transition-all duration-300">
                 <AlertDescription>
                   <p className="font-semibold mb-2 flex items-center gap-2">
-                    <span className="text-lg heartbeat-pulse">🔒</span>
+                    <span className="text-lg heartbeat-pulse">
+                      <Lock className="h-5 w-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
+                    </span>
                     Your API Key is Safe
                   </p>
                   <ul className="space-y-1 text-sm">
-                    <li className="hover:translate-x-1 transition-transform duration-200">
+                    <li className="ps-3 hover:translate-x-1 transition-transform duration-200">
                       • Stored locally in your browser only
                     </li>
-                    <li className="hover:translate-x-1 transition-transform duration-200">
+                    <li className="ps-3 hover:translate-x-1 transition-transform duration-200">
                       • Never sent to JoSan servers
                     </li>
-                    <li className="hover:translate-x-1 transition-transform duration-200">
+                    <li className="ps-3 hover:translate-x-1 transition-transform duration-200">
                       • Direct communication with Groq API
                     </li>
                   </ul>
