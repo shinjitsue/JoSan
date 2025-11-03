@@ -7,7 +7,7 @@ import {
 } from "../../components/ui/card";
 import { Switch } from "../../components/ui/switch";
 import { Alert, AlertDescription } from "../../components/ui/alert";
-import { Shield, Lock, Eye, Database } from "lucide-react";
+import { Shield, Lock, Eye, Database, ShieldCheck } from "lucide-react";
 
 interface PrivacySettingsProps {
   filterFeedsOnly: boolean;
@@ -33,9 +33,9 @@ export function PrivacySettings({
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Privacy Notice */}
-        <Alert className="border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/30">
-          <Lock className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-          <AlertDescription>
+        <Alert className="border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/30 relative overflow-hidden">
+          <Lock className="h-5 w-5 text-indigo-600 dark:text-indigo-400 " />
+          <AlertDescription className="relative">
             <p className="font-semibold mb-3 text-base text-indigo-900 dark:text-indigo-200">
               Privacy First Design
             </p>
@@ -46,6 +46,8 @@ export function PrivacySettings({
               <li>✓ Your API key is stored locally in your browser</li>
               <li>✓ No data sent to JoSan servers</li>
             </ul>
+            {/* Background Icon */}
+            <Lock className="absolute -right-4 -bottom-4 h-32 w-32 text-indigo-200/20 dark:text-indigo-800/10 rotate-12" />
           </AlertDescription>
         </Alert>
 
@@ -74,8 +76,8 @@ export function PrivacySettings({
 
         {/* What We Filter vs What We Don't */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="rounded-xl border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 p-6 shadow-sm">
-            <div className="flex items-start gap-3">
+          <div className="rounded-xl border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 p-6 shadow-sm relative overflow-hidden">
+            <div className="flex items-start gap-3 relative z-10">
               <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/50">
                 <Eye className="h-5 w-5 text-green-600 dark:text-green-400" />
               </div>
@@ -91,10 +93,12 @@ export function PrivacySettings({
                 </ul>
               </div>
             </div>
+            {/* Background Icon */}
+            <Eye className="absolute -right-4 -bottom-4 h-32 w-32 text-green-200/20 dark:text-green-800/10 rotate-12" />
           </div>
 
-          <div className="rounded-xl border-2 border-red-200 dark:border-red-800 bg-gradient-to-br from-red-50 to-pink-50 dark:from-red-950/30 dark:to-pink-950/30 p-6 shadow-sm">
-            <div className="flex items-start gap-3">
+          <div className="rounded-xl border-2 border-red-200 dark:border-red-800 bg-gradient-to-br from-red-50 to-pink-50 dark:from-red-950/30 dark:to-pink-950/30 p-6 shadow-sm relative overflow-hidden">
+            <div className="flex items-start gap-3 relative z-10">
               <div className="p-2 rounded-lg bg-red-100 dark:bg-red-900/50">
                 <Database className="h-5 w-5 text-red-600 dark:text-red-400" />
               </div>
@@ -110,13 +114,15 @@ export function PrivacySettings({
                 </ul>
               </div>
             </div>
+            {/* Background Icon */}
+            <Database className="absolute -right-4 -bottom-4 h-32 w-32 text-red-200/20 dark:text-red-800/10 rotate-12" />
           </div>
         </div>
 
         {/* Security Features */}
         <div className="rounded-xl border-2 bg-white dark:bg-gray-900/50 p-6 shadow-sm">
           <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
-            <span>🛡️</span>
+            <ShieldCheck className="h-6 w-6 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
             Security Features
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
