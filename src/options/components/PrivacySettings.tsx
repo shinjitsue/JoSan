@@ -20,7 +20,7 @@ export function PrivacySettings() {
           Privacy & Security
         </CardTitle>
         <CardDescription className="text-base">
-          Your privacy is our top priority
+          Your privacy is our top priority, here's how we protect it
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
