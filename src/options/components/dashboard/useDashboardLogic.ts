@@ -8,6 +8,8 @@ interface UsageStats {
   requestHistory: { date: string; count: number }[];
   requestsThisMinute: number;
   lastMinuteReset: string;
+  monthlyResetDate: string;
+  monthlyRequests: number;
 }
 
 export function useDashboardLogic() {
@@ -18,6 +20,8 @@ export function useDashboardLogic() {
     requestHistory: [],
     requestsThisMinute: 0,
     lastMinuteReset: "",
+    monthlyResetDate: "",
+    monthlyRequests: 0,
   });
   const [refreshKey, setRefreshKey] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);

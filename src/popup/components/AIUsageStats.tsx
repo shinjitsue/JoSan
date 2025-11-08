@@ -72,7 +72,7 @@ export function AIUsageStats({
 
       {dailyUsagePercent >= 90 && (
         <p className="text-xs text-red-600 dark:text-red-400 font-medium pt-2">
-          ⚠️ Approaching daily limit
+          Approaching daily limit
         </p>
       )}
     </div>

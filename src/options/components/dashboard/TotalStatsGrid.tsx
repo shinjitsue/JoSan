@@ -14,7 +14,7 @@ export function TotalStatsGrid({
         <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
           {totalRequests.toLocaleString()}
         </div>
-        <div className="text-xs text-muted-foreground mt-1">All time</div>
+        <div className="text-xs text-muted-foreground mt-1">This month</div>
       </div>
 
       <div className="rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/30 dark:to-purple-900/30 p-4 border-2 border-purple-200 dark:border-purple-800">

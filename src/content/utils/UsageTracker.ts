@@ -5,6 +5,8 @@ interface UsageStats {
   requestHistory: { date: string; count: number }[];
   requestsThisMinute: number;
   lastMinuteReset: string;
+  monthlyResetDate: string;
+  monthlyRequests: number;
 }
 
 export class UsageTracker {
@@ -13,21 +15,35 @@ export class UsageTracker {
   private static readonly FREE_TIER_PER_MINUTE = 30;
 
   static async getStats(): Promise<UsageStats> {
+    const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM format
+    const today = new Date().toISOString().split("T")[0];
+    const currentMinute = new Date().toISOString().slice(0, 16);
+
     const result = await chrome.storage.local.get({
       [this.STORAGE_KEY]: {
         totalRequests: 0,
         requestsToday: 0,
-        lastResetDate: new Date().toISOString().split("T")[0],
+        lastResetDate: today,
         requestHistory: [],
         requestsThisMinute: 0,
-        lastMinuteReset: new Date().toISOString().slice(0, 16), //  (YYYY-MM-DDTHH:MM)
+        lastMinuteReset: currentMinute,
+        monthlyResetDate: currentMonth,
+        monthlyRequests: 0,
       },
     });
 
     const stats = result[this.STORAGE_KEY];
 
+    // Reset monthly count if it's a new month
+    if (stats.monthlyResetDate !== currentMonth) {
+      stats.totalRequests = 0; // Reset total requests
+      stats.monthlyRequests = 0;
+      stats.monthlyResetDate = currentMonth;
+      stats.requestHistory = []; // Clear history on new month
+      await chrome.storage.local.set({ [this.STORAGE_KEY]: stats });
+    }
+
     // Reset daily count if it's a new day
-    const today = new Date().toISOString().split("T")[0];
     if (stats.lastResetDate !== today) {
       // Archive yesterday's count
       if (stats.requestsToday > 0) {
@@ -48,7 +64,6 @@ export class UsageTracker {
     }
 
     // Reset per-minute count if it's a new minute
-    const currentMinute = new Date().toISOString().slice(0, 16); // YYYY-MM-DDTHH:MM
     if (stats.lastMinuteReset !== currentMinute) {
       stats.requestsThisMinute = 0;
       stats.lastMinuteReset = currentMinute;
@@ -59,18 +74,31 @@ export class UsageTracker {
   }
 
   static async incrementUsage(): Promise<void> {
+    const currentMonth = new Date().toISOString().slice(0, 7);
+    const today = new Date().toISOString().split("T")[0];
+    const currentMinute = new Date().toISOString().slice(0, 16);
+
     const result = await chrome.storage.local.get([this.STORAGE_KEY]);
     const stats = result[this.STORAGE_KEY] || {
       totalRequests: 0,
       requestsToday: 0,
-      lastResetDate: new Date().toISOString().split("T")[0],
+      lastResetDate: today,
       requestHistory: [],
       requestsThisMinute: 0,
-      lastMinuteReset: new Date().toISOString().slice(0, 16),
+      lastMinuteReset: currentMinute,
+      monthlyResetDate: currentMonth,
+      monthlyRequests: 0,
     };
 
-    // Check and reset if needed
-    const today = new Date().toISOString().split("T")[0];
+    // Check and reset monthly if needed
+    if (stats.monthlyResetDate !== currentMonth) {
+      stats.totalRequests = 0;
+      stats.monthlyRequests = 0;
+      stats.monthlyResetDate = currentMonth;
+      stats.requestHistory = [];
+    }
+
+    // Check and reset daily if needed
     if (stats.lastResetDate !== today) {
       if (stats.requestsToday > 0) {
         stats.requestHistory.push({
@@ -85,7 +113,7 @@ export class UsageTracker {
       stats.lastResetDate = today;
     }
 
-    const currentMinute = new Date().toISOString().slice(0, 16);
+    // Check and reset per-minute if needed
     if (stats.lastMinuteReset !== currentMinute) {
       stats.requestsThisMinute = 0;
       stats.lastMinuteReset = currentMinute;
@@ -93,6 +121,7 @@ export class UsageTracker {
 
     // Increment counters
     stats.totalRequests += 1;
+    stats.monthlyRequests += 1;
     stats.requestsToday += 1;
     stats.requestsThisMinute += 1;
 
@@ -101,13 +130,19 @@ export class UsageTracker {
   }
 
   static async resetStats(): Promise<void> {
+    const currentMonth = new Date().toISOString().slice(0, 7);
+    const today = new Date().toISOString().split("T")[0];
+    const currentMinute = new Date().toISOString().slice(0, 16);
+
     const emptyStats: UsageStats = {
       totalRequests: 0,
       requestsToday: 0,
-      lastResetDate: new Date().toISOString().split("T")[0],
+      lastResetDate: today,
       requestHistory: [],
       requestsThisMinute: 0,
-      lastMinuteReset: new Date().toISOString().slice(0, 16),
+      lastMinuteReset: currentMinute,
+      monthlyResetDate: currentMonth,
+      monthlyRequests: 0,
     };
     await chrome.storage.local.set({ [this.STORAGE_KEY]: emptyStats });
   }

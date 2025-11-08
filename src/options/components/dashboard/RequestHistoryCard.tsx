@@ -17,12 +17,35 @@ export function RequestHistoryCard({
 }: RequestHistoryCardProps) {
   if (requestHistory.length === 0) return null;
 
-  const chartData = requestHistory.slice(-7).map((entry) => ({
-    date: new Date(entry.date).toLocaleDateString("en-US", {
+  // Generate last 7 days (excluding today)
+  const getLast7Days = () => {
+    const days = [];
+    const today = new Date();
+
+    // Start from yesterday (i = 1) and go back 7 days
+    for (let i = 7; i >= 1; i--) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i);
+      const dateStr = date.toISOString().split("T")[0];
+      days.push(dateStr);
+    }
+
+    return days;
+  };
+
+  // Create a map of existing data
+  const historyMap = new Map(
+    requestHistory.map((entry) => [entry.date, entry.count])
+  );
+
+  // Fill in missing days with 0
+  const last7Days = getLast7Days();
+  const chartData = last7Days.map((date) => ({
+    date: new Date(date).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
     }),
-    requests: entry.count,
+    requests: historyMap.get(date) || 0,
   }));
 
   const chartConfig = {
