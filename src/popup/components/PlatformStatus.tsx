@@ -1,21 +1,44 @@
 import { Globe } from "lucide-react";
+import type { IconType } from "react-icons";
 
 interface PlatformStatusProps {
   platformDisplayName: string;
+  platformIcon?: IconType;
   isPlatformEnabled: boolean;
   onToggle: () => void;
+  platformId?: string;
 }
 
 export function PlatformStatus({
   platformDisplayName,
+  platformIcon: PlatformIcon,
   isPlatformEnabled,
   onToggle,
+  platformId,
 }: PlatformStatusProps) {
   return (
     <div className="p-4 rounded-xl border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/50">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <Globe className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+          {PlatformIcon ? (
+            <div
+              className={`p-1.5 rounded-lg ${
+                platformId === "twitter"
+                  ? "bg-black dark:bg-white"
+                  : "bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30"
+              }`}
+            >
+              <PlatformIcon
+                className={`h-4 w-4 ${
+                  platformId === "twitter"
+                    ? "text-white dark:text-black"
+                    : "text-indigo-600 dark:text-indigo-400"
+                }`}
+              />
+            </div>
+          ) : (
+            <Globe className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+          )}
           <span className="text-sm font-medium">{platformDisplayName}</span>
         </div>
         <span

@@ -36,7 +36,7 @@ export function AIUsageStats({
           <span className="text-muted-foreground">
             {requestsToday} / {dailyLimit}
           </span>
-          <span className="font-medium">{dailyUsagePercent.toFixed(0)}%</span>
+          <span className="font-medium">{dailyUsagePercent.toFixed(1)}%</span>
         </div>
         <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
           <div
@@ -58,7 +58,7 @@ export function AIUsageStats({
           <span className="text-muted-foreground">
             This minute: {requestsThisMinute} / {minuteLimit}
           </span>
-          <span className="font-medium">{minuteUsagePercent.toFixed(0)}%</span>
+          <span className="font-medium">{minuteUsagePercent.toFixed(1)}%</span>
         </div>
         <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
           <div

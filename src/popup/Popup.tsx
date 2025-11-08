@@ -8,20 +8,34 @@ import { PlatformStatus } from "./components/PlatformStatus";
 import { AIToggle } from "./components/AIToggle";
 import { AIUsageStats } from "./components/AIUsageStats";
 import { SettingsButton } from "./components/SettingsButton";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaReddit,
+  FaLinkedin,
+  FaTiktok,
+  FaYoutube,
+  FaTumblr,
+  FaQuora,
+  FaDiscord,
+} from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { SiThreads, SiBluesky } from "react-icons/si";
+import type { IconType } from "react-icons";
 
-const PLATFORM_NAMES: { [key: string]: string } = {
-  facebook: "Facebook",
-  twitter: "Twitter/X",
-  instagram: "Instagram",
-  reddit: "Reddit",
-  linkedin: "LinkedIn",
-  tiktok: "TikTok",
-  youtube: "YouTube",
-  tumblr: "Tumblr",
-  quora: "Quora",
-  threads: "Threads",
-  discord: "Discord",
-  bluesky: "BlueSky",
+const PLATFORM_CONFIG: Record<string, { name: string; icon: IconType }> = {
+  facebook: { name: "Facebook", icon: FaFacebook },
+  twitter: { name: "Twitter/X", icon: FaXTwitter },
+  instagram: { name: "Instagram", icon: FaInstagram },
+  reddit: { name: "Reddit", icon: FaReddit },
+  linkedin: { name: "LinkedIn", icon: FaLinkedin },
+  tiktok: { name: "TikTok", icon: FaTiktok },
+  youtube: { name: "YouTube", icon: FaYoutube },
+  tumblr: { name: "Tumblr", icon: FaTumblr },
+  quora: { name: "Quora", icon: FaQuora },
+  threads: { name: "Threads", icon: SiThreads },
+  discord: { name: "Discord", icon: FaDiscord },
+  bluesky: { name: "BlueSky", icon: SiBluesky },
 };
 
 function Popup() {
@@ -82,8 +96,10 @@ function Popup() {
   };
 
   const isPlatformEnabled = settings.enabledPlatforms.includes(currentPlatform);
+  const platformConfig = PLATFORM_CONFIG[currentPlatform];
   const platformDisplayName =
-    PLATFORM_NAMES[currentPlatform] || currentPlatform || "Unknown";
+    platformConfig?.name || currentPlatform || "Unknown";
+  const PlatformIcon = platformConfig?.icon;
 
   return (
     <div className="w-96 bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-950 dark:via-indigo-950/20 dark:to-gray-950 transition-colors duration-300">
@@ -103,8 +119,10 @@ function Popup() {
         {currentPlatform !== "unknown" && (
           <PlatformStatus
             platformDisplayName={platformDisplayName}
+            platformIcon={PlatformIcon}
             isPlatformEnabled={isPlatformEnabled}
             onToggle={toggleCurrentPlatform}
+            platformId={currentPlatform}
           />
         )}
 
