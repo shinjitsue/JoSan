@@ -9,19 +9,32 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { X, Plus, List, Lightbulb } from "lucide-react";
+import { X, Plus, List, Lightbulb, Trash2, AlertTriangle } from "lucide-react";
 import { Kbd } from "@/components/ui/kbd";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface CustomWordsProps {
   customWords: string[];
   onAddWord: (word: string) => void;
   onRemoveWord: (word: string) => void;
+  onClearAll?: () => void;
 }
 
 export function CustomWords({
   customWords,
   onAddWord,
   onRemoveWord,
+  onClearAll,
 }: CustomWordsProps) {
   const [newWord, setNewWord] = useState("");
 
@@ -29,6 +42,15 @@ export function CustomWords({
     if (newWord.trim() && !customWords.includes(newWord.trim().toLowerCase())) {
       onAddWord(newWord.trim().toLowerCase());
       setNewWord("");
+    }
+  };
+
+  const handleClearAll = () => {
+    // Use dedicated handler if provided, otherwise remove one by one
+    if (onClearAll) {
+      onClearAll();
+    } else {
+      customWords.forEach((word) => onRemoveWord(word));
     }
   };
 
@@ -71,13 +93,69 @@ export function CustomWords({
         {/* Custom Words List */}
         <div className="space-y-4 rounded-xl border-2 bg-white dark:bg-gray-900/50 p-6 shadow-sm">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-lg">Your Custom Words</h3>
-            <Badge
-              variant="secondary"
-              className="text-base px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300"
-            >
-              {customWords.length} word{customWords.length !== 1 ? "s" : ""}
-            </Badge>
+            <div className="flex items-center gap-3">
+              <h3 className="font-semibold text-lg">Your Custom Words</h3>
+              <Badge
+                variant="secondary"
+                className="text-sm px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300"
+              >
+                {customWords.length} word{customWords.length !== 1 ? "s" : ""}
+              </Badge>
+            </div>
+
+            {/* Clear All Button */}
+            {customWords.length > 0 && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2 hover:bg-red-50 dark:hover:bg-red-950/30 hover:text-red-600 dark:hover:text-red-400 hover:border-red-300 dark:hover:border-red-800 transition-all duration-300 hover:scale-105"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Clear All
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="max-w-md bg-gradient-to-br from-white via-red-50/50 to-pink-50/30 dark:from-gray-900 dark:via-red-950/30 dark:to-pink-950/20 border-2 border-red-200 dark:border-red-800">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="flex items-center gap-3 text-xl">
+                      <div className="p-2 rounded-lg bg-red-500 shadow-md">
+                        <Trash2 className="h-5 w-5 text-white" />
+                      </div>
+                      <span className="bg-gradient-to-r from-red-600 to-pink-600 dark:from-red-400 dark:to-pink-400 bg-clip-text text-transparent">
+                        Clear All Custom Words?
+                      </span>
+                    </AlertDialogTitle>
+                    <AlertDialogDescription className="text-base pt-2 space-y-3">
+                      <p className="text-foreground">
+                        This will remove all{" "}
+                        <strong>{customWords.length}</strong> custom word
+                        {customWords.length !== 1 ? "s" : ""} from your filter
+                        list.
+                      </p>
+                      <div className="p-3 rounded-lg bg-red-100 dark:bg-red-950/50 border border-red-300 dark:border-red-800">
+                        <p className="text-sm text-red-900 dark:text-red-200 font-medium flex items-center gap-2">
+                          <AlertTriangle className="h-4 w-4 flex-shrink-0" />
+                          This action cannot be undone
+                        </p>
+                      </div>
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter className="gap-2">
+                    <AlertDialogCancel className="hover:scale-105 transition-transform">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleClearAll}
+                      className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 hover:scale-105 transition-all"
+                    >
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      Clear All Words
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            )}
           </div>
 
           {customWords.length > 0 ? (
@@ -86,13 +164,14 @@ export function CustomWords({
                 <Badge
                   key={word}
                   variant="secondary"
-                  className="gap-2 px-4 py-2 text-base bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-default"
+                  className="gap-2 px-4 py-2 text-base bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 cursor-default group"
                 >
-                  {word}
+                  <span>{word}</span>
                   <button
                     onClick={() => onRemoveWord(word)}
-                    className="ml-1 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                    className="hover:text-red-600 dark:hover:text-red-400 transition-colors hover:scale-110"
                     aria-label={`Remove ${word}`}
+                    title={`Remove "${word}"`}
                   >
                     <X className="h-4 w-4" />
                   </button>

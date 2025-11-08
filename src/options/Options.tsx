@@ -263,6 +263,7 @@ function Options() {
                 settings.customWords.filter((w) => w !== word)
               )
             }
+            onClearAll={() => updateSetting("customWords", [])}
           />
 
           <PrivacySettings />
