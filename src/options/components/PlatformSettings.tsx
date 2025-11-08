@@ -7,25 +7,56 @@ import {
 } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Globe } from "lucide-react";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaReddit,
+  FaLinkedin,
+  FaTiktok,
+  FaYoutube,
+  FaTumblr,
+  FaQuora,
+  FaDiscord,
+} from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { SiThreads, SiBluesky } from "react-icons/si";
+import type { IconType } from "react-icons";
 
 interface PlatformSettingsProps {
   enabledPlatforms: string[];
   onPlatformsChange: (platforms: string[]) => void;
 }
 
-const PLATFORMS = [
-  { id: "facebook", name: "Facebook", color: "bg-blue-600" },
-  { id: "twitter", name: "Twitter/X", color: "bg-sky-500" },
-  { id: "instagram", name: "Instagram", color: "bg-pink-600" },
-  { id: "reddit", name: "Reddit", color: "bg-orange-600" },
-  { id: "linkedin", name: "LinkedIn", color: "bg-blue-700" },
-  { id: "tiktok", name: "TikTok", color: "bg-black" },
-  { id: "youtube", name: "YouTube", color: "bg-red-600" },
-  { id: "tumblr", name: "Tumblr", color: "bg-indigo-900" },
-  { id: "quora", name: "Quora", color: "bg-red-700" },
-  { id: "threads", name: "Threads", color: "bg-gray-800" },
-  { id: "discord", name: "Discord", color: "bg-indigo-600" },
-  { id: "bluesky", name: "BlueSky", color: "bg-sky-600" },
+interface Platform {
+  id: string;
+  name: string;
+  color: string;
+  icon: IconType;
+}
+
+const PLATFORMS: Platform[] = [
+  { id: "facebook", name: "Facebook", color: "bg-blue-600", icon: FaFacebook },
+  {
+    id: "twitter",
+    name: "Twitter/X",
+    color: "bg-black ",
+    icon: FaXTwitter,
+  },
+  {
+    id: "instagram",
+    name: "Instagram",
+    color: "bg-pink-600",
+    icon: FaInstagram,
+  },
+  { id: "reddit", name: "Reddit", color: "bg-orange-600", icon: FaReddit },
+  { id: "linkedin", name: "LinkedIn", color: "bg-blue-700", icon: FaLinkedin },
+  { id: "tiktok", name: "TikTok", color: "bg-black", icon: FaTiktok },
+  { id: "youtube", name: "YouTube", color: "bg-red-600", icon: FaYoutube },
+  { id: "tumblr", name: "Tumblr", color: "bg-indigo-900", icon: FaTumblr },
+  { id: "quora", name: "Quora", color: "bg-red-700", icon: FaQuora },
+  { id: "threads", name: "Threads", color: "bg-gray-800", icon: SiThreads },
+  { id: "discord", name: "Discord", color: "bg-indigo-600", icon: FaDiscord },
+  { id: "bluesky", name: "BlueSky", color: "bg-sky-600", icon: SiBluesky },
 ];
 
 export function PlatformSettings({
@@ -54,27 +85,38 @@ export function PlatformSettings({
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {PLATFORMS.map((platform) => (
-            <label
-              key={platform.id}
-              className={`flex items-center justify-between p-4 rounded-xl border-2 hover:shadow-md cursor-pointer transition-all duration-300 ${
-                enabledPlatforms.includes(platform.id)
-                  ? "border-indigo-300 dark:border-indigo-700 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 shadow-sm"
-                  : "border-gray-200 dark:border-gray-800 hover:border-indigo-200 dark:hover:border-indigo-800 bg-white dark:bg-gray-900/50"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className={`h-4 w-4 rounded-full ${platform.color} shadow-md`}
+          {PLATFORMS.map((platform) => {
+            const Icon = platform.icon;
+            const isEnabled = enabledPlatforms.includes(platform.id);
+
+            return (
+              <label
+                key={platform.id}
+                className={`flex items-center justify-between p-4 rounded-xl border-2 hover:shadow-md cursor-pointer transition-all duration-300 ${
+                  isEnabled
+                    ? "border-indigo-300 dark:border-indigo-700 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 shadow-sm"
+                    : "border-gray-200 dark:border-gray-800 hover:border-indigo-200 dark:hover:border-indigo-800 bg-white dark:bg-gray-900/50"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`h-10 w-10 rounded-full ${
+                      platform.color
+                    } shadow-md flex items-center justify-center transition-transform duration-300 ${
+                      isEnabled ? "scale-110" : ""
+                    }`}
+                  >
+                    <Icon className="h-5 w-5 text-white" />
+                  </div>
+                  <span className="font-medium text-base">{platform.name}</span>
+                </div>
+                <Switch
+                  checked={isEnabled}
+                  onCheckedChange={() => togglePlatform(platform.id)}
                 />
-                <span className="font-medium text-base">{platform.name}</span>
-              </div>
-              <Switch
-                checked={enabledPlatforms.includes(platform.id)}
-                onCheckedChange={() => togglePlatform(platform.id)}
-              />
-            </label>
-          ))}
+              </label>
+            );
+          })}
         </div>
       </CardContent>
     </Card>
