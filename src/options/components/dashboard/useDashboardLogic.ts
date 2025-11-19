@@ -72,7 +72,7 @@ export function useDashboardLogic() {
   const minuteWarningLevel = UsageTracker.getMinuteWarningLevel(
     stats.requestsThisMinute
   );
-  const { tokens, cost } = UsageTracker.estimateCost(stats.totalRequests);
+  const { tokens } = UsageTracker.estimateCost(stats.totalRequests);
 
   // Helper functions
   const getProgressBarColor = () => {
@@ -126,7 +126,7 @@ export function useDashboardLogic() {
     minutePercentage,
     minuteWarningLevel,
     tokens,
-    cost,
+    cost: "0.00",
     getProgressBarColor,
     getMinuteProgressBarColor,
     getWarningMessage,

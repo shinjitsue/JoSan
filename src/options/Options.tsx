@@ -20,7 +20,7 @@ interface Settings {
   useAI: boolean;
   filterMild: boolean;
   filterToxic: boolean;
-  groqApiKey: string;
+  openaiApiKey: string;
 }
 
 function Options() {
@@ -46,7 +46,7 @@ function Options() {
     useAI: false,
     filterMild: false,
     filterToxic: true,
-    groqApiKey: "",
+    openaiApiKey: "",
   });
   const [saved, setSaved] = useState(false);
 
@@ -100,7 +100,7 @@ function Options() {
         useAI: false,
         filterMild: false,
         filterToxic: true,
-        groqApiKey: "",
+        openaiApiKey: "",
       },
       (items) => {
         // Sanitize enabledPlatforms
@@ -219,7 +219,7 @@ function Options() {
             useAI={settings.useAI}
             filterMild={settings.filterMild}
             filterToxic={settings.filterToxic}
-            groqApiKey={settings.groqApiKey}
+            openaiApiKey={settings.openaiApiKey}
             onUseAIChange={(useAI) => updateSetting("useAI", useAI)}
             onFilterMildChange={(filterMild) =>
               updateSetting("filterMild", filterMild)
@@ -227,10 +227,10 @@ function Options() {
             onFilterToxicChange={(filterToxic) =>
               updateSetting("filterToxic", filterToxic)
             }
-            onApiKeyChange={(apiKey) => updateSetting("groqApiKey", apiKey)}
+            onApiKeyChange={(apiKey) => updateSetting("openaiApiKey", apiKey)}
           />
 
-          {settings.useAI && settings.groqApiKey && (
+          {settings.useAI && settings.openaiApiKey && (
             <Suspense
               fallback={
                 <div className="rounded-xl border-2 bg-white dark:bg-gray-900/50 p-12 shadow-sm flex items-center justify-center">

@@ -20,13 +20,13 @@ import {
   Sparkles,
   Lock,
 } from "lucide-react";
-import { GroqService } from "@/content/utils/GroqService";
+import { OpenAIService } from "@/content/utils/OpenAIService";
 
 interface AISettingsProps {
   useAI: boolean;
   filterMild: boolean;
   filterToxic: boolean;
-  groqApiKey: string;
+  openaiApiKey: string;
   onUseAIChange: (useAI: boolean) => void;
   onFilterMildChange: (filterMild: boolean) => void;
   onFilterToxicChange: (filterToxic: boolean) => void;
@@ -39,7 +39,7 @@ export function AISettings({
   useAI,
   filterMild,
   filterToxic,
-  groqApiKey,
+  openaiApiKey,
   onUseAIChange,
   onFilterMildChange,
   onFilterToxicChange,
@@ -49,15 +49,15 @@ export function AISettings({
   const [apiKeyStatus, setApiKeyStatus] = useState<ApiKeyStatus>("unchecked");
 
   const validateApiKey = async () => {
-    if (!groqApiKey) {
+    if (!openaiApiKey) {
       setApiKeyStatus("invalid");
       return;
     }
 
     setApiKeyStatus("validating");
-    GroqService.setApiKey(groqApiKey);
+    OpenAIService.setApiKey(openaiApiKey);
 
-    const isValid = await GroqService.validateApiKey();
+    const isValid = await OpenAIService.validateApiKey();
     setApiKeyStatus(isValid ? "valid" : "invalid");
 
     if (isValid) {
@@ -82,7 +82,7 @@ export function AISettings({
           </span>
         </CardTitle>
         <CardDescription className="text-base">
-          Use Llama-3.1 8B via Groq for intelligent content classification
+          Use OpenAI Moderation API for intelligent content classification
         </CardDescription>
       </CardHeader>
 
@@ -115,19 +115,19 @@ export function AISettings({
             {/* API Key Section */}
             <div className="space-y-4 rounded-xl border-2 bg-white dark:bg-gray-900/50 p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01]">
               <label className="text-base font-semibold flex items-center gap-2">
-                Groq API Key{" "}
+                OpenAI API Key{" "}
                 <span className="text-red-500 heartbeat-pulse">*</span>
               </label>
 
               <div className="flex gap-2">
                 <Input
                   type={showApiKey ? "text" : "password"}
-                  value={groqApiKey}
+                  value={openaiApiKey}
                   onChange={(e) => {
                     onApiKeyChange(e.target.value);
                     setApiKeyStatus("unchecked");
                   }}
-                  placeholder="gsk_..."
+                  placeholder="sk-proj-..."
                   className="font-mono text-sm transition-all duration-300 focus:scale-[1.01] focus:shadow-md"
                 />
                 <Button
@@ -158,7 +158,7 @@ export function AISettings({
               {apiKeyStatus === "valid" && (
                 <div className="flex items-center gap-2 text-sm text-green-600 animate-fade-in-up">
                   <CheckCircle className="h-4 w-4 heartbeat-pulse" />
-                  API key is valid
+                  API key is valid and working
                 </div>
               )}
               {apiKeyStatus === "invalid" && (
@@ -171,12 +171,12 @@ export function AISettings({
               <p className="text-xs text-muted-foreground">
                 Get your free API key at{" "}
                 <a
-                  href="https://console.groq.com/keys"
+                  href="https://platform.openai.com/api-keys"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline hover:text-indigo-600 transition-colors duration-300"
                 >
-                  console.groq.com/keys
+                  platform.openai.com/api-keys
                 </a>
               </p>
 
@@ -195,7 +195,7 @@ export function AISettings({
                       • Never sent to JoSan servers
                     </li>
                     <li className="ps-6 hover:translate-x-1 transition-transform duration-200">
-                      • Direct communication with Groq API
+                      • Direct communication with OpenAI API
                     </li>
                   </ul>
                   {/* Background Icon */}

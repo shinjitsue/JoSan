@@ -128,11 +128,11 @@ function Popup() {
 
         <AIToggle
           useAI={settings.useAI}
-          groqApiKey={settings.groqApiKey}
+          openaiApiKey={settings.openaiApiKey}
           onToggle={toggleAI}
         />
 
-        {settings.useAI && settings.groqApiKey && (
+        {settings.useAI && settings.openaiApiKey && (
           <AIUsageStats
             requestsToday={settings.aiUsage.requestsToday}
             dailyLimit={settings.aiUsage.dailyLimit}

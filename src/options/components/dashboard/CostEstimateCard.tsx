@@ -22,14 +22,11 @@ export function CostEstimateCard({ cost }: CostEstimateCardProps) {
         <span className="text-3xl font-bold text-green-600 dark:text-green-400">
           ${cost}
         </span>
-        <span className="text-sm text-muted-foreground">
-          USD (if paid tier)
-        </span>
+        <span className="text-sm text-muted-foreground">USD (Free Tier)</span>
       </div>
       <p className="text-xs text-muted-foreground mt-3">
-        Free tier: First 100K requests/day. Estimates based on Groq pricing:
-        $0.05 per 1M input tokens, $0.08 per 1M output tokens
-        (Llama-3.1-8B-Instant).
+        OpenAI Moderation API is free for most usage tiers. No charges for
+        content moderation.
       </p>
       <div className="mt-3 p-2 rounded-lg bg-white/50 dark:bg-gray-900/50 border border-green-300 dark:border-green-700">
         <p className="text-xs font-medium text-green-700 dark:text-green-300 flex items-center gap-1.5">
