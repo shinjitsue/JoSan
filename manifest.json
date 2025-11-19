@@ -60,7 +60,7 @@
     "*://*.threads.net/*",
     "*://*.discord.com/*",
     "*://*.bsky.app/*",
-    "https://api.groq.com/*"
+    "https://api.openai.com/*"
   ],
   "web_accessible_resources": [
     {

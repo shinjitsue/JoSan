@@ -10,9 +10,10 @@ interface UsageStats {
 }
 
 export class UsageTracker {
-  private static readonly STORAGE_KEY = "groqUsageStats";
-  private static readonly FREE_TIER_DAILY_LIMIT = 14400;
-  private static readonly FREE_TIER_PER_MINUTE = 30;
+  private static readonly STORAGE_KEY = "openaiUsageStats";
+  // Updated for OpenAI Moderation API (these are generous estimates - check actual limits)
+  private static readonly FREE_TIER_DAILY_LIMIT = 14400; // 14,400/day
+  private static readonly FREE_TIER_PER_MINUTE = 30; // 30/min
 
   static async getStats(): Promise<UsageStats> {
     const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM format
@@ -147,11 +148,18 @@ export class UsageTracker {
     await chrome.storage.local.set({ [this.STORAGE_KEY]: emptyStats });
   }
 
+  static getDailyLimit(): number {
+    return this.FREE_TIER_DAILY_LIMIT;
+  }
+
+  static getMinuteLimit(): number {
+    return this.FREE_TIER_PER_MINUTE;
+  }
+
   static getDailyLimitPercentage(requestsToday: number): number {
     return (requestsToday / this.FREE_TIER_DAILY_LIMIT) * 100;
   }
 
-  // : Get per-minute limit percentage
   static getMinuteLimitPercentage(requestsThisMinute: number): number {
     return (requestsThisMinute / this.FREE_TIER_PER_MINUTE) * 100;
   }
@@ -165,7 +173,6 @@ export class UsageTracker {
     return "safe";
   }
 
-  // : Get per-minute warning level
   static getMinuteWarningLevel(
     requestsThisMinute: number
   ): "safe" | "warning" | "critical" {
@@ -175,43 +182,86 @@ export class UsageTracker {
     return "safe";
   }
 
-  // : Check if rate limit is approaching
   static isRateLimitApproaching(requestsThisMinute: number): boolean {
     return requestsThisMinute >= this.FREE_TIER_PER_MINUTE * 0.8;
   }
 
-  // : Check if rate limit is exceeded
   static isRateLimitExceeded(requestsThisMinute: number): boolean {
     return requestsThisMinute >= this.FREE_TIER_PER_MINUTE;
   }
 
+  // Updated for OpenAI Moderation API - which is FREE
   static estimateCost(totalRequests: number): { tokens: number; cost: string } {
-    // Llama-3.1-8B-Instant token breakdown based on actual GroqService prompts:
-    // System prompt: ~70 tokens (JSON classifier instructions)
-    // User input: ~50 tokens average (max 200 chars sent)
-    // Output: ~30 tokens (JSON response with classification/confidence/reason)
-    const avgInputTokensPerRequest = 120; // System + User
-    const avgOutputTokensPerRequest = 30;
+    // OpenAI Moderation API is FREE for most usage tiers
+    // No token-based pricing, just request-based rate limiting
 
-    const totalInputTokens = totalRequests * avgInputTokensPerRequest;
-    const totalOutputTokens = totalRequests * avgOutputTokensPerRequest;
-
-    // Groq pricing for Llama-3.1-8B-Instant
-    // Free tier: First 100K requests per day OR 30 requests/minute (whichever hits first)
-    // After free tier: $0.05 per 1M input tokens, $0.08 per 1M output tokens
-
-    // Note: This is cumulative cost estimate if ALL requests were paid
-    // In reality, free tier applies per-day, so actual cost is much lower
-    const inputCostPerMillion = 0.05;
-    const outputCostPerMillion = 0.08;
-
-    const inputCost = (totalInputTokens / 1_000_000) * inputCostPerMillion;
-    const outputCost = (totalOutputTokens / 1_000_000) * outputCostPerMillion;
-    const totalCost = inputCost + outputCost;
+    // For display purposes, we can estimate "equivalent tokens" but it's not charged
+    // Each moderation request processes the input text (~50-500 chars average)
+    const avgCharsPerRequest = 150; // Estimated average input length
+    const estimatedTokens = totalRequests * Math.ceil(avgCharsPerRequest / 4); // ~4 chars per token
 
     return {
-      tokens: totalInputTokens + totalOutputTokens,
-      cost: totalCost.toFixed(4),
+      tokens: estimatedTokens,
+      cost: "0.00", // Free tier - no cost for moderation requests
     };
+  }
+
+  // Additional helper methods for OpenAI Moderation API
+  static getServiceName(): string {
+    return "OpenAI Moderation API";
+  }
+
+  static getModelName(): string {
+    return "omni-moderation-latest";
+  }
+
+  static getPricingInfo(): string {
+    return "Free for most usage tiers";
+  }
+
+  static getApiDocumentationUrl(): string {
+    return "https://platform.openai.com/docs/guides/moderation";
+  }
+
+  // Get formatted usage summary for display
+  static getUsageSummary(stats: UsageStats): string {
+    const dailyPercent = this.getDailyLimitPercentage(stats.requestsToday);
+    const minutePercent = this.getMinuteLimitPercentage(
+      stats.requestsThisMinute
+    );
+
+    return `Today: ${stats.requestsToday.toLocaleString()} requests (${dailyPercent.toFixed(
+      1
+    )}%) | This minute: ${
+      stats.requestsThisMinute
+    } requests (${minutePercent.toFixed(1)}%)`;
+  }
+
+  // Check if service is within healthy usage limits
+  static isUsageHealthy(stats: UsageStats): boolean {
+    const dailyWarning = this.getWarningLevel(stats.requestsToday);
+    const minuteWarning = this.getMinuteWarningLevel(stats.requestsThisMinute);
+
+    return dailyWarning === "safe" && minuteWarning === "safe";
+  }
+
+  // Get recommendations based on current usage
+  static getUsageRecommendation(stats: UsageStats): string {
+    const dailyWarning = this.getWarningLevel(stats.requestsToday);
+    const minuteWarning = this.getMinuteWarningLevel(stats.requestsThisMinute);
+
+    if (minuteWarning === "critical") {
+      return "Rate limit nearly exceeded. Consider reducing AI checks temporarily.";
+    }
+
+    if (dailyWarning === "critical") {
+      return "Daily limit nearly reached. Monitor usage closely.";
+    }
+
+    if (dailyWarning === "warning" || minuteWarning === "warning") {
+      return "Usage is elevated. Consider optimizing AI check frequency.";
+    }
+
+    return "Usage is within normal limits.";
   }
 }

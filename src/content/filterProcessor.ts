@@ -2,7 +2,7 @@ import { PlatformDetector } from "./utils/PlatformDetector";
 import { ProfanityLoader } from "./utils/ProfanityLoader";
 import { PrivacyFilter } from "./utils/PrivacyFilter";
 import { StatisticsManager } from "./utils/StatisticsManager";
-import { GroqService } from "./utils/GroqService";
+import { OpenAIService } from "./utils/OpenAIService";
 import { FEED_SELECTORS } from "./config/SelectorConfig";
 
 interface FilterSettings {
@@ -67,7 +67,7 @@ export class FilterProcessor {
         useAI: false,
         filterMild: false,
         filterToxic: true,
-        groqApiKey: "",
+        openaiApiKey: "",
       });
 
       this.isEnabled = result.enabled;
@@ -79,10 +79,10 @@ export class FilterProcessor {
         filterToxic: result.filterToxic,
       };
 
-      // Configure Groq API
-      if (result.groqApiKey) {
-        GroqService.setApiKey(result.groqApiKey);
-        console.log("[JoSan] Groq API configured");
+      // Configure OpenAI API
+      if (result.openaiApiKey) {
+        OpenAIService.setApiKey(result.openaiApiKey);
+        console.log("[JoSan] OpenAI API configured");
       }
 
       // Detect current platform
@@ -258,36 +258,26 @@ export class FilterProcessor {
       const originalText = textNode.nodeValue || "";
       if (!originalText.trim() || originalText.length < 3) return;
 
-      // Stage 1: Fast regex check
       const regexMatches = originalText.match(this.profanityRegex);
 
       if (regexMatches) {
-        // Found profanity via regex
+        if (
+          this.filterSettings.useAI &&
+          !this.shouldSkipAICheck(originalText)
+        ) {
+          console.log("[JoSan AI] Getting AI classification for flagged text");
 
-        if (this.filterSettings.useAI) {
-          // Check if text is worth AI processing
-          if (this.shouldSkipAICheck(originalText)) {
-            console.log("[JoSan] Skipping AI check (low-value text)");
-            this.applyRegexFilter(textNode, originalText, regexMatches);
-            return;
-          }
+          const aiResult = await OpenAIService.classifyText(originalText);
 
-          // Stage 2: AI context check for flagged content
-          console.log("[JoSan] Suspicious text found, checking with AI...");
-          const classification = await GroqService.classifyText(originalText);
-
-          if (classification) {
-            this.applyFilterByClassification(
-              textNode,
-              originalText,
-              classification
-            );
+          if (aiResult) {
+            this.applyFilterByClassification(textNode, originalText, aiResult);
           } else {
-            // AI failed, fall back to regex filtering
+            console.log(
+              "[JoSan AI] AI check failed, falling back to regex filter"
+            );
             this.applyRegexFilter(textNode, originalText, regexMatches);
           }
         } else {
-          // AI disabled, use regex only
           this.applyRegexFilter(textNode, originalText, regexMatches);
         }
       }

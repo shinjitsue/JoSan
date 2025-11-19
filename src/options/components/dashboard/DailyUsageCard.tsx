@@ -37,7 +37,7 @@ export function DailyUsageCard({
       <div className="mb-3">
         <div className="flex items-center justify-between text-sm mb-2">
           <span className="text-muted-foreground">
-            {requestsToday.toLocaleString()} / 14,400 requests
+            {requestsToday.toLocaleString()} / 1,000,000 requests
           </span>
           <span className="font-medium">{dailyPercentage.toFixed(1)}%</span>
         </div>
@@ -50,7 +50,7 @@ export function DailyUsageCard({
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Free tier limit: 14,400 requests/day • Resets daily at midnight UTC
+        Free tier limit: 1,000,000 requests/day • Resets daily at midnight UTC
       </p>
     </DashboardCard>
   );

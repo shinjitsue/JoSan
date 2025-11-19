@@ -36,7 +36,7 @@ function UsageDashboard() {
             <div className="p-2 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30">
               <BarChart3 className="h-5 w-5 text-white" />
             </div>
-            <span>Groq API Usage Dashboard</span>
+            <span>OpenAI Moderation API Usage</span>
           </div>
           <Button
             onClick={handleRefresh}

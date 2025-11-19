@@ -19,7 +19,7 @@ interface Settings {
   stats: Stats;
   useAI: boolean;
   enabledPlatforms: string[];
-  groqApiKey: string;
+  openaiApiKey: string;
   aiUsage: UsageStats;
 }
 
@@ -30,7 +30,7 @@ export function useSettings() {
     stats: { blockedWords: 0, pagesScanned: 0, lastScan: "" },
     useAI: false,
     enabledPlatforms: [],
-    groqApiKey: "",
+    openaiApiKey: "",
     aiUsage: {
       requestsToday: 0,
       dailyLimit: 14400,
@@ -60,8 +60,8 @@ export function useSettings() {
           "discord",
           "bluesky",
         ],
-        groqApiKey: "",
-        groqUsageStats: {
+        openaiApiKey: "",
+        openaiUsageStats: {
           requestsToday: 0,
           requestsThisMinute: 0,
         },
@@ -73,11 +73,11 @@ export function useSettings() {
           stats: items.stats,
           useAI: items.useAI,
           enabledPlatforms: items.enabledPlatforms,
-          groqApiKey: items.groqApiKey || "",
+          openaiApiKey: items.openaiApiKey || "",
           aiUsage: {
-            requestsToday: items.groqUsageStats?.requestsToday || 0,
+            requestsToday: items.openaiUsageStats?.requestsToday || 0,
             dailyLimit: 14400,
-            requestsThisMinute: items.groqUsageStats?.requestsThisMinute || 0,
+            requestsThisMinute: items.openaiUsageStats?.requestsThisMinute || 0,
             minuteLimit: 30,
           },
         });

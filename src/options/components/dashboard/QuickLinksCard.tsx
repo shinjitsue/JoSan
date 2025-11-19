@@ -6,11 +6,11 @@ export function QuickLinksCard() {
     <DashboardCard>
       <h3 className="font-semibold mb-4 flex items-center gap-2">
         <Link className="h-4 w-4 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
-        Groq Console
+        OpenAI Platform
       </h3>
       <div className="space-y-2">
         <a
-          href="https://console.groq.com/usage"
+          href="https://platform.openai.com/usage"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-between p-3 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 rounded-lg transition-colors group"
@@ -31,7 +31,7 @@ export function QuickLinksCard() {
           </svg>
         </a>
         <a
-          href="https://console.groq.com/settings/limits"
+          href="https://platform.openai.com/settings/organization/limits"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-between p-3 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 rounded-lg transition-colors group"
@@ -52,12 +52,12 @@ export function QuickLinksCard() {
           </svg>
         </a>
         <a
-          href="https://groq.com/pricing/"
+          href="https://openai.com/pricing"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-between p-3 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 rounded-lg transition-colors group"
         >
-          <span className="text-sm font-medium">Upgrade to Paid Tier</span>
+          <span className="text-sm font-medium">Pricing Information</span>
           <svg
             className="w-4 h-4 text-muted-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors"
             fill="none"
