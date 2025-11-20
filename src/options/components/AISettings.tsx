@@ -72,6 +72,11 @@ export function AISettings({
       setApiKeyStatus(response.ok ? "valid" : "invalid");
 
       if (response.ok) {
+        // Immediately push key to background
+        chrome.runtime.sendMessage({
+          type: "SET_API_KEY",
+          apiKey: openaiApiKey,
+        });
         setTimeout(() => setApiKeyStatus("unchecked"), 3000);
       }
     } catch (error) {

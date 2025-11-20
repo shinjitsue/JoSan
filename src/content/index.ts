@@ -108,8 +108,15 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
   if (areaName !== "local") return;
   if (!filter) return;
 
-  if (changes.enabledPlatforms || changes.customWords) {
-    console.log("[JoSan] Settings changed, reloading...");
+  if (
+    changes.enabledPlatforms ||
+    changes.customWords ||
+    changes.openaiApiKey ||
+    changes.useAI ||
+    changes.filterMild ||
+    changes.filterToxic
+  ) {
+    console.log("[JoSan] Settings changed (AI/platform), reloading...");
     filter
       .loadSettings()
       .then(() => filter?.processPage())

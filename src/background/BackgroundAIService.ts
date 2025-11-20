@@ -235,7 +235,7 @@ export class BackgroundAIService {
       // Step 2: Use omni-moderation-latest
       const omniResult = await this.omniModerationCheck(request.text);
 
-      // Step 3: Use gpt-4o-mini for ambiguous cases only
+      // Step 3: Use gpt-5-mini for ambiguous cases only
       let finalResult = omniResult;
       if (
         omniResult.needsContextualCheck &&
@@ -427,7 +427,7 @@ export class BackgroundAIService {
             Authorization: `Bearer ${this.apiKey}`,
           },
           body: JSON.stringify({
-            model: "gpt-4o-mini",
+            model: "gpt-5-mini",
             messages: [
               { role: "system", content: prompt.system },
               { role: "user", content: prompt.user },

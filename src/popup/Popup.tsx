@@ -71,7 +71,15 @@ function Popup() {
   const toggleAI = () => {
     const newState = !settings.useAI;
     setSettings({ ...settings, useAI: newState });
-    chrome.storage.local.set({ useAI: newState });
+    chrome.storage.local.set({ useAI: newState }, () => {
+      if (newState && settings.openaiApiKey) {
+        // Proactively configure API key
+        chrome.runtime.sendMessage({
+          type: "SET_API_KEY",
+          apiKey: settings.openaiApiKey,
+        });
+      }
+    });
   };
 
   const toggleCurrentPlatform = () => {

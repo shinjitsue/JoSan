@@ -128,7 +128,7 @@ export class FastLanguageDetector {
           if (!detectedLangs.includes(lang)) {
             detectedLangs.push(lang);
           }
-          return "●".repeat(match.length);
+          return "*".repeat(match.length);
         });
       }
     });
