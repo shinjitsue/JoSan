@@ -64,7 +64,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["data/en.txt", "data/tl.txt", "data/ceb.txt"],
+      "resources": ["data/en.txt", "data/tl.txt", "data/bis.txt"],
       "matches": ["<all_urls>"]
     }
   ]

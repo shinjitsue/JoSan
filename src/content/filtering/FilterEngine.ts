@@ -10,7 +10,7 @@ interface Language {
 interface RegexSet {
   english: RegExp | null;
   tagalog: RegExp | null;
-  cebuano: RegExp | null;
+  bisaya: RegExp | null;
 }
 
 export class FilterEngine {
@@ -41,7 +41,7 @@ export class FilterEngine {
     const regexResult = FastLanguageDetector.applyMultiLangFilter(text, {
       en: regexes.english,
       tl: regexes.tagalog,
-      ceb: regexes.cebuano,
+      bis: regexes.bisaya,
     });
 
     // Step 3: Determine if AI is needed
