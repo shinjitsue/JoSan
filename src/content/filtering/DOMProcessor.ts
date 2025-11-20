@@ -23,6 +23,9 @@ export class DOMProcessor {
   private processedNodes = new WeakSet<Node>();
   private processedCount = 0;
 
+  // Cache original text so placeholder races never lose it
+  private originalTextMap = new WeakMap<Node, string>();
+
   // Invalidate a node (and descendants) so it can be reprocessed
   invalidate(node: Node): void {
     const walk = (n: Node) => {
@@ -42,7 +45,6 @@ export class DOMProcessor {
     this.processFeedAreas(textProcessor);
   }
 
-  // Recursive traversal with async handling for text nodes
   async processNode(
     node: Node,
     textProcessor: (textNode: Node) => Promise<void>
@@ -50,7 +52,6 @@ export class DOMProcessor {
     try {
       if (this.processedNodes.has(node)) return;
 
-      // Skip filtered wrappers
       if (
         node.nodeType === Node.ELEMENT_NODE &&
         node instanceof Element &&
@@ -61,7 +62,6 @@ export class DOMProcessor {
       }
 
       if (node.nodeType === Node.TEXT_NODE) {
-        // Await to reduce race conditions with AI placeholder replacement
         await textProcessor(node);
         this.processedNodes.add(node);
         this.processedCount++;
@@ -69,7 +69,6 @@ export class DOMProcessor {
       }
 
       if (node.nodeType === Node.ELEMENT_NODE) {
-        // Skip private content
         if (PrivacyFilter.isPrivateContent(node)) {
           this.processedNodes.add(node);
           return;
@@ -121,7 +120,7 @@ export class DOMProcessor {
           try {
             await textProcessor(n);
             this.processedNodes.add(n);
-            this.processedCount++; // count text nodes processed
+            this.processedCount++;
           } catch (e) {
             console.warn("[JoSan] Batched node error:", e);
           }
@@ -141,7 +140,6 @@ export class DOMProcessor {
         if (!(element instanceof Element)) continue;
         if (this.processedNodes.has(element)) continue;
         if (PrivacyFilter.isPrivateContent(element)) continue;
-        // Use batched processing instead of deep recursion
         await this.processElementBatched(element, textProcessor);
         this.processedNodes.add(element);
       }
@@ -200,17 +198,20 @@ export class DOMProcessor {
     );
   }
 
-  setPlaceholder(textNode: Node, language: Language): string {
-    const placeholder = `[Analyzing ${FastLanguageDetector.getLanguageName(
+  setPlaceholder(textNode: Node, language: Language): void {
+    // Prevent double placeholder
+    if (textNode.nodeValue?.startsWith("[Analyzing ")) return;
+    const originalValue = textNode.nodeValue || "";
+    this.originalTextMap.set(textNode, originalValue);
+    textNode.nodeValue = `[Analyzing ${FastLanguageDetector.getLanguageName(
       language.code
     )} content...]`;
-    const originalValue = textNode.nodeValue || "";
-    textNode.nodeValue = placeholder;
-    return originalValue;
   }
 
-  restoreOriginalText(textNode: Node, originalText: string): void {
-    textNode.nodeValue = originalText;
+  restoreOriginalText(textNode: Node, originalText?: string): void {
+    const stored = this.originalTextMap.get(textNode);
+    textNode.nodeValue = originalText ?? stored ?? "";
+    if (stored) this.originalTextMap.delete(textNode);
   }
 
   private getFilteredText(
@@ -240,5 +241,6 @@ export class DOMProcessor {
   cleanup(): void {
     this.processedNodes = new WeakSet();
     this.processedCount = 0;
+    this.originalTextMap = new WeakMap();
   }
 }

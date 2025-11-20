@@ -27,11 +27,18 @@ export class ContentAIProxy {
       .toString(36)
       .slice(2, 8)}`;
 
+    if (!chrome.runtime?.id) {
+      return {
+        id: requestId,
+        action: "error",
+        reason: "Extension context unavailable",
+      };
+    }
+
     // Store reference for cleanup
     this.pendingRequests.set(requestId, textNode);
 
     try {
-      // Send to background service (NO API KEY EXPOSURE)
       const aiResult = await new Promise<AIProcessingResponse>((resolve) => {
         let resolved = false;
 
@@ -98,6 +105,23 @@ export class ContentAIProxy {
       });
 
       this.pendingRequests.delete(requestId);
+
+      if (aiResult.classification === "clean" && aiResult.action !== "keep") {
+        aiResult.action = "keep";
+        aiResult.reason =
+          aiResult.reason || "Clean content - restored original text";
+      }
+
+      if (
+        aiResult.action !== "filter" &&
+        (!aiResult.classification || aiResult.classification === "unknown")
+      ) {
+        aiResult.action = "keep";
+        aiResult.classification = "clean";
+        aiResult.reason =
+          aiResult.reason || "Fallback: treating as clean content";
+      }
+
       return aiResult;
     } catch (error) {
       console.error("[JoSan AI] Background processing error:", error);
