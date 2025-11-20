@@ -108,7 +108,7 @@ export class ContentAIProxy {
 
   cleanup(): void {
     // Cancel any pending AI requests
-    this.pendingRequests.forEach((textNode, requestId) => {
+    this.pendingRequests.forEach((_textNode, requestId) => {
       console.log(`[JoSan] Cleaning up pending AI request: ${requestId}`);
     });
     this.pendingRequests.clear();

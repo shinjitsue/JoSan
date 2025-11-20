@@ -3,7 +3,7 @@ import { BackgroundAIService } from "./BackgroundAIService";
 // Initialize background AI processor
 let isInitialized = false;
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   try {
     if (message.type === "SET_API_KEY") {
       BackgroundAIService.setApiKey(message.apiKey);

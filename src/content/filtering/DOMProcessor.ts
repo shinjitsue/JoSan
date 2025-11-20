@@ -21,6 +21,7 @@ interface AIProcessingResponse {
 export class DOMProcessor {
   // Tracks nodes already processed to avoid duplicate work
   private processedNodes = new WeakSet<Node>();
+  private processedCount = 0;
 
   // Invalidate a node (and descendants) so it can be reprocessed
   invalidate(node: Node): void {
@@ -63,6 +64,7 @@ export class DOMProcessor {
         // Await to reduce race conditions with AI placeholder replacement
         await textProcessor(node);
         this.processedNodes.add(node);
+        this.processedCount++;
         return;
       }
 
@@ -87,6 +89,47 @@ export class DOMProcessor {
     }
   }
 
+  private collectTextNodes(root: Node, acc: Node[] = []): Node[] {
+    if (root.nodeType === Node.TEXT_NODE) {
+      acc.push(root);
+      return acc;
+    }
+    if (root instanceof Element) {
+      if (
+        root.hasAttribute("data-josan-filtered") ||
+        PrivacyFilter.isPrivateContent(root)
+      ) {
+        return acc;
+      }
+    }
+    root.childNodes.forEach((c) => this.collectTextNodes(c, acc));
+    return acc;
+  }
+
+  private async processElementBatched(
+    element: Element,
+    textProcessor: (textNode: Node) => Promise<void>,
+    batchSize = 25
+  ): Promise<void> {
+    const nodes = this.collectTextNodes(element).filter(
+      (n) => !this.processedNodes.has(n)
+    );
+    for (let i = 0; i < nodes.length; i += batchSize) {
+      const slice = nodes.slice(i, i + batchSize);
+      await Promise.all(
+        slice.map(async (n) => {
+          try {
+            await textProcessor(n);
+            this.processedNodes.add(n);
+            this.processedCount++; // count text nodes processed
+          } catch (e) {
+            console.warn("[JoSan] Batched node error:", e);
+          }
+        })
+      );
+    }
+  }
+
   private async processFeedAreas(
     textProcessor: (textNode: Node) => Promise<void>
   ): Promise<void> {
@@ -98,7 +141,9 @@ export class DOMProcessor {
         if (!(element instanceof Element)) continue;
         if (this.processedNodes.has(element)) continue;
         if (PrivacyFilter.isPrivateContent(element)) continue;
-        await this.processNode(element, textProcessor);
+        // Use batched processing instead of deep recursion
+        await this.processElementBatched(element, textProcessor);
+        this.processedNodes.add(element);
       }
     } catch (error) {
       console.error("[JoSan] Error processing feed areas:", error);
@@ -188,11 +233,12 @@ export class DOMProcessor {
     return "background-color: #f8f9fa; color: #6c757d; padding: 2px 6px; border-radius: 4px; border: 1px solid #dee2e6; cursor: help; font-size: 0.875em;";
   }
 
-  cleanup(): void {
-    this.processedNodes = new WeakSet();
+  getProcessedNodesCount(): number {
+    return this.processedCount;
   }
 
-  getProcessedNodesCount(): number {
-    return -1;
+  cleanup(): void {
+    this.processedNodes = new WeakSet();
+    this.processedCount = 0;
   }
 }
