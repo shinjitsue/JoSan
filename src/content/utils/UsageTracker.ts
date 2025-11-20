@@ -212,7 +212,7 @@ export class UsageTracker {
   }
 
   static getModelName(): string {
-    return "omni-moderation-latest";
+    return "text-moderation-latest";
   }
 
   static getPricingInfo(): string {

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "JoSan Extension",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "AI-powered content moderation that intelligently detects and filters profanity, harassment, and hate speech using context-aware analysis.",
   "icons": {
     "16": "icons/icon16.png",
@@ -64,7 +64,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["data/en.txt"],
+      "resources": ["data/en.txt", "data/tl.txt", "data/ceb.txt"],
       "matches": ["<all_urls>"]
     }
   ]

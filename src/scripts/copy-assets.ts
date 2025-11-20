@@ -33,11 +33,23 @@ if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
-// Copy profanity list file
-const profanityListSource = path.join(rootDir, "public/data/en.txt");
-if (fs.existsSync(profanityListSource)) {
-  fs.copyFileSync(profanityListSource, path.join(dataDir, "en.txt"));
-  console.log("Profanity list copied to dist/data/");
-}
+// Copy all language files
+const languageFiles = [
+  { source: "en.txt", dest: "en.txt" },
+  { source: "tl.txt", dest: "tl.txt" },
+  { source: "ceb.txt", dest: "ceb.txt" },
+];
+
+languageFiles.forEach(({ source, dest }) => {
+  const sourceFile = path.join(rootDir, `public/data/${source}`);
+  const destFile = path.join(dataDir, dest);
+
+  if (fs.existsSync(sourceFile)) {
+    fs.copyFileSync(sourceFile, destFile);
+    console.log(`${source} copied to dist/data/`);
+  } else {
+    console.warn(`Warning: ${source} not found, skipping...`);
+  }
+});
 
 console.log("Assets copied to dist folder");

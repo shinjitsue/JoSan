@@ -11,9 +11,16 @@ export default defineConfig({
       input: {
         popup: resolve(__dirname, "popup.html"),
         options: resolve(__dirname, "options.html"),
+        content: resolve(__dirname, "src/content/index.ts"),
+        background: resolve(__dirname, "src/background/index.ts"),
       },
       output: {
-        entryFileNames: "[name].js",
+        entryFileNames: (chunkInfo) => {
+          // Ensure proper naming for scripts
+          if (chunkInfo.name === "content") return "content.js";
+          if (chunkInfo.name === "background") return "background.js";
+          return "[name].js";
+        },
         manualChunks: {
           "vendor-charts": ["recharts"],
 
