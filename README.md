@@ -21,12 +21,12 @@ JoSan enhances your browsing experience with advanced content moderation capabil
   - **Stage 1**: Fast regex-based profanity detection
   - **Stage 2**: AI context analysis for flagged content
 - 🤖 **AI-Powered Classification** using OpenAI Moderation API
-  - Uses **omni-moderation-latest** model for content analysis
+  - Uses **omni-moderation-latest** model and **GPT-5-mini** for content analysis
   - Distinguishes between toxic, mild, and clean content
   - Context-aware analysis reduces false positives
   - Configurable severity levels (filter toxic, mild, or both)
 - 🌐 **Multi-language support**:
-  - English, Tagalog, and Cebuano profanity detection
+  - English, Tagalog, and Bisaya profanity detection
   - Smart language detection with confidence scoring
   - Mixed-language content handling
 - ⚙️ Developed with **TypeScript** for strong type safety
@@ -46,7 +46,7 @@ JoSan enhances your browsing experience with advanced content moderation capabil
   - Monthly usage tracking with automatic reset
   - Estimated token usage display
 - 🎯 **Smart Text Analysis**
-  - Multi-stage processing: regex → omni-moderation → contextual analysis
+  - Multi-stage processing: regex → omni-moderation → contextual analysis (GPT-5-mini)
   - Skips low-value content (emojis, URLs, short text)
   - Caches results for 5 minutes to reduce API calls
   - Automatic rate limit management with cooldown
@@ -96,7 +96,7 @@ josan/
 │   └── data/                  # Profanity word lists
 │       ├── en.txt            # English profanity list
 │       ├── tl.txt            # Tagalog profanity list
-│       └── ceb.txt           # Cebuano profanity list
+│       └── bis.txt           # Bisaya profanity list
 ├── src/                       # Source code
 │   ├── background/            # Background service worker
 │   │   ├── index.ts          # Background script entry
@@ -350,7 +350,7 @@ flowchart TD
     M --> N{Needs Contextual<br/>Check?}
 
     N -->|No| O[Use Omni Result]
-    N -->|Yes| P[🧠 GPT-4o Contextual Analysis]
+    N -->|Yes| P[🧠 GPT-5-mini Contextual Analysis]
 
     P --> Q{Classification}
     O --> Q
@@ -388,7 +388,7 @@ flowchart TD
 3. **Rate Limiting**: Respects 30 req/min and 14,400 req/day limits
 4. **Heuristic Skipping**: Ignores emojis, URLs, short text (<10 chars)
 5. **Batch Processing**: Groups up to 5 API calls efficiently
-6. **Multi-language Detection**: Analyzes English, Tagalog, and Cebuano
+6. **Multi-language Detection**: Analyzes English, Tagalog, and Bisaya
 7. **Language-aware Filtering**: Applies appropriate regex per language
 8. **Cooldown Mechanism**: Temporarily pauses after repeated failures
 
@@ -411,7 +411,7 @@ graph LR
     H --> I[1. Omni-Moderation<br/>API Check]
     I --> J{Needs<br/>Context?}
 
-    J -->|Yes| K[2. GPT-4o<br/>Contextual Analysis]
+    J -->|Yes| K[2. GPT-5-mini<br/>Contextual Analysis]
     J -->|No| L[Use Omni Result]
 
     K --> M[Classification +<br/>Confidence Score]
@@ -439,7 +439,7 @@ graph TD
 
     C -->|English| D[Apply English<br/>Regex]
     C -->|Tagalog| E[Apply Tagalog<br/>Regex]
-    C -->|Cebuano| F[Apply Cebuano<br/>Regex]
+    C -->|Bisaya| F[Apply Bisaya<br/>Regex]
     C -->|Mixed| G[Apply All<br/>Regexes]
 
     D --> H[Regex Results]
@@ -475,7 +475,7 @@ graph TD
     B -->|Low Score<br/>Clean| E[🟢 CLEAN]
     B -->|Ambiguous| F{Contextual<br/>Check}
 
-    F -->|GPT-4o Analysis| G{Re-classify}
+    F -->|GPT-5-mini Analysis| G{Re-classify}
     G --> C
     G --> D
     G --> E
@@ -502,14 +502,14 @@ graph TD
 
 ### Performance Metrics
 
-| Metric         | Stage 1 (Regex) | Stage 2 (Omni) | Stage 3 (GPT-4o) | Cached AI |
-| -------------- | --------------- | -------------- | ---------------- | --------- |
-| **Speed**      | ~0.1ms          | ~200-400ms     | ~400-600ms       | ~0.1ms    |
-| **Accuracy**   | 60-70%          | 85-90%         | 90-95%           | 90-95%    |
-| **Network**    | None            | Required       | Required         | None      |
-| **Processing** | 100% local      | Cloud API      | Cloud API        | Memory    |
-| **Rate Limit** | None            | 30/min         | 30/min           | None      |
-| **Cost**       | Free            | Free           | Free             | Free      |
+| Metric         | Stage 1 (Regex) | Stage 2 (Omni) | Stage 3 (GPT-5-mini) | Cached AI |
+| -------------- | --------------- | -------------- | -------------------- | --------- |
+| **Speed**      | ~0.1ms          | ~200-400ms     | ~400-600ms           | ~0.1ms    |
+| **Accuracy**   | 60-70%          | 85-90%         | 90-95%               | 90-95%    |
+| **Network**    | None            | Required       | Required             | None      |
+| **Processing** | 100% local      | Cloud API      | Cloud API            | Memory    |
+| **Rate Limit** | None            | 30/min         | 30/min               | None      |
+| **Cost**       | Free            | Free           | Free                 | Free      |
 
 ---
 
@@ -654,7 +654,7 @@ JoSan actively filters profanity on **12 major social media platforms**:
 
 | Platform  | Filtered Areas               | Private Areas Excluded       |
 | --------- | ---------------------------- | ---------------------------- |
-| Facebook  | News Feed, Posts, Comments   | Messenger, DMs               |
+| Fabisook  | News Feed, Posts, Comments   | Messenger, DMs               |
 | Twitter/X | Timeline, Tweets, Replies    | Direct Messages              |
 | Instagram | Feed, Stories, Comments      | Instagram Direct             |
 | Reddit    | Posts, Comments, Subreddits  | Chat, Private Messages       |
@@ -711,8 +711,8 @@ JoSan supports **3 languages** for profanity detection:
    - Cultural context awareness
    - ~500+ words
 
-3. **Cebuano (CEB)**
-   - Cebuano/Bisaya profanity detection
+3. **Bisaya (BIS)**
+   - Bisaya profanity detection
    - Regional expressions
    - ~50+ words
 
@@ -774,7 +774,7 @@ window.JoSanDebug.getStats(); // View statistics
 
 ### v2.1.0 (Current)
 
-- ✨ Multi-language support (English, Tagalog, Cebuano)
+- ✨ Multi-language support (English, Tagalog, Bisaya)
 - 🤖 Switched to OpenAI Moderation API
 - 📊 Enhanced usage dashboard with charts
 - 🎯 Improved AI accuracy with two-stage analysis
