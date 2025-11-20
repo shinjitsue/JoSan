@@ -8,6 +8,7 @@ interface DailyUsageCardProps {
   getProgressBarColor: () => string;
   getWarningTextColor: () => string;
   getWarningMessage: () => string;
+  dailyLimit: number;
 }
 
 export function DailyUsageCard({
@@ -17,6 +18,7 @@ export function DailyUsageCard({
   getProgressBarColor,
   getWarningTextColor,
   getWarningMessage,
+  dailyLimit,
 }: DailyUsageCardProps) {
   return (
     <DashboardCard>
@@ -37,7 +39,8 @@ export function DailyUsageCard({
       <div className="mb-3">
         <div className="flex items-center justify-between text-sm mb-2">
           <span className="text-muted-foreground">
-            {requestsToday.toLocaleString()} / 1,000,000 requests
+            {requestsToday.toLocaleString()} / {dailyLimit.toLocaleString()}{" "}
+            requests
           </span>
           <span className="font-medium">{dailyPercentage.toFixed(1)}%</span>
         </div>
@@ -50,7 +53,8 @@ export function DailyUsageCard({
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Free tier limit: 1,000,000 requests/day • Resets daily at midnight UTC
+        Free tier limit: {dailyLimit.toLocaleString()} requests/day • Resets
+        daily at midnight UTC
       </p>
     </DashboardCard>
   );

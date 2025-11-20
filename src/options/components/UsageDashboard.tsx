@@ -26,6 +26,8 @@ function UsageDashboard() {
     getMinuteWarningMessage,
     getWarningTextColor,
     getMinuteWarningTextColor,
+    minuteLimit,
+    dailyLimit,
   } = useDashboardLogic();
 
   return (
@@ -60,6 +62,7 @@ function UsageDashboard() {
           getMinuteProgressBarColor={getMinuteProgressBarColor}
           getMinuteWarningTextColor={getMinuteWarningTextColor}
           getMinuteWarningMessage={getMinuteWarningMessage}
+          minuteLimit={minuteLimit}
         />
 
         <DailyUsageCard
@@ -69,6 +72,7 @@ function UsageDashboard() {
           getProgressBarColor={getProgressBarColor}
           getWarningTextColor={getWarningTextColor}
           getWarningMessage={getWarningMessage}
+          dailyLimit={dailyLimit}
         />
 
         <TotalStatsGrid

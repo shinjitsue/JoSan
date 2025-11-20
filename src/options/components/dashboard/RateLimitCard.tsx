@@ -7,6 +7,7 @@ interface RateLimitCardProps {
   getMinuteProgressBarColor: () => string;
   getMinuteWarningTextColor: () => string;
   getMinuteWarningMessage: () => string;
+  minuteLimit: number;
 }
 
 export function RateLimitCard({
@@ -15,6 +16,7 @@ export function RateLimitCard({
   getMinuteProgressBarColor,
   getMinuteWarningTextColor,
   getMinuteWarningMessage,
+  minuteLimit,
 }: RateLimitCardProps) {
   return (
     <DashboardCard>
@@ -31,7 +33,7 @@ export function RateLimitCard({
       <div className="mb-3">
         <div className="flex items-center justify-between text-sm mb-2">
           <span className="text-muted-foreground">
-            {requestsThisMinute} / 1,000 requests
+            {requestsThisMinute} / {minuteLimit.toLocaleString()} requests
           </span>
           <span className="font-medium">{minutePercentage.toFixed(1)}%</span>
         </div>
@@ -44,7 +46,8 @@ export function RateLimitCard({
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Free tier limit: 1,000 requests/minute • Resets every minute
+        Free tier limit: {minuteLimit.toLocaleString()} requests/minute • Resets
+        every minute
       </p>
     </DashboardCard>
   );

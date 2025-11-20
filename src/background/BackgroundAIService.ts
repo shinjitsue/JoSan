@@ -67,6 +67,10 @@ export class BackgroundAIService {
   private static readonly MAX_CACHE_SIZE = 1000;
   private static readonly BATCH_SIZE = 5;
   private static readonly BATCH_TIMEOUT = 100; // ms
+  private static consecutiveFailures = 0;
+  private static cooldownUntil = 0;
+  private static readonly FAILURE_THRESHOLD = 5;
+  private static readonly COOLDOWN_MS = 30_000;
 
   static setApiKey(key: string): void {
     this.apiKey = key;
@@ -75,6 +79,13 @@ export class BackgroundAIService {
   static async processText(
     request: AIProcessingRequest
   ): Promise<AIProcessingResponse> {
+    if (Date.now() < this.cooldownUntil) {
+      return {
+        id: request.id,
+        action: "error",
+        reason: "AI temporarily cooling down after repeated failures",
+      };
+    }
     return new Promise((resolve) => {
       // Check cache first
       const cacheKey = this.getCacheKey(request.text, request.language.code);
@@ -178,6 +189,9 @@ export class BackgroundAIService {
     language: string,
     requests: AIProcessingRequest[]
   ): Promise<AIProcessingResponse[]> {
+    console.log(
+      `[JoSan AI] Processing language group "${language}" (${requests.length} request(s))`
+    );
     const results: AIProcessingResponse[] = [];
 
     for (const request of requests) {
@@ -243,6 +257,8 @@ export class BackgroundAIService {
         finalResult.classification
       );
 
+      this.consecutiveFailures = 0;
+
       return {
         id: request.id,
         action: shouldFilter ? "filter" : "keep",
@@ -254,8 +270,20 @@ export class BackgroundAIService {
         }`,
       };
     } catch (error) {
-      console.error("[JoSan AI] Processing error:", error);
-      return { id: request.id, action: "error" };
+      this.consecutiveFailures++;
+      if (this.consecutiveFailures >= this.FAILURE_THRESHOLD) {
+        this.cooldownUntil = Date.now() + this.COOLDOWN_MS;
+        console.warn(
+          `[JoSan AI] Entering cooldown ${this.COOLDOWN_MS / 1000}s (failures=${
+            this.consecutiveFailures
+          })`
+        );
+      }
+      return {
+        id: request.id,
+        action: "error",
+        reason: (error as Error).message || "AI processing error",
+      };
     }
   }
 

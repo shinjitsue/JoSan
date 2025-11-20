@@ -74,6 +74,8 @@ export function useDashboardLogic() {
   );
   const { tokens } = UsageTracker.estimateCost(stats.totalRequests);
 
+  const dailyLimit = UsageTracker.getDailyLimit();
+  const minuteLimit = UsageTracker.getMinuteLimit();
   // Helper functions
   const getProgressBarColor = () => {
     if (warningLevel === "critical") return "bg-red-500 dark:bg-red-600";
@@ -127,6 +129,8 @@ export function useDashboardLogic() {
     minuteWarningLevel,
     tokens,
     cost: "0.00",
+    dailyLimit,
+    minuteLimit,
     getProgressBarColor,
     getMinuteProgressBarColor,
     getWarningMessage,
