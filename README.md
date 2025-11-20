@@ -502,14 +502,13 @@ graph TD
 
 ### Performance Metrics
 
-| Metric         | Stage 1 (Regex) | Stage 2 (Omni) | Stage 3 (GPT-5-mini) | Cached AI |
-| -------------- | --------------- | -------------- | -------------------- | --------- |
-| **Speed**      | ~0.1ms          | ~200-400ms     | ~400-600ms           | ~0.1ms    |
-| **Accuracy**   | 60-70%          | 85-90%         | 90-95%               | 90-95%    |
-| **Network**    | None            | Required       | Required             | None      |
-| **Processing** | 100% local      | Cloud API      | Cloud API            | Memory    |
-| **Rate Limit** | None            | 30/min         | 30/min               | None      |
-| **Cost**       | Free            | Free           | Free                 | Free      |
+| Metric               | Stage 1 (Regex)                                       | Stage 2 (Omni / Small LLM)                                     | Stage 3 (GPT-5-mini, Cloud)                              | Cached AI                                 |
+| -------------------- | ----------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------- | ----------------------------------------- |
+| **Speed (per post)** | **~0.1–10 ms**                                        | **~50–300 ms**                                                 | **~200–800 ms**                                          | **~0.1–5 ms**                             |
+| **Accuracy**         | Precision **95–99%**, Recall **20–60%** (F1: ~32–74%) | Precision **90–95%**, Recall **70–85%** (F1: ~79–89%)          | Precision **92–98%**, Recall **85–95%** (F1: ~88–96%)    | Same as model that produced cached output |
+| **Network**          | None                                                  | Required                                                       | Required                                                 | None (unless cache miss)                  |
+| **Processing**       | Local                                                 | Cloud or local LLM server                                      | Cloud (OpenAI API)                                       | Local memory                              |
+| **Rate Limit**       | None                                                  | Depends on provider                                            | Depends on provider                                      | None                                      |
 
 ---
 
@@ -787,3 +786,4 @@ window.JoSanDebug.getStats(); // View statistics
 - 🤖 Basic AI filtering with Groq API
 - 📱 12 platform support
 - 🎨 Modern UI with Tailwind CSS
+
