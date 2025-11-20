@@ -1,90 +1,86 @@
-import { FilterProcessor } from "./filterProcessor";
+import { FilterProcessor } from "./FilterProcessor";
 
-// Initialize filter instance
 let filter: FilterProcessor | null = null;
 let observer: MutationObserver | null = null;
 
-// Initialize the filter
 const initializeFilter = async () => {
   try {
     console.log("[JoSan] Initializing content script...");
-
-    if (!filter) {
-      filter = new FilterProcessor();
-    }
-
+    if (!filter) filter = new FilterProcessor();
     await filter.loadSettings();
-
-    // Initial page processing
-    filter.processPage();
-
-    console.log("[JoSan] Content script initialized successfully");
-
-    // Start monitoring for dynamic content changes
+    await filter.processPage();
     startObserver();
+    console.log("[JoSan] Content script initialized");
   } catch (error) {
     console.error("[JoSan] Initialization error:", error);
   }
 };
 
-// Start the MutationObserver
 const startObserver = () => {
   if (!filter) return;
-
-  // Disconnect existing observer if any
-  if (observer) {
-    observer.disconnect();
-  }
+  if (observer) observer.disconnect();
 
   observer = new MutationObserver((mutations) => {
     try {
-      // Check if filter is enabled before processing
-      if (!filter || !filter.isFilterEnabled()) {
-        return;
-      }
+      if (!filter || !filter.isFilterEnabled()) return;
 
-      mutations.forEach((mutation) => {
+      for (const mutation of mutations) {
+        // Handle in-place text changes
+        if (mutation.type === "characterData") {
+          const target = mutation.target;
+          filter.invalidateNode(target);
+          filter.processNode(target); // async (fire-and-forget)
+          continue;
+        }
+
+        // New nodes added
         if (mutation.addedNodes.length > 0) {
           mutation.addedNodes.forEach((node) => {
-            if (filter) {
-              filter.processNode(node);
+            // Skip filtered spans
+            if (
+              node.nodeType === Node.ELEMENT_NODE &&
+              node instanceof Element &&
+              node.hasAttribute("data-josan-filtered")
+            ) {
+              return;
             }
+            filter?.processNode(node);
           });
         }
-      });
+      }
     } catch (error) {
       console.error("[JoSan] Observer error:", error);
     }
   });
 
-  // Start observing after a short delay to ensure DOM is ready
   setTimeout(() => {
     if (document.body) {
       observer?.observe(document.body, {
         childList: true,
         subtree: true,
+        characterData: true,
+        characterDataOldValue: false,
       });
-      console.log("[JoSan] MutationObserver started");
+      console.log(
+        "[JoSan] MutationObserver started (childList + characterData)"
+      );
     }
   }, 100);
 };
 
-// Initialize when DOM is ready
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initializeFilter);
 } else {
   initializeFilter();
 }
 
-// Re-initialize on page navigation (for SPAs)
 window.addEventListener("load", () => {
   if (filter) {
-    console.log("[JoSan] Page loaded, re-processing...");
+    console.log("[JoSan] Page load event, re-processing...");
     filter.processPage();
   }
 });
 
-// Listen for messages from popup
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   try {
     if (
@@ -92,108 +88,71 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       message.enabled !== undefined
     ) {
       if (!filter) {
-        console.error("[JoSan] Filter not initialized");
         sendResponse({ success: false, error: "Filter not initialized" });
         return true;
       }
-
       filter.updateFilterState(message.enabled);
-
-      if (message.enabled) {
-        filter.processPage();
-      }
-
+      if (message.enabled) filter.processPage();
       sendResponse({ success: true, enabled: message.enabled });
       return true;
     }
-
     sendResponse({ success: false, error: "Unknown action" });
   } catch (error) {
     console.error("[JoSan] Message handler error:", error);
     sendResponse({ success: false, error: String(error) });
   }
-
   return true;
 });
 
-// Listen for storage changes (when user changes platform settings)
 chrome.storage.onChanged.addListener((changes, areaName) => {
-  try {
-    if (areaName === "local") {
-      if (changes.enabledPlatforms) {
-        console.log("[JoSan] Platform settings changed, reloading...");
+  if (areaName !== "local") return;
+  if (!filter) return;
 
-        if (filter) {
-          filter.loadSettings().then(() => {
-            if (filter) {
-              filter.processPage();
-            }
-          });
-        }
-      }
-
-      if (changes.customWords) {
-        console.log("[JoSan] Custom words changed, reloading...");
-        if (filter) {
-          filter.loadSettings().then(() => {
-            if (filter) {
-              filter.processPage();
-            }
-          });
-        }
-      }
-    }
-  } catch (error) {
-    console.error("[JoSan] Storage change handler error:", error);
+  if (changes.enabledPlatforms || changes.customWords) {
+    console.log("[JoSan] Settings changed, reloading...");
+    filter
+      .loadSettings()
+      .then(() => filter?.processPage())
+      .catch((e) => console.error("[JoSan] Reload error:", e));
   }
 });
 
-// Handle page visibility changes (when user switches tabs)
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible" && filter) {
     if (!chrome.runtime?.id) {
-      console.warn("[JoSan] Extension context invalidated, cannot re-process");
+      console.warn("[JoSan] Context invalid, cannot re-process");
       return;
     }
-    console.log("[JoSan] Tab became visible, re-processing...");
     filter.processPage();
   }
 });
 
-// Cleanup on unload
 window.addEventListener("beforeunload", () => {
-  if (observer) {
-    observer.disconnect();
-    console.log("[JoSan] Observer disconnected");
-  }
-
+  if (observer) observer.disconnect();
   if (filter && chrome?.runtime?.id) {
     try {
       const stats = filter.getStats?.();
-      if (stats) {
-        chrome.storage.local.set({ stats });
-      }
-    } catch (error) {
-      console.debug("[JoSan] Could not save stats on unload:", error);
+      if (stats) chrome.storage.local.set({ stats });
+    } catch (e) {
+      console.error("[JoSan] Failed to persist stats before unload:", e);
     }
   }
 });
 
 if (typeof chrome !== "undefined" && chrome.runtime) {
   chrome.runtime.onSuspend?.addListener(() => {
-    console.log("[JoSan] Extension suspending, cleaning up...");
     if (observer) observer.disconnect();
     filter = null;
   });
 }
 
-// Export for debugging (optional)
 declare global {
   interface Window {
     JoSanDebug: {
       getFilter: () => FilterProcessor | null;
       reprocess: () => void;
       getStats: () => void;
+      invalidateSelection: () => void;
     };
   }
 }
@@ -208,6 +167,13 @@ if (typeof window !== "undefined") {
       chrome.storage.local.get("stats", (result) => {
         console.log("[JoSan] Stats:", result.stats);
       });
+    },
+    invalidateSelection: () => {
+      const sel = window.getSelection();
+      if (sel && sel.anchorNode && filter) {
+        filter.invalidateNode(sel.anchorNode);
+        filter.processNode(sel.anchorNode);
+      }
     },
   };
 }
