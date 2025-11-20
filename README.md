@@ -502,7 +502,7 @@ graph TD
 
 ### Performance Metrics
 
-| Metric               | Stage 1 (Regex)                                       | Stage 2 (Omni / Small LLM)                                     | Stage 3 (GPT-5-mini, Cloud)                              | Cached AI                                 |
+| Metric               | Stage 1 (Regex)                                       | Stage 2 (Omni / Small LLM)                                     | Stage 2 (GPT-5-mini, Cloud)                              | Cached AI                                 |
 | -------------------- | ----------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------- | ----------------------------------------- |
 | **Speed (per post)** | **~0.1–10 ms**                                        | **~50–300 ms**                                                 | **~200–800 ms**                                          | **~0.1–5 ms**                             |
 | **Accuracy**         | Precision **95–99%**, Recall **20–60%** (F1: ~32–74%) | Precision **90–95%**, Recall **70–85%** (F1: ~79–89%)          | Precision **92–98%**, Recall **85–95%** (F1: ~88–96%)    | Same as model that produced cached output |
@@ -786,4 +786,5 @@ window.JoSanDebug.getStats(); // View statistics
 - 🤖 Basic AI filtering with Groq API
 - 📱 12 platform support
 - 🎨 Modern UI with Tailwind CSS
+
 
