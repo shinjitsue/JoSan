@@ -14,7 +14,7 @@ interface FilterSettings {
 interface RegexSet {
   english: RegExp | null;
   tagalog: RegExp | null;
-  cebuano: RegExp | null;
+  bisaya: RegExp | null;
 }
 
 interface Language {
@@ -44,7 +44,7 @@ export class FilterProcessor {
   private regexes: RegexSet = {
     english: null,
     tagalog: null,
-    cebuano: null,
+    bisaya: null,
   };
   private currentPlatform = "";
   private enabledPlatforms: string[] = [];
@@ -204,7 +204,7 @@ export class FilterProcessor {
           {
             en: this.regexes.english,
             tl: this.regexes.tagalog,
-            ceb: this.regexes.cebuano,
+            bis: this.regexes.bisaya,
           }
         );
 

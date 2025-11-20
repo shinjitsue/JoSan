@@ -47,7 +47,7 @@ interface OpenAIChatResponse {
 interface LanguageContext {
   en: string;
   tl: string;
-  ceb: string;
+  bis: string;
   mixed: string;
 }
 
@@ -472,7 +472,7 @@ export class BackgroundAIService {
     const languageContext: LanguageContext = {
       en: "English",
       tl: "Tagalog/Filipino - Consider cultural context, honorifics (po, opo), and indirect speech patterns",
-      ceb: "Cebuano - Consider regional expressions, cultural nuances, and local context",
+      bis: "Bisaya - Consider regional expressions, cultural nuances, and local context",
       mixed: "Mixed languages - Analyze each language component",
     };
 

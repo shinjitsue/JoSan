@@ -37,7 +37,7 @@ if (!fs.existsSync(dataDir)) {
 const languageFiles = [
   { source: "en.txt", dest: "en.txt" },
   { source: "tl.txt", dest: "tl.txt" },
-  { source: "ceb.txt", dest: "ceb.txt" },
+  { source: "bis.txt", dest: "bis.txt" },
 ];
 
 languageFiles.forEach(({ source, dest }) => {

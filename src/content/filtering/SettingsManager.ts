@@ -10,20 +10,20 @@ interface FilterSettings {
 interface RegexSet {
   english: RegExp | null;
   tagalog: RegExp | null;
-  cebuano: RegExp | null;
+  bisaya: RegExp | null;
 }
 
 export class SettingsManager {
   private profanitySets: Record<string, Set<string>> = {
     en: new Set(),
     tl: new Set(),
-    ceb: new Set(),
+    bis: new Set(),
   };
 
   private profanityRegexes: RegexSet = {
     english: null,
     tagalog: null,
-    cebuano: null,
+    bisaya: null,
   };
 
   private filterSettings: FilterSettings = {
@@ -131,7 +131,7 @@ export class SettingsManager {
     const languages = [
       { code: "en", file: "en.txt" },
       { code: "tl", file: "tl.txt" },
-      { code: "ceb", file: "ceb.txt" },
+      { code: "ceb", file: "bis.txt" },
     ];
 
     for (const lang of languages) {
@@ -183,8 +183,8 @@ export class SettingsManager {
     this.profanityRegexes.tagalog = ProfanityLoader.compileRegex(
       this.profanitySets.tl
     );
-    this.profanityRegexes.cebuano = ProfanityLoader.compileRegex(
-      this.profanitySets.ceb
+    this.profanityRegexes.bisaya = ProfanityLoader.compileRegex(
+      this.profanitySets.bis
     );
   }
 

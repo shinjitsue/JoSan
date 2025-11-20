@@ -5,7 +5,7 @@ export class FastLanguageDetector {
 
     tl: /\b(ang|ng|sa|na|ay|si|ni|ka|ako|ikaw|siya|kami|kayo|sila|po|opo|hindi|oo|mga|para|kung|pero|kasi|kaya|saan|ano|sino|kailan|bakit|paano|ito|iyan|iyon|dito|diyan|doon|mula|hanggang|habang|kapag|dahil|upang|nang|at|o|man|din|rin|lang|lamang|pala|nga|ba|talaga|sobra|masyado|medyo|konti|marami|lahat|walang|mayron|meron|pwede|dapat|gusto|ayaw|mahal|libre|bago|luma|malaki|maliit|maganda|pangit|mabuti|masama|mataba|payat|mataas|mababa|mabilis|mabagal|mainit|malamig|masaya|malungkot|galit|takot|antok|gutom|uhaw|pagod|sakit|galing|tama|mali|totoo|fake|alam|hindi_alam|nandito|nandoon|pumunta|umuwi|kumain|uminom|matulog|gumising|magwork|mag_aral|maglaro|manood|makinig|magsalita|tumawa|umiyak|sumigaw|tumakbo|maglakad|umupo|tumayo|humiga|magbasa|magsulat|mag_isip|mag_alala|mag_antay|salamat|pasensya|patawad|walang_anuman|sige|tara|halika|bili|bayad|libre|mahal|mura|magkano|piso|peso|tao|babae|lalaki|bata|matanda|kaibigan|pamilya|nanay|tatay|kuya|ate|bunso|lola|lolo|asawa|anak|kapatid)\b/gi,
 
-    ceb: /\b(ang|sa|og|ug|ni|si|kay|aron|kung|dili|oo|bitaw|lagi|gud|man|pod|ra|nya|nila|nato|ninyo|kanila|kami|kamo|sila|ako|ikaw|siya|kini|kana|kadto|dinhi|didto|adto|gikan|padulong|samtang|human|una|sunod|karong|gahapon|ugma|karon|unya|dayon|usa|duha|tulo|upat|lima|unom|pito|walo|siyam|napulo|daghan|gamay|dako|gagmay|taas|mubo|paspas|hinay|init|bugnaw|nindot|bati|maayo|dili_maayo|bag_o|daan|gwapa|pangit|tambok|niwang|kusog|huyang|maalamon|buang|buotan|dautan|higala|kaaway|pamilya|balay|sakyanan|pagkaon|tubig|kwarta|oras|adlaw|gabii|tuig|karong_adlawa|ugma|gahapon|moadto|mouli|mokaon|mo_inom|matulog|mata|magtrabaho|mag_eskwela|magdula|motan_aw|maminaw|mosulti|mokatawa|mohilak|mosinggit|modagan|maglakaw|molingkod|motindog|mohigda|magbasa|magsulat|mag_isip|mag_alaala|maghulat|salamat|pasaylo|way_sapayan|sige|tara|halin|palit|bayad|libre|mahal|barato|pila|piso|tawo|babaye|lalaki|bata|tigulang|higala|pamilya|mama|papa|kuya|ate|manghod|lola|lolo|bana|asawa|anak|igsoon)\b/gi,
+    bis: /\b(ang|sa|og|ug|ni|si|kay|aron|kung|dili|oo|bitaw|lagi|gud|man|pod|ra|nya|nila|nato|ninyo|kanila|kami|kamo|sila|ako|ikaw|siya|kini|kana|kadto|dinhi|didto|adto|gikan|padulong|samtang|human|una|sunod|karong|gahapon|ugma|karon|unya|dayon|usa|duha|tulo|upat|lima|unom|pito|walo|siyam|napulo|daghan|gamay|dako|gagmay|taas|mubo|paspas|hinay|init|bugnaw|nindot|bati|maayo|dili_maayo|bag_o|daan|gwapa|pangit|tambok|niwang|kusog|huyang|maalamon|buang|buotan|dautan|higala|kaaway|pamilya|balay|sakyanan|pagkaon|tubig|kwarta|oras|adlaw|gabii|tuig|karong_adlawa|ugma|gahapon|moadto|mouli|mokaon|mo_inom|matulog|mata|magtrabaho|mag_eskwela|magdula|motan_aw|maminaw|mosulti|mokatawa|mohilak|mosinggit|modagan|maglakaw|molingkod|motindog|mohigda|magbasa|magsulat|mag_isip|mag_alaala|maghulat|salamat|pasaylo|way_sapayan|sige|tara|halin|palit|bayad|libre|mahal|barato|pila|piso|tawo|babaye|lalaki|bata|tigulang|higala|pamilya|mama|papa|kuya|ate|manghod|lola|lolo|bana|asawa|anak|igsoon)\b/gi,
   };
 
   // Character frequency patterns for each language
@@ -18,7 +18,7 @@ export class FastLanguageDetector {
       commonChars: ["a", "n", "g", "i", "o", "k", "s", "t", "l"],
       weight: 1.2,
     },
-    ceb: {
+    bis: {
       commonChars: ["a", "g", "n", "o", "i", "k", "u", "l", "s"],
       weight: 1.2,
     },
@@ -39,15 +39,15 @@ export class FastLanguageDetector {
         (textLower.match(this.LANGUAGE_PATTERNS.en) || []).length / totalWords,
       tl:
         (textLower.match(this.LANGUAGE_PATTERNS.tl) || []).length / totalWords,
-      ceb:
-        (textLower.match(this.LANGUAGE_PATTERNS.ceb) || []).length / totalWords,
+      bis:
+        (textLower.match(this.LANGUAGE_PATTERNS.bis) || []).length / totalWords,
     };
 
     // Add character frequency analysis for better accuracy
     const charScores = this.analyzeCharFrequency(textLower);
     scores.en += charScores.en * 0.3;
     scores.tl += charScores.tl * 0.3;
-    scores.ceb += charScores.ceb * 0.3;
+    scores.bis += charScores.bis * 0.3;
 
     // Find dominant language
     const maxLang = Object.entries(scores).reduce((a, b) =>
@@ -58,7 +58,7 @@ export class FastLanguageDetector {
     const maxScore = scores[maxLang as keyof typeof scores];
 
     // Enhanced mixed language detection
-    const totalScore = scores.en + scores.tl + scores.ceb;
+    const totalScore = scores.en + scores.tl + scores.bis;
     const nonZeroScores = Object.values(scores).filter((s) => s > 0.05).length;
     const isMixed = totalScore > 0.2 && nonZeroScores >= 2;
 
@@ -69,7 +69,7 @@ export class FastLanguageDetector {
     } else {
       confidence = Math.min(maxScore * 4, 1.0);
       // Boost confidence for clear winners
-      if (maxScore > scores.en + scores.tl + scores.ceb - maxScore) {
+      if (maxScore > scores.en + scores.tl + scores.bis - maxScore) {
         confidence = Math.min(confidence * 1.2, 1.0);
       }
     }
@@ -90,7 +90,7 @@ export class FastLanguageDetector {
       charCounts[char] = (charCounts[char] || 0) + 1;
     }
 
-    const scores = { en: 0, tl: 0, ceb: 0 };
+    const scores = { en: 0, tl: 0, bis: 0 };
 
     // Calculate language scores based on character frequency patterns
     Object.entries(this.CHAR_FREQUENCY).forEach(([lang, pattern]) => {
@@ -145,7 +145,7 @@ export class FastLanguageDetector {
     const names: Record<string, string> = {
       en: "English",
       tl: "Tagalog",
-      ceb: "Cebuano",
+      bis: "Bisaya",
       mixed: "Mixed Languages",
     };
     return names[code] || "Unknown";
