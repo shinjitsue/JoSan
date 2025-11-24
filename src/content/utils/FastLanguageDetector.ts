@@ -5,7 +5,7 @@ export class FastLanguageDetector {
 
     tl: /\b(ang|ng|sa|na|ay|si|ni|ka|ako|ikaw|siya|kami|kayo|sila|po|opo|hindi|oo|mga|para|kung|pero|kasi|kaya|saan|ano|sino|kailan|bakit|paano|ito|iyan|iyon|dito|diyan|doon|mula|hanggang|habang|kapag|dahil|upang|nang|at|o|man|din|rin|lang|lamang|pala|nga|ba|talaga|sobra|masyado|medyo|konti|marami|lahat|walang|mayron|meron|pwede|dapat|gusto|ayaw|mahal|libre|bago|luma|malaki|maliit|maganda|pangit|mabuti|masama|mataba|payat|mataas|mababa|mabilis|mabagal|mainit|malamig|masaya|malungkot|galit|takot|antok|gutom|uhaw|pagod|sakit|galing|tama|mali|totoo|fake|alam|hindi_alam|nandito|nandoon|pumunta|umuwi|kumain|uminom|matulog|gumising|magwork|mag_aral|maglaro|manood|makinig|magsalita|tumawa|umiyak|sumigaw|tumakbo|maglakad|umupo|tumayo|humiga|magbasa|magsulat|mag_isip|mag_alala|mag_antay|salamat|pasensya|patawad|walang_anuman|sige|tara|halika|bili|bayad|libre|mahal|mura|magkano|piso|peso|tao|babae|lalaki|bata|matanda|kaibigan|pamilya|nanay|tatay|kuya|ate|bunso|lola|lolo|asawa|anak|kapatid)\b/gi,
 
-    bis: /\b(ang|sa|og|ug|ni|si|kay|aron|kung|dili|oo|bitaw|lagi|gud|man|pod|ra|nya|nila|nato|ninyo|kanila|kami|kamo|sila|ako|ikaw|siya|kini|kana|kadto|dinhi|didto|adto|gikan|padulong|samtang|human|una|sunod|karong|gahapon|ugma|karon|unya|dayon|usa|duha|tulo|upat|lima|unom|pito|walo|siyam|napulo|daghan|gamay|dako|gagmay|taas|mubo|paspas|hinay|init|bugnaw|nindot|bati|maayo|dili_maayo|bag_o|daan|gwapa|pangit|tambok|niwang|kusog|huyang|maalamon|buang|buotan|dautan|higala|kaaway|pamilya|balay|sakyanan|pagkaon|tubig|kwarta|oras|adlaw|gabii|tuig|karong_adlawa|ugma|gahapon|moadto|mouli|mokaon|mo_inom|matulog|mata|magtrabaho|mag_eskwela|magdula|motan_aw|maminaw|mosulti|mokatawa|mohilak|mosinggit|modagan|maglakaw|molingkod|motindog|mohigda|magbasa|magsulat|mag_isip|mag_alaala|maghulat|salamat|pasaylo|way_sapayan|sige|tara|halin|palit|bayad|libre|mahal|barato|pila|piso|tawo|babaye|lalaki|bata|tigulang|higala|pamilya|mama|papa|kuya|ate|manghod|lola|lolo|bana|asawa|anak|igsoon)\b/gi,
+    bis: /\b(ang|sa|og|ug|ni|si|kay|aron|ka|kung|dili|oo|bitaw|lagi|gud|man|pod|ra|nya|nila|nato|ninyo|kanila|kami|kamo|sila|ako|ikaw|siya|kini|kana|kadto|dinhi|didto|adto|gikan|padulong|samtang|human|una|sunod|karong|gahapon|ugma|karon|unya|dayon|usa|duha|tulo|upat|lima|unom|pito|walo|siyam|napulo|daghan|gamay|dako|gagmay|taas|mubo|paspas|hinay|init|bugnaw|nindot|bati|maayo|dili_maayo|bag_o|daan|gwapa|pangit|tambok|niwang|kusog|huyang|maalamon|buang|buotan|dautan|higala|kaaway|pamilya|balay|sakyanan|pagkaon|tubig|kwarta|oras|adlaw|gabii|tuig|karong_adlawa|ugma|gahapon|moadto|mouli|mokaon|mo_inom|matulog|mata|magtrabaho|mag_eskwela|magdula|motan_aw|maminaw|mosulti|mokatawa|mohilak|mosinggit|modagan|maglakaw|molingkod|motindog|mohigda|magbasa|magsulat|mag_isip|mag_alaala|maghulat|salamat|pasaylo|way_sapayan|sige|tara|halin|palit|bayad|libre|mahal|barato|pila|piso|tawo|babaye|lalaki|bata|tigulang|higala|pamilya|mama|papa|kuya|ate|manghod|lola|lolo|bana|asawa|anak|igsoon)\b/gi,
   };
 
   // Character frequency patterns for each language
@@ -29,7 +29,10 @@ export class FastLanguageDetector {
     confidence: number;
     scores: Record<string, number>;
   } {
-    const textLower = text.toLowerCase();
+    // Preprocess text to handle evasion techniques before detection
+    const preprocessedText = this.preprocessForDetection(text);
+
+    const textLower = preprocessedText.toLowerCase();
     const words = textLower.split(/\s+/).filter((w) => w.length > 1);
     const totalWords = Math.max(words.length, 1);
 
@@ -81,6 +84,29 @@ export class FastLanguageDetector {
     };
   }
 
+  private static preprocessForDetection(text: string): string {
+    let processed = text;
+
+    // Normalize common leetspeak for better language detection
+    const basicLeetMap: Record<string, string> = {
+      "3": "e",
+      "1": "i",
+      "0": "o",
+      "4": "a",
+      "5": "s",
+      "7": "t",
+    };
+
+    for (const [leet, normal] of Object.entries(basicLeetMap)) {
+      processed = processed.replace(new RegExp(leet, "g"), normal);
+    }
+
+    // Remove excessive spacing
+    processed = processed.replace(/\s{2,}/g, " ");
+
+    return processed;
+  }
+
   private static analyzeCharFrequency(text: string): Record<string, number> {
     const charCounts: Record<string, number> = {};
     const totalChars = text.replace(/\s/g, "").length;
@@ -107,7 +133,7 @@ export class FastLanguageDetector {
     return scores;
   }
 
-  // Multi-language regex application for filtering
+  // Enhanced multi-language regex application with better evasion handling
   static applyMultiLangFilter(
     text: string,
     regexSets: Record<string, RegExp | null>
@@ -123,13 +149,16 @@ export class FastLanguageDetector {
     // Apply all language filters
     Object.entries(regexSets).forEach(([lang, regex]) => {
       if (regex) {
-        filtered = filtered.replace(regex, (match) => {
-          totalMatches++;
-          if (!detectedLangs.includes(lang)) {
-            detectedLangs.push(lang);
-          }
-          return "*".repeat(match.length);
-        });
+        const matches = filtered.match(regex);
+        if (matches) {
+          filtered = filtered.replace(regex, (match) => {
+            totalMatches++;
+            if (!detectedLangs.includes(lang)) {
+              detectedLangs.push(lang);
+            }
+            return "*".repeat(match.length);
+          });
+        }
       }
     });
 
@@ -198,21 +227,63 @@ export class FastLanguageDetector {
     return true;
   }
 
-  // Detect if text needs AI analysis (for ambiguous cases only)
+  // Enhanced decision logic for AI usage
   static shouldUseAI(text: string, regexMatches: number): boolean {
     if (!this.isTextWorthAnalyzing(text)) return false;
 
     const detection = this.detectBest(text);
 
-    // Use AI only for:
-    // 1. Low confidence detection with some regex matches
-    // 2. Mixed languages
-    // 3. Ambiguous cases with moderate regex matches
+    // Enhanced logic: Use AI for more sophisticated evasion patterns
+    const hasComplexEvasion = this.detectComplexEvasion(text);
+
+    // Use AI if:
+    // 1. Complex evasion detected regardless of regex matches
+    // 2. Low confidence detection with some regex matches
+    // 3. Mixed languages
+    // 4. Ambiguous cases with moderate regex matches
+    // 5. Text has suspicious patterns but low regex matches
 
     return (
+      hasComplexEvasion ||
       (detection.confidence < 0.6 && regexMatches > 0 && regexMatches < 3) ||
       (detection.code === "mixed" && regexMatches > 0) ||
-      (regexMatches === 1 && text.length > 50) // Single match in longer text might need context
+      (regexMatches === 1 && text.length > 50) ||
+      this.hasSuspiciousPatterns(text, regexMatches)
     );
+  }
+
+  private static detectComplexEvasion(text: string): boolean {
+    // Check for patterns that suggest intentional evasion
+    const evasionPatterns = [
+      /[a-z]\s+[a-z]\s+[a-z]\s+[a-z]/i, // Excessive spacing: "f u c k"
+      /[a-z][-_.]{2,}[a-z]/i, // Multiple separators: "f---u---c---k"
+      /[@4∆3ε1!|0ø$5§]+.*[@4∆3ε1!|0ø$5§]+/i, // Multiple leetspeak chars
+      /(.)\1{4,}/i, // Excessive repetition: "fuuuuuck"
+      /[a-z]([^a-z\s])+[a-z]/i, // Interspersed symbols: "f*u*c*k"
+    ];
+
+    return evasionPatterns.some((pattern) => pattern.test(text));
+  }
+
+  private static hasSuspiciousPatterns(
+    text: string,
+    regexMatches: number
+  ): boolean {
+    // Text that looks suspicious but might have evaded regex
+    if (regexMatches > 0) return false; // Already caught by regex
+
+    const suspiciousPatterns = [
+      /\b[a-z]{2,}[@4∆3ε1!|0ø$5§][a-z]{2,}\b/i, // Words with leetspeak in middle
+      /\b[a-z]+[-_.]+[a-z]+[-_.]+[a-z]+\b/i, // Hyphenated/separated words
+      /\b[a-z]*[1!|@4$5]+[a-z]*\b/i, // Mixed alphanumeric
+    ];
+
+    const wordCount = text.split(/\s+/).length;
+    const suspiciousCount = suspiciousPatterns.reduce((count, pattern) => {
+      return count + (text.match(pattern)?.length || 0);
+    }, 0);
+
+    // If more than 20% of words are suspicious, use AI
+    return suspiciousCount > 0 && suspiciousCount / wordCount > 0.2;
   }
 }
