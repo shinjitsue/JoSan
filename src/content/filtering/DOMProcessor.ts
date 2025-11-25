@@ -179,7 +179,7 @@ export class DOMProcessor {
     const langName =
       aiResult.language || FastLanguageDetector.getLanguageName(language.code);
 
-    const filteredText = this.getFilteredText(originalText, level, langName);
+    const filteredText = this.getFilteredText(originalText, level);
     const parent = textNode.parentElement;
 
     if (parent) {
@@ -217,14 +217,10 @@ export class DOMProcessor {
     if (stored) this.originalTextMap.delete(textNode);
   }
 
-  private getFilteredText(
-    _text: string,
-    level: string,
-    language: string
-  ): string {
-    if (level === "toxic") return `[${language} Toxic Content Blocked]`;
-    if (level === "mild") return `[${language} Mild Content Filtered]`;
-    return `[${language} Content Filtered]`;
+  private getFilteredText(_text: string, level: string): string {
+    if (level === "toxic") return `Harmful Content Blocked`;
+    if (level === "mild") return `Inappropriate Content Filtered`;
+    return `Content Filtered`;
   }
 
   private getFilterStyle(level: string): string {

@@ -77,20 +77,13 @@ export class BloomFilter {
   mightContain(item: string): boolean {
     const normalized = item.toLowerCase().trim();
 
-    // 🔍 ADD DEBUG LOGGING
-    console.log(
-      `[BloomFilter DEBUG] Checking "${item}" (normalized: "${normalized}")`
-    );
-
     for (let i = 0; i < this.hashFunctions; i++) {
       const hash = this.getHash(normalized, i);
       if (!this.getBit(hash)) {
-        console.log(`[BloomFilter DEBUG] Hash ${i} failed for "${normalized}"`);
         return false;
       }
     }
 
-    console.log(`[BloomFilter DEBUG] All hashes passed for "${normalized}"`);
     return true;
   }
 
