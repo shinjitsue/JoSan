@@ -1,9 +1,9 @@
 import { StatisticsManager } from "./utils/StatisticsManager";
-import { FastLanguageDetector } from "./utils/FastLanguageDetector";
 import { SettingsManager } from "./filtering/SettingsManager";
-import { FilterEngine } from "./filtering/FilterEngine";
 import { ContentAIProxy } from "./filtering/ContentAIProxy";
 import { DOMProcessor } from "./filtering/DOMProcessor";
+import { FilterEngine } from "./filtering/FilterEngine";
+import type { WordListData } from "./utils/ProfanityLoader";
 
 interface FilterSettings {
   useAI: boolean;
@@ -11,10 +11,10 @@ interface FilterSettings {
   filterToxic: boolean;
 }
 
-interface RegexSet {
-  english: RegExp | null;
-  tagalog: RegExp | null;
-  bisaya: RegExp | null;
+interface WordListSet {
+  english: WordListData | null;
+  tagalog: WordListData | null;
+  bisaya: WordListData | null;
 }
 
 interface Language {
@@ -41,16 +41,27 @@ export class FilterProcessor {
     filterMild: false,
     filterToxic: true,
   };
-  private regexes: RegexSet = {
+  private wordLists: WordListSet = {
     english: null,
     tagalog: null,
     bisaya: null,
   };
+  private customWordList: WordListData | null = null;
   private currentPlatform = "";
   private enabledPlatforms: string[] = [];
 
+  // Performance monitoring
+  private performanceStats = {
+    bloomChecks: 0,
+    bloomTime: 0,
+    trieChecks: 0,
+    trieTime: 0,
+    aiRequests: 0,
+    totalProcessed: 0,
+  };
+
   constructor() {
-    console.log("[JoSan FilterProcessor] Optimized instance created");
+    console.log("[JoSan FilterProcessor] Enhanced Bloom+Trie instance created");
   }
 
   async loadSettings(): Promise<void> {
@@ -58,7 +69,8 @@ export class FilterProcessor {
       const settings = await this.settingsManager.loadSettings();
       this.isEnabled = settings.isEnabled;
       this.filterSettings = settings.filterSettings;
-      this.regexes = settings.regexes;
+      this.wordLists = settings.wordLists;
+      this.customWordList = settings.customWordList;
       this.currentPlatform = settings.currentPlatform;
       this.enabledPlatforms = settings.isPlatformEnabled
         ? [settings.currentPlatform]
@@ -86,6 +98,14 @@ export class FilterProcessor {
       this.enabledPlatforms = result.enabledPlatforms;
       this.isInitialized = true;
 
+      // Log memory usage
+      const memUsage = this.settingsManager.getMemoryUsage();
+      console.log(
+        `[JoSan] Total memory usage: ${(memUsage.totalBytes / 1024).toFixed(
+          1
+        )}KB`
+      );
+
       console.log(
         `[JoSan] AI enabled: ${this.filterSettings.useAI}, Filter mild: ${this.filterSettings.filterMild}, Filter toxic: ${this.filterSettings.filterToxic}`
       );
@@ -103,16 +123,22 @@ export class FilterProcessor {
   private async filterTextNode(textNode: Node): Promise<void> {
     try {
       if (!textNode.nodeValue) return;
+
       // Skip nodes already approved clean
       if (this.approvedNodes.has(textNode)) return;
+
       // Skip while analyzing placeholder
       if (textNode.nodeValue.startsWith("[Analyzing ")) return;
 
       const originalTextUntrimmed = textNode.nodeValue;
       const originalText = originalTextUntrimmed.trim();
+
       if (!FilterEngine.shouldProcessText(originalText)) return;
 
+      this.performanceStats.totalProcessed++;
+
       const textHash = this.hashText(originalText);
+
       // If we have seen this exact text and previously approved clean -> skip
       if (
         this.recentTextHashes.has(textHash) &&
@@ -121,27 +147,56 @@ export class FilterProcessor {
         return;
       }
 
-      const analysis = FilterEngine.analyzeText(originalText, this.regexes);
-      if (analysis.regexResult.matchCount === 0) return;
+      // Enhanced analysis with Bloom+Trie
+      const startTime = performance.now();
+      const analysis = FilterEngine.analyzeText(
+        originalText,
+        this.wordLists,
+        this.customWordList
+      );
 
-      // If AI disabled or not needed -> normal regex path
+      const analysisTime = performance.now() - startTime;
+      this.performanceStats.bloomChecks++;
+      this.performanceStats.bloomTime += analysisTime;
+
+      // If no matches found, approve node as clean
+      if (analysis.filterResult.matchCount === 0) {
+        this.approvedNodes.add(textNode);
+        this.recentTextHashes.add(textHash);
+        return;
+      }
+
+      console.log(
+        `[JoSan] Found ${
+          analysis.filterResult.matchCount
+        } matches in ${analysis.filterResult.detectedLanguages.join(
+          ", "
+        )} (${analysisTime.toFixed(2)}ms)`
+      );
+
+      // If AI disabled or not needed -> apply filtering directly
       if (!this.filterSettings.useAI || !analysis.needsAI) {
         this.domProcessor.applyRegexFilter(
           textNode,
-          analysis.regexResult,
+          {
+            filteredText: analysis.filterResult.filteredText,
+            matchCount: analysis.filterResult.matchCount,
+            detectedLanguages: analysis.filterResult.detectedLanguages,
+          },
           analysis.language
         );
         this.statsManager.incrementBlockedWords(
-          analysis.regexResult.matchCount
+          analysis.filterResult.matchCount
         );
         return;
       }
 
+      // AI processing needed
       await this.processWithAI(
         textNode,
         originalText,
         analysis.language,
-        analysis.regexResult.matchCount,
+        analysis.filterResult.matchCount,
         originalTextUntrimmed
       );
     } catch (error) {
@@ -153,7 +208,7 @@ export class FilterProcessor {
     textNode: Node,
     originalText: string,
     language: Language,
-    regexMatches: number,
+    matchCount: number,
     originalTextUntrimmed?: string
   ): Promise<void> {
     const fullOriginal = originalTextUntrimmed ?? originalText;
@@ -166,6 +221,7 @@ export class FilterProcessor {
       .toString(36)
       .slice(2, 6)}`;
     this.activeAiRequests.set(textNode, requestId);
+    this.performanceStats.aiRequests++;
 
     this.domProcessor.setPlaceholder(textNode, language);
 
@@ -174,7 +230,7 @@ export class FilterProcessor {
         textNode,
         originalText,
         language,
-        regexMatches
+        matchCount
       );
 
       // Ignore stale result (another newer request started meanwhile)
@@ -187,30 +243,37 @@ export class FilterProcessor {
         console.warn("[JoSan] AI processing failed:", aiResult?.reason);
 
         const isContextualSingle =
-          regexMatches === 1 &&
+          matchCount === 1 &&
           (language.code === "mixed" || language.confidence < 0.6) &&
           originalText.length > 40;
 
         if (isContextualSingle) {
           this.domProcessor.restoreOriginalText(textNode, fullOriginal);
-          // Mark as approved (clean by fallback) to prevent loops
           this.approvedNodes.add(textNode);
           this.recentTextHashes.add(this.hashText(originalText));
           return;
         }
 
-        const regexResult = FastLanguageDetector.applyMultiLangFilter(
+        // Fallback to Bloom+Trie filtering
+        const fallbackResult = FilterEngine.analyzeText(
           originalText,
-          {
-            en: this.regexes.english,
-            tl: this.regexes.tagalog,
-            bis: this.regexes.bisaya,
-          }
+          this.wordLists,
+          this.customWordList
         );
 
-        if (regexResult.matchCount > 0) {
-          this.domProcessor.applyRegexFilter(textNode, regexResult, language);
-          this.statsManager.incrementBlockedWords(regexResult.matchCount);
+        if (fallbackResult.filterResult.matchCount > 0) {
+          this.domProcessor.applyRegexFilter(
+            textNode,
+            {
+              filteredText: fallbackResult.filterResult.filteredText,
+              matchCount: fallbackResult.filterResult.matchCount,
+              detectedLanguages: fallbackResult.filterResult.detectedLanguages,
+            },
+            language
+          );
+          this.statsManager.incrementBlockedWords(
+            fallbackResult.filterResult.matchCount
+          );
         } else {
           this.domProcessor.restoreOriginalText(textNode, fullOriginal);
           this.approvedNodes.add(textNode);
@@ -250,6 +313,7 @@ export class FilterProcessor {
       }
     }
   }
+
   isFilterEnabled(): boolean {
     return this.isEnabled && this.isInitialized;
   }
@@ -259,15 +323,20 @@ export class FilterProcessor {
     if (!chrome.runtime?.id) return;
 
     console.log(
-      `[JoSan] Processing optimized page on ${this.currentPlatform}...`
+      `[JoSan] Processing enhanced page on ${this.currentPlatform}...`
     );
     this.statsManager.incrementPagesScanned();
 
+    const startTime = performance.now();
     await this.domProcessor.processPage(
       this.enabledPlatforms,
       this.currentPlatform,
       this.filterTextNode.bind(this)
     );
+    const processTime = performance.now() - startTime;
+
+    console.log(`[JoSan] Page processed in ${processTime.toFixed(2)}ms`);
+    this.logPerformanceStats();
   }
 
   async processNode(node: Node): Promise<void> {
@@ -284,12 +353,45 @@ export class FilterProcessor {
     if (this.approvedNodes.has(node)) return;
     this.domProcessor.invalidate(node);
   }
+
   getStats() {
     return this.statsManager.getStats();
+  }
+
+  private logPerformanceStats(): void {
+    const stats = this.performanceStats;
+    if (stats.totalProcessed === 0) return;
+
+    const avgBloomTime = stats.bloomTime / stats.bloomChecks;
+    const avgTrieTime =
+      stats.trieChecks > 0 ? stats.trieTime / stats.trieChecks : 0;
+
+    console.log(`[JoSan Performance] Processed ${stats.totalProcessed} nodes:`);
+    console.log(
+      `  Bloom checks: ${stats.bloomChecks} (${avgBloomTime.toFixed(2)}ms avg)`
+    );
+    console.log(
+      `  Trie checks: ${stats.trieChecks} (${avgTrieTime.toFixed(2)}ms avg)`
+    );
+    console.log(`  AI requests: ${stats.aiRequests}`);
+  }
+
+  getPerformanceStats() {
+    return { ...this.performanceStats };
   }
 
   cleanup(): void {
     this.domProcessor.cleanup();
     this.contentAIProxy.cleanup();
+
+    // Reset performance stats
+    this.performanceStats = {
+      bloomChecks: 0,
+      bloomTime: 0,
+      trieChecks: 0,
+      trieTime: 0,
+      aiRequests: 0,
+      totalProcessed: 0,
+    };
   }
 }

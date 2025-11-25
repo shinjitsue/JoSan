@@ -1,5 +1,5 @@
 import { PlatformDetector } from "../utils/PlatformDetector";
-import { ProfanityLoader } from "../utils/ProfanityLoader";
+import { ProfanityLoader, type WordListData } from "../utils/ProfanityLoader";
 
 interface FilterSettings {
   useAI: boolean;
@@ -7,24 +7,20 @@ interface FilterSettings {
   filterToxic: boolean;
 }
 
-interface RegexSet {
-  english: RegExp | null;
-  tagalog: RegExp | null;
-  bisaya: RegExp | null;
+interface WordListSet {
+  english: WordListData | null;
+  tagalog: WordListData | null;
+  bisaya: WordListData | null;
 }
 
 export class SettingsManager {
-  private profanitySets: Record<string, Set<string>> = {
-    en: new Set(),
-    tl: new Set(),
-    bis: new Set(),
-  };
-
-  private profanityRegexes: RegexSet = {
+  private wordLists: WordListSet = {
     english: null,
     tagalog: null,
     bisaya: null,
   };
+
+  private customWordList: WordListData | null = null;
 
   private filterSettings: FilterSettings = {
     useAI: false,
@@ -39,15 +35,39 @@ export class SettingsManager {
   async loadSettings(): Promise<{
     isEnabled: boolean;
     filterSettings: FilterSettings;
-    regexes: RegexSet;
+    wordLists: WordListSet;
+    customWordList: WordListData | null;
     currentPlatform: string;
     isPlatformEnabled: boolean;
   }> {
     try {
-      console.log("[JoSan] Loading optimized settings...");
+      console.log("[JoSan] Loading enhanced settings with Bloom+Trie...");
 
-      // Load profanity lists for all languages
-      await this.loadMultilingualWordLists();
+      // Load all language word lists concurrently
+      const [englishData, tagalogData, bisayaData] = await Promise.all([
+        ProfanityLoader.loadWordList("en", "en.txt"),
+        ProfanityLoader.loadWordList("tl", "tl.txt"),
+        ProfanityLoader.loadWordList("bis", "bis.txt"),
+      ]);
+
+      this.wordLists = {
+        english: englishData,
+        tagalog: tagalogData,
+        bisaya: bisayaData,
+      };
+
+      // Print memory usage stats
+      console.log("[JoSan] Memory usage:");
+      Object.values(this.wordLists).forEach((wordList) => {
+        if (wordList) {
+          const stats = ProfanityLoader.getStats(wordList);
+          console.log(
+            `  ${stats.language}: ${stats.wordCount} words, ${(
+              stats.totalMemoryBytes / 1024
+            ).toFixed(1)}KB`
+          );
+        }
+      });
 
       // Load settings from storage
       const result = await chrome.storage.local.get({
@@ -100,58 +120,30 @@ export class SettingsManager {
         this.isEnabled = false;
       }
 
-      // Add custom words
-      this.addCustomWords(result.customWords);
+      // Create custom word list
+      await this.updateCustomWords(result.customWords);
 
-      // Compile regexes
-      this.compileRegexes();
+      const totalWords =
+        Object.values(this.wordLists).reduce(
+          (sum, wordList) => sum + (wordList?.wordCount || 0),
+          0
+        ) + (this.customWordList?.wordCount || 0);
 
-      const totalWords = Object.values(this.profanitySets).reduce(
-        (sum, set) => sum + set.size,
-        0
-      );
       console.log(
-        `[JoSan] Loaded ${totalWords} total words across 3 languages`
+        `[JoSan] Loaded ${totalWords} total words across all languages`
       );
 
       return {
         isEnabled: this.isEnabled,
         filterSettings: this.filterSettings,
-        regexes: this.profanityRegexes,
+        wordLists: this.wordLists,
+        customWordList: this.customWordList,
         currentPlatform: this.currentPlatform,
         isPlatformEnabled,
       };
     } catch (error) {
       console.error("[JoSan] Failed to load settings:", error);
       throw error;
-    }
-  }
-
-  private async loadMultilingualWordLists(): Promise<void> {
-    const languages = [
-      { code: "en", file: "en.txt" },
-      { code: "tl", file: "tl.txt" },
-      { code: "bis", file: "bis.txt" },
-    ];
-
-    for (const lang of languages) {
-      try {
-        const response = await fetch(
-          chrome.runtime.getURL(`data/${lang.file}`)
-        );
-        if (response.ok) {
-          const text = await response.text();
-          const words = text
-            .split("\n")
-            .map((w) => w.trim().toLowerCase())
-            .filter((w) => w.length > 0);
-          this.profanitySets[lang.code as keyof typeof this.profanitySets] =
-            new Set(words);
-          console.log(`[JoSan] Loaded ${words.length} ${lang.code} words`);
-        }
-      } catch (error) {
-        console.error(`[JoSan] Failed to load ${lang.code} word list:`, error);
-      }
     }
   }
 
@@ -167,33 +159,48 @@ export class SettingsManager {
     }
   }
 
-  private addCustomWords(customWords: string[]): void {
+  async updateCustomWords(customWords: string[]): Promise<void> {
     const words = Array.isArray(customWords) ? customWords : [];
-    words.forEach((word: string) => {
-      if (typeof word === "string" && word.trim().length > 0) {
-        this.profanitySets.en.add(word.toLowerCase());
-      }
-    });
-  }
+    const validWords = words
+      .filter(
+        (word: string) => typeof word === "string" && word.trim().length > 0
+      )
+      .map((word: string) => word.toLowerCase().trim());
 
-  private compileRegexes(): void {
-    this.profanityRegexes.english = ProfanityLoader.compileRegex(
-      this.profanitySets.en
-    );
-    this.profanityRegexes.tagalog = ProfanityLoader.compileRegex(
-      this.profanitySets.tl
-    );
-    this.profanityRegexes.bisaya = ProfanityLoader.compileRegex(
-      this.profanitySets.bis
-    );
+    if (validWords.length > 0) {
+      this.customWordList = {
+        bloom: new (await import("../utils/BloomFilter")).BloomFilter(
+          validWords.length,
+          0.01
+        ),
+        trie: new (await import("../utils/TrieFilter")).TrieFilter(),
+        wordCount: validWords.length,
+        language: "custom",
+      };
+
+      validWords.forEach((word) => {
+        this.customWordList!.bloom.add(word);
+        this.customWordList!.trie.addWord(word, "custom");
+      });
+
+      console.log(
+        `[JoSan] Created custom word list with ${validWords.length} words`
+      );
+    } else {
+      this.customWordList = null;
+    }
   }
 
   getFilterSettings(): FilterSettings {
     return { ...this.filterSettings };
   }
 
-  getRegexes(): RegexSet {
-    return { ...this.profanityRegexes };
+  getWordLists(): WordListSet {
+    return { ...this.wordLists };
+  }
+
+  getCustomWordList(): WordListData | null {
+    return this.customWordList;
   }
 
   isFilterEnabled(): boolean {
@@ -207,5 +214,27 @@ export class SettingsManager {
   updateFilterState(enabled: boolean): void {
     this.isEnabled = enabled;
     console.log(`[JoSan] Filter state updated: ${enabled}`);
+  }
+
+  // Performance monitoring
+  getMemoryUsage(): { totalBytes: number; breakdown: Record<string, number> } {
+    const breakdown: Record<string, number> = {};
+    let totalBytes = 0;
+
+    Object.entries(this.wordLists).forEach(([lang, wordList]) => {
+      if (wordList) {
+        const stats = ProfanityLoader.getStats(wordList);
+        breakdown[lang] = stats.totalMemoryBytes;
+        totalBytes += stats.totalMemoryBytes;
+      }
+    });
+
+    if (this.customWordList) {
+      const stats = ProfanityLoader.getStats(this.customWordList);
+      breakdown.custom = stats.totalMemoryBytes;
+      totalBytes += stats.totalMemoryBytes;
+    }
+
+    return { totalBytes, breakdown };
   }
 }

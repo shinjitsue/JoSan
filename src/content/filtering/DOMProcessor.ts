@@ -9,6 +9,12 @@ interface Language {
   scores: Record<string, number>;
 }
 
+interface FilterResult {
+  filteredText: string;
+  matchCount: number;
+  detectedLanguages: string[];
+}
+
 interface AIProcessingResponse {
   id: string;
   action: "filter" | "keep" | "error";
@@ -41,7 +47,7 @@ export class DOMProcessor {
     textProcessor: (textNode: Node) => Promise<void>
   ): void {
     if (!enabledPlatforms.includes(currentPlatform)) return;
-    console.log(`[JoSan] Processing optimized page on ${currentPlatform}...`);
+    console.log(`[JoSan] Processing enhanced page on ${currentPlatform}...`);
     this.processFeedAreas(textProcessor);
   }
 
@@ -148,21 +154,18 @@ export class DOMProcessor {
     }
   }
 
+  // Updated to use new FilterResult interface
   applyRegexFilter(
     textNode: Node,
-    regexResult: {
-      filteredText: string;
-      matchCount: number;
-      detectedLanguages: string[];
-    },
+    filterResult: FilterResult,
     language: Language
   ): void {
-    textNode.nodeValue = regexResult.filteredText;
+    textNode.nodeValue = filterResult.filteredText;
     const langName = FastLanguageDetector.getLanguageName(language.code);
     console.log(
-      `[JoSan Regex] Blocked ${
-        regexResult.matchCount
-      } word(s) in ${langName} (${regexResult.detectedLanguages.join(", ")})`
+      `[JoSan Bloom+Trie] Blocked ${
+        filterResult.matchCount
+      } word(s) in ${langName} (${filterResult.detectedLanguages.join(", ")})`
     );
   }
 
