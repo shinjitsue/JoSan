@@ -156,10 +156,6 @@ export class TrieFilter {
 
         // Skip ahead to end of current match
         i = longestMatch.endIndex;
-
-        console.log(
-          `[JoSan Trie] Masked "${matchedWord}" → "${wordReplacement}" (${longestMatch.word.length} chars)`
-        );
       }
     }
 

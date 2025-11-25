@@ -13,7 +13,7 @@ export class UsageTracker {
   private static readonly STORAGE_KEY = "openaiUsageStats";
   // Updated for OpenAI Moderation API (these are generous estimates - check actual limits)
   private static readonly FREE_TIER_DAILY_LIMIT = 14400; // 14,400/day
-  private static readonly FREE_TIER_PER_MINUTE = 30; // 30/min
+  private static readonly FREE_TIER_PER_MINUTE = 150; // 150/min
 
   static async getStats(): Promise<UsageStats> {
     const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM format

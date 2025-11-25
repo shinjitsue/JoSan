@@ -35,7 +35,7 @@ export function useSettings() {
       requestsToday: 0,
       dailyLimit: 14400,
       requestsThisMinute: 0,
-      minuteLimit: 30,
+      minuteLimit: 150,
     },
   });
 
@@ -78,7 +78,7 @@ export function useSettings() {
             requestsToday: items.openaiUsageStats?.requestsToday || 0,
             dailyLimit: 14400,
             requestsThisMinute: items.openaiUsageStats?.requestsThisMinute || 0,
-            minuteLimit: 30,
+            minuteLimit: 150,
           },
         });
       }
