@@ -131,7 +131,7 @@ export class SettingsManager {
     const languages = [
       { code: "en", file: "en.txt" },
       { code: "tl", file: "tl.txt" },
-      { code: "ceb", file: "bis.txt" },
+      { code: "bis", file: "bis.txt" },
     ];
 
     for (const lang of languages) {
