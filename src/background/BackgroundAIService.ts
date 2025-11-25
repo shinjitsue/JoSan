@@ -70,7 +70,7 @@ export class BackgroundAIService {
   private static consecutiveFailures = 0;
   private static cooldownUntil = 0;
   private static readonly FAILURE_THRESHOLD = 5;
-  private static readonly COOLDOWN_MS = 30_000;
+  private static readonly COOLDOWN_MS = 5_000;
 
   static setApiKey(key: string): void {
     this.apiKey = key;
