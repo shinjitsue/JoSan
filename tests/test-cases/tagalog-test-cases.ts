@@ -1,15 +1,4 @@
-/**
- * Tagalog Test Cases - 100 Cases for Contextual Analysis
- *
- * 50 CLEAN cases - Text that looks problematic but is actually clean
- * 50 TOXIC cases - Toxic content including obfuscated profanity
- */
-
 import type { TestCase } from "./types";
-
-// =============================================================================
-// CLEAN TEST CASES (50 cases) - Should be classified as "clean"
-// =============================================================================
 
 /**
  * Scunthorpe-like Problem Cases (1-8)
@@ -425,7 +414,7 @@ export const tagalogReportingCases: TestCase[] = [
 ];
 
 // =============================================================================
-// TOXIC TEST CASES (50 cases) - Should be classified as "toxic"
+// TOXIC TEST CASES (50 cases)
 // =============================================================================
 
 /**

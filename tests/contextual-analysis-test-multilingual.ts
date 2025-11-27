@@ -14,7 +14,6 @@
  * 4. Trie Filter precise matching
  * 5. REAL AI Contextual Analysis (omni-moderation-latest + gpt-4o-mini)
  *
- * ⚠️ WARNING: This test makes real API calls and will consume OpenAI credits!
  *
  * Setup:
  * 1. Copy .env.example to .env
