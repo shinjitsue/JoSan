@@ -1,0 +1,653 @@
+══════════════════════════════════════════════════════════════════════
+🔤 JoSan REGEX-ONLY Multilingual Test (No AI)
+   Languages: English, Tagalog, Bisaya
+══════════════════════════════════════════════════════════════════════
+
+📋 This test uses ONLY Bloom Filter + Trie Filter + Text Normalization
+   NO AI/OpenAI calls are made.
+
+   Total tests: 300
+   - English: 100
+   - Tagalog: 100
+   - Bisaya: 100
+
+
+──────────────────────────────────────────────────
+📚 Testing ENGLISH cases
+──────────────────────────────────────────────────
+[1/300] #1 (english)... ✓ Expected: clean, Got: clean [OBF]
+[2/300] #2 (english)... ✓ Expected: clean, Got: clean
+[3/300] #3 (english)... ✓ Expected: clean, Got: clean
+[4/300] #4 (english)... ✓ Expected: clean, Got: clean [OBF]
+[5/300] #5 (english)... ✓ Expected: clean, Got: clean [OBF]
+[6/300] #6 (english)... ✓ Expected: clean, Got: clean [OBF]
+[7/300] #7 (english)... ✓ Expected: clean, Got: clean
+[8/300] #8 (english)... ✓ Expected: clean, Got: clean [OBF]
+[9/300] #9 (english)... ✓ Expected: clean, Got: clean
+[10/300] #10 (english)... ✓ Expected: clean, Got: clean [OBF]
+[11/300] #11 (english)... ✓ Expected: clean, Got: clean
+[12/300] #12 (english)... ✓ Expected: clean, Got: clean [OBF]
+[13/300] #13 (english)... ✓ Expected: clean, Got: clean
+[14/300] #14 (english)... ✓ Expected: clean, Got: clean
+[15/300] #15 (english)... ✓ Expected: clean, Got: clean
+[16/300] #16 (english)... ✓ Expected: clean, Got: clean
+[17/300] #17 (english)... ✓ Expected: clean, Got: clean [OBF]
+[18/300] #18 (english)... ✓ Expected: clean, Got: clean [OBF]
+[19/300] #19 (english)... ✓ Expected: clean, Got: clean
+[20/300] #20 (english)... ✗ Expected: clean, Got: toxic [OBF] (2 matches)
+      Text: "The content filter detected the word 'shit' in 42 posts"
+      Category: reporting
+[21/300] #21 (english)... ✓ Expected: clean, Got: clean
+[22/300] #22 (english)... ✓ Expected: clean, Got: clean
+[23/300] #23 (english)... ✓ Expected: clean, Got: clean [OBF]
+[24/300] #24 (english)... ✓ Expected: clean, Got: clean
+[25/300] #25 (english)... ✓ Expected: clean, Got: clean
+[26/300] #26 (english)... ✓ Expected: clean, Got: clean
+[27/300] #27 (english)... ✓ Expected: clean, Got: clean [OBF]
+[28/300] #28 (english)... ✓ Expected: clean, Got: clean
+[29/300] #29 (english)... ✓ Expected: clean, Got: clean
+[30/300] #30 (english)... ✓ Expected: clean, Got: clean
+[31/300] #31 (english)... ✓ Expected: clean, Got: clean
+[32/300] #32 (english)... ✓ Expected: clean, Got: clean [OBF]
+[33/300] #33 (english)... ✓ Expected: clean, Got: clean [OBF]
+[34/300] #34 (english)... ✓ Expected: clean, Got: clean
+[35/300] #35 (english)... ✗ Expected: clean, Got: mild (1 matches)
+      Text: "The spotted dick is a traditional British dessert"
+      Category: cooking
+[36/300] #36 (english)... ✓ Expected: clean, Got: clean [OBF]
+[37/300] #37 (english)... ✓ Expected: clean, Got: clean
+[38/300] #38 (english)... ✓ Expected: clean, Got: clean
+[39/300] #39 (english)... ✓ Expected: clean, Got: clean [OBF]
+[40/300] #40 (english)... ✓ Expected: clean, Got: clean [OBF]
+[41/300] #41 (english)... ✓ Expected: clean, Got: clean
+[42/300] #42 (english)... ✓ Expected: clean, Got: clean
+[43/300] #43 (english)... ✓ Expected: clean, Got: clean [OBF]
+[44/300] #44 (english)... ✓ Expected: clean, Got: clean [OBF]
+[45/300] #45 (english)... ✓ Expected: clean, Got: clean
+[46/300] #46 (english)... ✓ Expected: clean, Got: clean
+[47/300] #47 (english)... ✓ Expected: clean, Got: clean
+[48/300] #48 (english)... ✓ Expected: clean, Got: clean
+[49/300] #49 (english)... ✓ Expected: clean, Got: clean
+[50/300] #50 (english)... ✓ Expected: clean, Got: clean
+[51/300] #51 (english)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[52/300] #52 (english)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[53/300] #53 (english)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[54/300] #54 (english)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[55/300] #55 (english)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[56/300] #56 (english)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[57/300] #57 (english)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[58/300] #58 (english)... ✓ Expected: toxic, Got: toxic [OBF] (3 matches)
+[59/300] #59 (english)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[60/300] #60 (english)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[61/300] #61 (english)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[62/300] #62 (english)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[63/300] #63 (english)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[64/300] #64 (english)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[65/300] #65 (english)... ✗ Expected: toxic, Got: clean
+      Text: "What the fck is this garbage content"
+      Category: vowel_removal
+[66/300] #66 (english)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "You're a complete btch and everyone sees it"
+      Category: vowel_removal
+[67/300] #67 (english)... ✗ Expected: toxic, Got: clean
+      Text: "This is absolute sht, what were they thinking"
+      Category: vowel_removal
+[68/300] #68 (english)... ✗ Expected: toxic, Got: clean
+      Text: "Stfu nobody wants to hear your opinion"
+      Category: vowel_removal
+[69/300] #69 (english)... ✗ Expected: toxic, Got: clean
+      Text: "Gtfo of here with that nonsense"
+      Category: vowel_removal
+[70/300] #70 (english)... ✗ Expected: toxic, Got: clean
+      Text: "You're such a dck, always causing problems"
+      Category: vowel_removal
+[71/300] #71 (english)... ✓ Expected: toxic, Got: toxic [OBF] (5 matches)
+[72/300] #72 (english)... ✓ Expected: toxic, Got: toxic [OBF] (3 matches)
+[73/300] #73 (english)... ✓ Expected: toxic, Got: toxic [OBF] (3 matches)
+[74/300] #74 (english)... ✓ Expected: toxic, Got: mild (1 matches)
+[75/300] #75 (english)... ✓ Expected: toxic, Got: mild (1 matches)
+[76/300] #76 (english)... ✗ Expected: toxic, Got: clean
+      Text: "Kill yourself, the world would be better without you"
+      Category: threat
+[77/300] #77 (english)... ✗ Expected: toxic, Got: clean
+      Text: "I hope you die in your sleep tonight"
+      Category: threat
+[78/300] #78 (english)... ✓ Expected: toxic, Got: mild (1 matches)
+[79/300] #79 (english)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "I'm going to find where you live and end you"
+      Category: threat
+[80/300] #80 (english)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "You deserve to suffer for what you said"
+      Category: threat
+[81/300] #81 (english)... ✗ Expected: toxic, Got: clean
+      Text: "Go back to where you came from, you don't belong here"
+      Category: hate
+[82/300] #82 (english)... ✗ Expected: toxic, Got: clean
+      Text: "Your kind shouldn't be allowed in this country"
+      Category: hate
+[83/300] #83 (english)... ✗ Expected: toxic, Got: clean
+      Text: "People like you are the reason society is failing"
+      Category: hate
+[84/300] #84 (english)... ✗ Expected: toxic, Got: clean
+      Text: "That's so gay, imagine actually liking that"
+      Category: hate
+[85/300] #85 (english)... ✗ Expected: toxic, Got: clean
+      Text: "Women belong in the kitchen, not in leadership"
+      Category: hate
+[86/300] #86 (english)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Nobody likes you, everyone talks behind your back"
+      Category: bullying
+[87/300] #87 (english)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[88/300] #88 (english)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Your existence is a mistake and everyone knows it"
+      Category: bullying
+[89/300] #89 (english)... ✗ Expected: toxic, Got: clean
+      Text: "Just delete your account, nobody wants you here"
+      Category: bullying
+[90/300] #90 (english)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "I'm going to expose all your secrets to everyone"
+      Category: bullying
+[91/300] #91 (english)... ✓ Expected: toxic, Got: mild (1 matches)
+[92/300] #92 (english)... ✓ Expected: toxic, Got: mild (1 matches)
+[93/300] #93 (english)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "I'm just saying, you should probably shut up forever"
+      Category: subtle
+[94/300] #94 (english)... ✗ Expected: toxic, Got: clean
+      Text: "No offense but your face makes me want to puke"
+      Category: subtle
+[95/300] #95 (english)... ✓ Expected: toxic, Got: mild (1 matches)
+[96/300] #96 (english)... ✓ Expected: toxic, Got: toxic [OBF] (4 matches)
+[97/300] #97 (english)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[98/300] #98 (english)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[99/300] #99 (english)... ✓ Expected: toxic, Got: mild (1 matches)
+[100/300] #100 (english)... ✓ Expected: toxic, Got: toxic [OBF] (4 matches)
+
+──────────────────────────────────────────────────
+📚 Testing TAGALOG cases
+──────────────────────────────────────────────────
+[101/300] #1 (tagalog)... ✓ Expected: clean, Got: clean
+[102/300] #2 (tagalog)... ✓ Expected: clean, Got: clean
+[103/300] #3 (tagalog)... ✗ Expected: clean, Got: mild (1 matches)
+      Text: "Ang tangang-tangang hayop na ito ay masarap kainin"
+      Category: scunthorpe
+[104/300] #4 (tagalog)... ✓ Expected: clean, Got: clean
+[105/300] #5 (tagalog)... ✓ Expected: clean, Got: clean
+[106/300] #6 (tagalog)... ✓ Expected: clean, Got: clean
+[107/300] #7 (tagalog)... ✓ Expected: clean, Got: clean
+[108/300] #8 (tagalog)... ✓ Expected: clean, Got: clean
+[109/300] #9 (tagalog)... ✓ Expected: clean, Got: clean
+[110/300] #10 (tagalog)... ✓ Expected: clean, Got: clean
+[111/300] #11 (tagalog)... ✓ Expected: clean, Got: clean
+[112/300] #12 (tagalog)... ✓ Expected: clean, Got: clean
+[113/300] #13 (tagalog)... ✓ Expected: clean, Got: clean
+[114/300] #14 (tagalog)... ✓ Expected: clean, Got: clean
+[115/300] #15 (tagalog)... ✓ Expected: clean, Got: clean
+[116/300] #16 (tagalog)... ✓ Expected: clean, Got: clean
+[117/300] #17 (tagalog)... ✓ Expected: clean, Got: clean
+[118/300] #18 (tagalog)... ✓ Expected: clean, Got: clean
+[119/300] #19 (tagalog)... ✓ Expected: clean, Got: clean [OBF]
+[120/300] #20 (tagalog)... ✓ Expected: clean, Got: clean
+[121/300] #21 (tagalog)... ✓ Expected: clean, Got: clean
+[122/300] #22 (tagalog)... ✓ Expected: clean, Got: clean
+[123/300] #23 (tagalog)... ✓ Expected: clean, Got: clean [OBF]
+[124/300] #24 (tagalog)... ✓ Expected: clean, Got: clean
+[125/300] #25 (tagalog)... ✓ Expected: clean, Got: clean [OBF]
+[126/300] #26 (tagalog)... ✓ Expected: clean, Got: clean [OBF]
+[127/300] #27 (tagalog)... ✓ Expected: clean, Got: clean
+[128/300] #28 (tagalog)... ✓ Expected: clean, Got: clean
+[129/300] #29 (tagalog)... ✓ Expected: clean, Got: clean
+[130/300] #30 (tagalog)... ✓ Expected: clean, Got: clean
+[131/300] #31 (tagalog)... ✓ Expected: clean, Got: clean
+[132/300] #32 (tagalog)... ✓ Expected: clean, Got: clean
+[133/300] #33 (tagalog)... ✓ Expected: clean, Got: clean [OBF]
+[134/300] #34 (tagalog)... ✓ Expected: clean, Got: clean [OBF]
+[135/300] #35 (tagalog)... ✓ Expected: clean, Got: clean [OBF]
+[136/300] #36 (tagalog)... ✓ Expected: clean, Got: clean [OBF]
+[137/300] #37 (tagalog)... ✓ Expected: clean, Got: clean [OBF]
+[138/300] #38 (tagalog)... ✓ Expected: clean, Got: clean [OBF]
+[139/300] #39 (tagalog)... ✓ Expected: clean, Got: clean
+[140/300] #40 (tagalog)... ✓ Expected: clean, Got: clean [OBF]
+[141/300] #41 (tagalog)... ✓ Expected: clean, Got: clean
+[142/300] #42 (tagalog)... ✓ Expected: clean, Got: clean
+[143/300] #43 (tagalog)... ✓ Expected: clean, Got: clean
+[144/300] #44 (tagalog)... ✓ Expected: clean, Got: clean [OBF]
+[145/300] #45 (tagalog)... ✓ Expected: clean, Got: clean [OBF]
+[146/300] #46 (tagalog)... ✓ Expected: clean, Got: clean
+[147/300] #47 (tagalog)... ✓ Expected: clean, Got: clean
+[148/300] #48 (tagalog)... ✗ Expected: clean, Got: toxic [OBF] (2 matches)
+      Text: "Ang filter ay nakakita ng salitang 'gago' sa 50 posts"
+      Category: reporting
+[149/300] #49 (tagalog)... ✓ Expected: clean, Got: clean
+[150/300] #50 (tagalog)... ✓ Expected: clean, Got: clean
+[151/300] #51 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (5 matches)
+[152/300] #52 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[153/300] #53 (tagalog)... ✓ Expected: toxic, Got: mild (1 matches)
+[154/300] #54 (tagalog)... ✓ Expected: toxic, Got: mild (1 matches)
+[155/300] #55 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[156/300] #56 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[157/300] #57 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[158/300] #58 (tagalog)... ✗ Expected: toxic, Got: clean
+      Text: "Walang hiya ka, paano mo nagawa yan?"
+      Category: direct
+[159/300] #59 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (3 matches)
+[160/300] #60 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[161/300] #61 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[162/300] #62 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (3 matches)
+[163/300] #63 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[164/300] #64 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[165/300] #65 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[166/300] #66 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[167/300] #67 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[168/300] #68 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[169/300] #69 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[170/300] #70 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[171/300] #71 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[172/300] #72 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[173/300] #73 (tagalog)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "P.I. ka talaga, nakakabwisit ka!"
+      Category: acronym
+[174/300] #74 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[175/300] #75 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[176/300] #76 (tagalog)... ✓ Expected: toxic, Got: toxic [OBF] (3 matches)
+[177/300] #77 (tagalog)... ✗ Expected: toxic, Got: clean
+      Text: "Patayin mo na lang sarili mo, walang magmamahal sayo"
+      Category: threat
+[178/300] #78 (tagalog)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Sana mamatay ka sa sakit mo, you deserve it!"
+      Category: threat
+[179/300] #79 (tagalog)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Hahanapin kita at sasaktan kita, tandaan mo yan!"
+      Category: threat
+[180/300] #80 (tagalog)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Dapat nahulog ka sa hagdan at namatay ka na!"
+      Category: threat
+[181/300] #81 (tagalog)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Bubugbugin kita pag nakita kita, maghintay ka!"
+      Category: threat
+[182/300] #82 (tagalog)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Ipapabaril kita sa mga kakilala ko, ingat ka!"
+      Category: threat
+[183/300] #83 (tagalog)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Bakit kayo dito? Bumalik na kayo sa probinsya nyo!"
+      Category: hate
+[184/300] #84 (tagalog)... ✗ Expected: toxic, Got: clean
+      Text: "Ang mga mahihirap dapat hindi pinapayagang bumoto"
+      Category: hate
+[185/300] #85 (tagalog)... ✗ Expected: toxic, Got: clean
+      Text: "Ang mga bakla at tomboy ay abnormal at dapat ayusin"
+      Category: hate
+[186/300] #86 (tagalog)... ✗ Expected: toxic, Got: clean
+      Text: "Mga babae dapat sa kusina lang, hindi sa trabaho"
+      Category: hate
+[187/300] #87 (tagalog)... ✗ Expected: toxic, Got: clean
+      Text: "Ang mga taga-ibang bansa ay dapat ipabalik sa kanila"
+      Category: hate
+[188/300] #88 (tagalog)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Mga Muslim terrorist lahat, dapat bantayan sila!"
+      Category: hate
+[189/300] #89 (tagalog)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Napaka pangit mo, parang patay na daga ang itsura mo!"
+      Category: bullying
+[190/300] #90 (tagalog)... ✗ Expected: toxic, Got: clean
+      Text: "Walang nagmamahal sayo, kaya mag-isa ka palagi"
+      Category: bullying
+[191/300] #91 (tagalog)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Dapat hindi ka na ipinanganak, pagkakamali ka lang!"
+      Category: bullying
+[192/300] #92 (tagalog)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Delete mo na account mo, walang gusto sa opinyon mo!"
+      Category: bullying
+[193/300] #93 (tagalog)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Ang taba mo naman, kain ka na naman ng kain!"
+      Category: bullying
+[194/300] #94 (tagalog)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Ang dumi ng bahay nyo, kasing dumi ng ugali mo!"
+      Category: bullying
+[195/300] #95 (tagalog)... ✓ Expected: toxic, Got: mild (1 matches)
+[196/300] #96 (tagalog)... ✓ Expected: toxic, Got: mild (1 matches)
+[197/300] #97 (tagalog)... ✗ Expected: toxic, Got: clean
+      Text: "No offense pero ang pangit ng style mo"
+      Category: subtle
+[198/300] #98 (tagalog)... ✗ Expected: toxic, Got: clean
+      Text: "Para sa ikabubuti mo, tigilan mo na ang pagmamagaling mo"
+      Category: subtle
+[199/300] #99 (tagalog)... ✗ Expected: toxic, Got: clean
+      Text: "Sa totoo lang, wala kang silbi sa mundo"
+      Category: subtle
+[200/300] #100 (tagalog)... ✗ Expected: toxic, Got: clean
+      Text: "Kaibigan, ang pangit ng mukha mo at ugali mo"
+      Category: subtle
+
+──────────────────────────────────────────────────
+📚 Testing BISAYA cases
+──────────────────────────────────────────────────
+[201/300] #1 (bisaya)... ✓ Expected: clean, Got: clean
+[202/300] #2 (bisaya)... ✓ Expected: clean, Got: clean
+[203/300] #3 (bisaya)... ✓ Expected: clean, Got: clean
+[204/300] #4 (bisaya)... ✓ Expected: clean, Got: clean
+[205/300] #5 (bisaya)... ✓ Expected: clean, Got: clean
+[206/300] #6 (bisaya)... ✓ Expected: clean, Got: clean [OBF]
+[207/300] #7 (bisaya)... ✓ Expected: clean, Got: clean
+[208/300] #8 (bisaya)... ✓ Expected: clean, Got: clean
+[209/300] #9 (bisaya)... ✓ Expected: clean, Got: clean
+[210/300] #10 (bisaya)... ✓ Expected: clean, Got: clean
+[211/300] #11 (bisaya)... ✓ Expected: clean, Got: clean
+[212/300] #12 (bisaya)... ✓ Expected: clean, Got: clean
+[213/300] #13 (bisaya)... ✓ Expected: clean, Got: clean
+[214/300] #14 (bisaya)... ✓ Expected: clean, Got: clean
+[215/300] #15 (bisaya)... ✓ Expected: clean, Got: clean
+[216/300] #16 (bisaya)... ✓ Expected: clean, Got: clean
+[217/300] #17 (bisaya)... ✓ Expected: clean, Got: clean
+[218/300] #18 (bisaya)... ✓ Expected: clean, Got: clean
+[219/300] #19 (bisaya)... ✓ Expected: clean, Got: clean [OBF]
+[220/300] #20 (bisaya)... ✓ Expected: clean, Got: clean
+[221/300] #21 (bisaya)... ✓ Expected: clean, Got: clean
+[222/300] #22 (bisaya)... ✓ Expected: clean, Got: clean
+[223/300] #23 (bisaya)... ✓ Expected: clean, Got: clean [OBF]
+[224/300] #24 (bisaya)... ✓ Expected: clean, Got: clean
+[225/300] #25 (bisaya)... ✓ Expected: clean, Got: clean [OBF]
+[226/300] #26 (bisaya)... ✓ Expected: clean, Got: clean [OBF]
+[227/300] #27 (bisaya)... ✓ Expected: clean, Got: clean
+[228/300] #28 (bisaya)... ✓ Expected: clean, Got: clean
+[229/300] #29 (bisaya)... ✓ Expected: clean, Got: clean
+[230/300] #30 (bisaya)... ✓ Expected: clean, Got: clean
+[231/300] #31 (bisaya)... ✓ Expected: clean, Got: clean
+[232/300] #32 (bisaya)... ✓ Expected: clean, Got: clean
+[233/300] #33 (bisaya)... ✗ Expected: clean, Got: toxic [OBF] (2 matches)
+      Text: "Samok kaayo ning sitwasyon nga ni!"
+      Category: frustration
+[234/300] #34 (bisaya)... ✗ Expected: clean, Got: toxic [OBF] (4 matches)
+      Text: "Kapoy na kaayo ko, lisod kaayo ni!"
+      Category: frustration
+[235/300] #35 (bisaya)... ✓ Expected: clean, Got: clean [OBF]
+[236/300] #36 (bisaya)... ✗ Expected: clean, Got: toxic [OBF] (2 matches)
+      Text: "Di na nako makaya, lisod kaayo sa kinabuhi!"
+      Category: frustration
+[237/300] #37 (bisaya)... ✓ Expected: clean, Got: clean [OBF]
+[238/300] #38 (bisaya)... ✓ Expected: clean, Got: clean [OBF]
+[239/300] #39 (bisaya)... ✓ Expected: clean, Got: clean
+[240/300] #40 (bisaya)... ✓ Expected: clean, Got: clean [OBF]
+[241/300] #41 (bisaya)... ✓ Expected: clean, Got: clean
+[242/300] #42 (bisaya)... ✓ Expected: clean, Got: clean
+[243/300] #43 (bisaya)... ✓ Expected: clean, Got: clean
+[244/300] #44 (bisaya)... ✓ Expected: clean, Got: clean [OBF]
+[245/300] #45 (bisaya)... ✓ Expected: clean, Got: clean [OBF]
+[246/300] #46 (bisaya)... ✓ Expected: clean, Got: clean
+[247/300] #47 (bisaya)... ✓ Expected: clean, Got: clean
+[248/300] #48 (bisaya)... ✗ Expected: clean, Got: toxic [OBF] (2 matches)
+      Text: "Ang filter nakakita sa pulong 'yawa' sa 50 ka posts"
+      Category: reporting
+[249/300] #49 (bisaya)... ✓ Expected: clean, Got: clean
+[250/300] #50 (bisaya)... ✓ Expected: clean, Got: clean
+[251/300] #51 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (4 matches)
+[252/300] #52 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[253/300] #53 (bisaya)... ✓ Expected: toxic, Got: mild (1 matches)
+[254/300] #54 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[255/300] #55 (bisaya)... ✓ Expected: toxic, Got: mild (1 matches)
+[256/300] #56 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[257/300] #57 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (3 matches)
+[258/300] #58 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[259/300] #59 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[260/300] #60 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[261/300] #61 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[262/300] #62 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[263/300] #63 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[264/300] #64 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[265/300] #65 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (2 matches)
+[266/300] #66 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[267/300] #67 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (3 matches)
+[268/300] #68 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (3 matches)
+[269/300] #69 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[270/300] #70 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[271/300] #71 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[272/300] #72 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (1 matches)
+[273/300] #73 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (6 matches)
+[274/300] #74 (bisaya)... ✓ Expected: toxic, Got: toxic (2 matches)
+[275/300] #75 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (4 matches)
+[276/300] #76 (bisaya)... ✓ Expected: toxic, Got: toxic [OBF] (6 matches)
+[277/300] #77 (bisaya)... ✗ Expected: toxic, Got: clean
+      Text: "Patya nalang imong kaugalingon, walay magmahal nimo"
+      Category: threat
+[278/300] #78 (bisaya)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Unta mamatay ka sa imong sakit, deserve nimo na!"
+      Category: threat
+[279/300] #79 (bisaya)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Pangitaon tika ug sakiton tika, hinumdomi na!"
+      Category: threat
+[280/300] #80 (bisaya)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Unta nahulog ka sa hagdan ug namatay ka na!"
+      Category: threat
+[281/300] #81 (bisaya)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Bunalan tika inig kita nato, hulat lang!"
+      Category: threat
+[282/300] #82 (bisaya)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Ipapusil tika sa akong mga kaila, pag-amping ka!"
+      Category: threat
+[283/300] #83 (bisaya)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Ngano naa mo diri? Balik na mo sa inyong probinsya!"
+      Category: hate
+[284/300] #84 (bisaya)... ✗ Expected: toxic, Got: clean
+      Text: "Ang mga pobre dili dapat tugotan nga mobotar"
+      Category: hate
+[285/300] #85 (bisaya)... ✗ Expected: toxic, Got: clean
+      Text: "Ang mga bayot ug tomboy abnormal ug kinahanglan ayohon"
+      Category: hate
+[286/300] #86 (bisaya)... ✗ Expected: toxic, Got: clean
+      Text: "Mga babaye dapat sa kusina ra, dili sa trabaho"
+      Category: hate
+[287/300] #87 (bisaya)... ✗ Expected: toxic, Got: clean
+      Text: "Ang mga taga-laing nasud kinahanglan ipabalik sa ila"
+      Category: hate
+[288/300] #88 (bisaya)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Mga Muslim terorista tanan, kinahanglan bantayan sila!"
+      Category: hate
+[289/300] #89 (bisaya)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Ka pangit nimo, sama sa patay nga ilaga imong itsura!"
+      Category: bullying
+[290/300] #90 (bisaya)... ✗ Expected: toxic, Got: clean
+      Text: "Walay nagmahal nimo, maoy ra ka kanunay"
+      Category: bullying
+[291/300] #91 (bisaya)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Dapat wala ka gipanganak, sayop ka lang!"
+      Category: bullying
+[292/300] #92 (bisaya)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Delete na imong account, walay gusto sa imong opinyon!"
+      Category: bullying
+[293/300] #93 (bisaya)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Ka tambok nimo, kaon napud ka og kaon!"
+      Category: bullying
+[294/300] #94 (bisaya)... ✗ Expected: toxic, Got: clean [OBF]
+      Text: "Ka hugaw sa inyong balay, sama ka hugaw sa imong batasan!"
+      Category: bullying
+[295/300] #95 (bisaya)... ✓ Expected: toxic, Got: mild (1 matches)
+[296/300] #96 (bisaya)... ✓ Expected: toxic, Got: mild (1 matches)
+[297/300] #97 (bisaya)... ✓ Expected: toxic, Got: mild (1 matches)
+[298/300] #98 (bisaya)... ✗ Expected: toxic, Got: clean
+      Text: "Para sa imong kaayohan, undanga na ang imong pagpangita og a..."
+      Category: subtle
+[299/300] #99 (bisaya)... ✗ Expected: toxic, Got: clean
+      Text: "Sa tinuod lang, walay pulos ka sa kalibutan"
+      Category: subtle
+[300/300] #100 (bisaya)... ✗ Expected: toxic, Got: clean
+      Text: "Higala, ka pangit sa imong nawong ug batasan"
+      Category: subtle
+
+════════════════════════════════════════════════════════════════════════════════
+📊 COMPREHENSIVE TEST SUMMARY - REGEX-ONLY (NO AI)
+════════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           OVERALL STATISTICS                                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  Total Tests:          300        │  Correct Predictions:  226        │
+│  Overall Accuracy:     75.33      % │  Total API Calls:      0           │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          CONFUSION MATRIX (Toxic vs Non-Toxic)             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                              Predicted                                      │
+│                        Toxic          Non-Toxic                            │
+│              ┌──────────────────┬──────────────────┐                       │
+│    Actual    │  TP: 84         │  FN: 66       │  Toxic               │
+│              ├──────────────────┼──────────────────┤                       │
+│              │  FP: 8          │  TN: 142      │  Non-Toxic           │
+│              └──────────────────┴──────────────────┘                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           CLASSIFICATION METRICS                           │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  Precision:            91.30      %  (TP / (TP + FP))                         │
+│  Recall (Sensitivity): 56.00      %  (TP / (TP + FN))                         │
+│  Specificity:          94.67      %  (TN / (TN + FP))                         │
+│  F1 Score:             69.42      %  (2 * P * R / (P + R))                     │
+│  Balanced Accuracy:    75.33      %  ((Recall + Specificity) / 2)            │
+│  MCC:                  0.5494         (Matthews Correlation Coefficient)         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            PER-CLASS ACCURACY                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  Clean Accuracy:       94.67      %  █████████                      │
+│  Toxic Accuracy:       56.00      %  ██████                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           LATENCY STATISTICS                               │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  Total Time:           0.07       s                                         │
+│  Average Latency:      0.221      ms                                        │
+│  Min Latency:          0.056      ms                                        │
+│  Max Latency:          3.267      ms                                        │
+│  Median Latency:       0.119      ms                                        │
+│  95th Percentile:      0.516      ms                                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+════════════════════════════════════════════════════════════════════════════════
+📌 ACCURACY BY LANGUAGE
+════════════════════════════════════════════════════════════════════════════════
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ Language     │ Correct/Total │ Accuracy │ Precision │ Recall │ F1 Score     │
+├──────────────────────────────────────────────────────────────────────────────┤
+│ english      │ 77/100       │ 77.0     % │ 93.5      % │ 58.0   % │ 71.6         % │
+│ tagalog      │ 74/100       │ 74.0     % │ 92.9      % │ 52.0   % │ 66.7         % │
+│ bisaya       │ 75/100       │ 75.0     % │ 87.9      % │ 58.0   % │ 69.9         % │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+📊 DETAILED BREAKDOWN BY LANGUAGE:
+────────────────────────────────────────────────────────────────────────────────
+
+  🌐 ENGLISH
+  ────────────────────────────────────────
+     Overall:    77/100 (77.0%)
+     Clean:      48/50 (96.0%)
+     Toxic:      29/50 (58.0%)
+     Precision:  93.55%
+     Recall:     58.00%
+     F1 Score:   71.60%
+     Avg Latency: 0.267ms
+     Confusion Matrix: TP=29 FP=2 TN=48 FN=21
+
+  🌐 TAGALOG
+  ────────────────────────────────────────
+     Overall:    74/100 (74.0%)
+     Clean:      48/50 (96.0%)
+     Toxic:      26/50 (52.0%)
+     Precision:  92.86%
+     Recall:     52.00%
+     F1 Score:   66.67%
+     Avg Latency: 0.246ms
+     Confusion Matrix: TP=26 FP=2 TN=48 FN=24
+
+  🌐 BISAYA
+  ────────────────────────────────────────
+     Overall:    75/100 (75.0%)
+     Clean:      46/50 (92.0%)
+     Toxic:      29/50 (58.0%)
+     Precision:  87.88%
+     Recall:     58.00%
+     F1 Score:   69.88%
+     Avg Latency: 0.148ms
+     Confusion Matrix: TP=29 FP=4 TN=46 FN=21
+
+════════════════════════════════════════════════════════════════════════════════
+📂 CATEGORY BREAKDOWN
+════════════════════════════════════════════════════════════════════════════════
+
+┌────────────────────────────┬─────────────┬──────────┬────────────────────┐
+│ Category                   │ Correct     │ Accuracy │ Visual             │
+├────────────────────────────┼─────────────┼──────────┼────────────────────┤
+│ academic                   │ 24/24      │ 100      % │ ██████████         │
+│ medical                    │ 16/16      │ 100      % │ ██████████         │
+│ literary                   │ 3/3        │ 100      % │ ██████████         │
+│ gaming                     │ 8/8        │ 100      % │ ██████████         │
+│ sports                     │ 8/8        │ 100      % │ ██████████         │
+│ technical                  │ 3/3        │ 100      % │ ██████████         │
+│ criticism                  │ 11/11      │ 100      % │ ██████████         │
+│ homophones                 │ 5/5        │ 100      % │ ██████████         │
+│ leet_speak                 │ 24/24      │ 100      % │ ██████████         │
+│ spaced                     │ 18/18      │ 100      % │ ██████████         │
+│ mixed                      │ 5/5        │ 100      % │ ██████████         │
+│ religious                  │ 8/8        │ 100      % │ ██████████         │
+│ compound                   │ 4/4        │ 100      % │ ██████████         │
+│ scunthorpe                 │ 25/26      │ 96       % │ ██████████         │
+│ direct                     │ 20/21      │ 95       % │ ██████████         │
+│ cooking                    │ 10/11      │ 91       % │ █████████          │
+│ frustration                │ 13/16      │ 81       % │ ████████           │
+│ acronym                    │ 3/4        │ 75       % │ ████████           │
+│ reporting                  │ 8/11       │ 73       % │ ███████            │
+│ subtle                     │ 8/17       │ 47       % │ █████              │
+│ threat                     │ 1/17       │ 6        % │ █                  │
+│ bullying                   │ 1/17       │ 6        % │ █                  │
+│ vowel_removal              │ 0/6        │ 0        % │                    │
+│ hate                       │ 0/17       │ 0        % │                    │
+└────────────────────────────┴─────────────┴──────────┴────────────────────┘
+
+════════════════════════════════════════════════════════════════════════════════
+❌ ERROR ANALYSIS
+════════════════════════════════════════════════════════════════════════════════
+
+  Total Misclassifications: 74
+  False Positives (clean→toxic): 8
+  False Negatives (toxic→clean): 66
+
+  📈 False Positives by Category:
+     reporting                : 3
+     frustration              : 3
+     cooking                  : 1
+     scunthorpe               : 1
+
+  📉 False Negatives by Category:
+     hate                     : 17
+     threat                   : 16
+     bullying                 : 16
+     subtle                   : 9
+     vowel_removal            : 6
+     direct                   : 1
+     acronym                  : 1
+
+════════════════════════════════════════════════════════════════════════════════
+🏆 FINAL SUMMARY - REGEX ONLY (NO AI)
+════════════════════════════════════════════════════════════════════════════════
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                              KEY METRICS                                     │
+├──────────────────────────────────────────────────────────────────────────────┤
+│  Overall Accuracy:       75.33%                                              │
+│  Precision:              91.30%                                              │
+│  Recall:                 56.00%                                              │
+│  F1 Score:               69.42%                                              │
+│  Clean Accuracy:         94.67%                                              │
+│  Toxic Accuracy:         56.00%                                              │
+│  Average Latency:        0.221ms                                             │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                           BY LANGUAGE                                        │
+├──────────────────────────────────────────────────────────────────────────────┤
+│  English           : 77.00% accuracy, F1: 71.60%, Latency: 0.267ms           │
+│  Tagalog           : 74.00% accuracy, F1: 66.67%, Latency: 0.246ms           │
+│  Bisaya            : 75.00% accuracy, F1: 69.88%, Latency: 0.148ms           │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+💾 Results saved to: /home/saiba/Documents/CODING/Thesis/JoSan/josan/tests/regex-only-results-multilingual.json

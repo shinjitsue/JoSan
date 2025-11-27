@@ -1385,22 +1385,22 @@ interface ComprehensiveSummary extends ExtendedTestSummary {
   specificity: number;
   balancedAccuracy: number;
   mcc: number; // Matthews Correlation Coefficient
-  
+
   // Per-class accuracy
   cleanAccuracy: number;
   toxicAccuracy: number;
   mildAccuracy: number;
-  
+
   // Latency stats
   avgLatencyMs: number;
   minLatencyMs: number;
   maxLatencyMs: number;
   medianLatencyMs: number;
   p95LatencyMs: number;
-  
+
   // Language-specific detailed stats
   languageDetailedStats: Record<string, LanguageDetailedStats>;
-  
+
   // Error analysis
   errorAnalysis: {
     falsePositivesByCategory: Record<string, number>;
@@ -1422,9 +1422,9 @@ function calculateSummary(results: ExtendedTestResult[]): ComprehensiveSummary {
   // ===========================================
   // CONFUSION MATRIX (Binary: Toxic vs Non-Toxic)
   // ===========================================
-  let truePositives = 0;  // Actual toxic, predicted toxic
+  let truePositives = 0; // Actual toxic, predicted toxic
   let falsePositives = 0; // Actual clean/mild, predicted toxic
-  let trueNegatives = 0;  // Actual clean/mild, predicted clean/mild
+  let trueNegatives = 0; // Actual clean/mild, predicted clean/mild
   let falseNegatives = 0; // Actual toxic, predicted clean/mild
 
   results.forEach((r) => {
@@ -1442,39 +1442,53 @@ function calculateSummary(results: ExtendedTestResult[]): ComprehensiveSummary {
   // ===========================================
   const precision = truePositives / (truePositives + falsePositives) || 0;
   const recall = truePositives / (truePositives + falseNegatives) || 0;
-  const f1Score = precision + recall > 0 ? (2 * precision * recall) / (precision + recall) : 0;
+  const f1Score =
+    precision + recall > 0
+      ? (2 * precision * recall) / (precision + recall)
+      : 0;
   const specificity = trueNegatives / (trueNegatives + falsePositives) || 0;
   const balancedAccuracy = (recall + specificity) / 2;
-  
+
   // Matthews Correlation Coefficient
-  const mccNumerator = (truePositives * trueNegatives) - (falsePositives * falseNegatives);
+  const mccNumerator =
+    truePositives * trueNegatives - falsePositives * falseNegatives;
   const mccDenominator = Math.sqrt(
     (truePositives + falsePositives) *
-    (truePositives + falseNegatives) *
-    (trueNegatives + falsePositives) *
-    (trueNegatives + falseNegatives)
+      (truePositives + falseNegatives) *
+      (trueNegatives + falsePositives) *
+      (trueNegatives + falseNegatives)
   );
   const mcc = mccDenominator !== 0 ? mccNumerator / mccDenominator : 0;
 
   // ===========================================
   // PER-CLASS ACCURACY
   // ===========================================
-  const cleanResults = results.filter((r) => r.testCase.expectedLabel === "clean");
-  const toxicResults = results.filter((r) => r.testCase.expectedLabel === "toxic");
-  const mildResults = results.filter((r) => r.testCase.expectedLabel === "mild");
+  const cleanResults = results.filter(
+    (r) => r.testCase.expectedLabel === "clean"
+  );
+  const toxicResults = results.filter(
+    (r) => r.testCase.expectedLabel === "toxic"
+  );
+  const mildResults = results.filter(
+    (r) => r.testCase.expectedLabel === "mild"
+  );
 
   const cleanCorrect = cleanResults.filter((r) => r.isCorrect).length;
   const toxicCorrect = toxicResults.filter((r) => r.isCorrect).length;
   const mildCorrect = mildResults.filter((r) => r.isCorrect).length;
 
-  const cleanAccuracy = cleanResults.length > 0 ? (cleanCorrect / cleanResults.length) * 100 : 0;
-  const toxicAccuracy = toxicResults.length > 0 ? (toxicCorrect / toxicResults.length) * 100 : 0;
-  const mildAccuracy = mildResults.length > 0 ? (mildCorrect / mildResults.length) * 100 : 0;
+  const cleanAccuracy =
+    cleanResults.length > 0 ? (cleanCorrect / cleanResults.length) * 100 : 0;
+  const toxicAccuracy =
+    toxicResults.length > 0 ? (toxicCorrect / toxicResults.length) * 100 : 0;
+  const mildAccuracy =
+    mildResults.length > 0 ? (mildCorrect / mildResults.length) * 100 : 0;
 
   // ===========================================
   // CATEGORY BREAKDOWN
   // ===========================================
-  const categoryBreakdown: Record<string, { correct: number; total: number }> = {};
+  const categoryBreakdown: Record<string, { correct: number; total: number }> =
+    {};
   results.forEach((r) => {
     const cat = r.testCase.category;
     if (!categoryBreakdown[cat]) {
@@ -1487,7 +1501,8 @@ function calculateSummary(results: ExtendedTestResult[]): ComprehensiveSummary {
   // ===========================================
   // LANGUAGE BREAKDOWN (Simple)
   // ===========================================
-  const languageBreakdown: Record<string, { correct: number; total: number }> = {};
+  const languageBreakdown: Record<string, { correct: number; total: number }> =
+    {};
   results.forEach((r) => {
     const lang = r.languageExpected || r.language;
     if (!languageBreakdown[lang]) {
@@ -1500,7 +1515,9 @@ function calculateSummary(results: ExtendedTestResult[]): ComprehensiveSummary {
   // ===========================================
   // LATENCY STATS
   // ===========================================
-  const latencies = results.map((r) => r.processingTimeMs).sort((a, b) => a - b);
+  const latencies = results
+    .map((r) => r.processingTimeMs)
+    .sort((a, b) => a - b);
   const totalTime = latencies.reduce((sum, l) => sum + l, 0);
   const avgLatencyMs = totalTime / results.length;
   const minLatencyMs = latencies[0] || 0;
@@ -1514,32 +1531,47 @@ function calculateSummary(results: ExtendedTestResult[]): ComprehensiveSummary {
   // ===========================================
   // OBFUSCATION STATS
   // ===========================================
-  const obfuscationResults = results.filter((r) => r.normalization.obfuscationDetected);
-  const obfuscationCorrect = obfuscationResults.filter((r) => r.isCorrect).length;
+  const obfuscationResults = results.filter(
+    (r) => r.normalization.obfuscationDetected
+  );
+  const obfuscationCorrect = obfuscationResults.filter(
+    (r) => r.isCorrect
+  ).length;
 
   // ===========================================
   // LANGUAGE DETAILED STATS
   // ===========================================
   const languageDetailedStats: Record<string, LanguageDetailedStats> = {};
-  
+
   const languages = ["english", "tagalog", "bisaya"];
   for (const lang of languages) {
-    const langResults = results.filter((r) => (r.languageExpected || r.language) === lang);
+    const langResults = results.filter(
+      (r) => (r.languageExpected || r.language) === lang
+    );
     if (langResults.length === 0) continue;
 
     const langCorrect = langResults.filter((r) => r.isCorrect).length;
-    
+
     // Per-class stats for this language
-    const langClean = langResults.filter((r) => r.testCase.expectedLabel === "clean");
-    const langToxic = langResults.filter((r) => r.testCase.expectedLabel === "toxic");
-    const langMild = langResults.filter((r) => r.testCase.expectedLabel === "mild");
-    
+    const langClean = langResults.filter(
+      (r) => r.testCase.expectedLabel === "clean"
+    );
+    const langToxic = langResults.filter(
+      (r) => r.testCase.expectedLabel === "toxic"
+    );
+    const langMild = langResults.filter(
+      (r) => r.testCase.expectedLabel === "mild"
+    );
+
     const langCleanCorrect = langClean.filter((r) => r.isCorrect).length;
     const langToxicCorrect = langToxic.filter((r) => r.isCorrect).length;
     const langMildCorrect = langMild.filter((r) => r.isCorrect).length;
 
     // Confusion matrix for this language
-    let langTP = 0, langFP = 0, langTN = 0, langFN = 0;
+    let langTP = 0,
+      langFP = 0,
+      langTN = 0,
+      langFN = 0;
     langResults.forEach((r) => {
       const actualToxic = r.testCase.expectedLabel === "toxic";
       const predictedToxic = r.finalLabel === "toxic";
@@ -1551,12 +1583,14 @@ function calculateSummary(results: ExtendedTestResult[]): ComprehensiveSummary {
 
     const langPrecision = langTP / (langTP + langFP) || 0;
     const langRecall = langTP / (langTP + langFN) || 0;
-    const langF1 = langPrecision + langRecall > 0 
-      ? (2 * langPrecision * langRecall) / (langPrecision + langRecall) 
-      : 0;
+    const langF1 =
+      langPrecision + langRecall > 0
+        ? (2 * langPrecision * langRecall) / (langPrecision + langRecall)
+        : 0;
 
     const langLatencies = langResults.map((r) => r.processingTimeMs);
-    const langAvgLatency = langLatencies.reduce((sum, l) => sum + l, 0) / langResults.length;
+    const langAvgLatency =
+      langLatencies.reduce((sum, l) => sum + l, 0) / langResults.length;
 
     languageDetailedStats[lang] = {
       total: langResults.length,
@@ -1565,17 +1599,24 @@ function calculateSummary(results: ExtendedTestResult[]): ComprehensiveSummary {
       cleanStats: {
         total: langClean.length,
         correct: langCleanCorrect,
-        accuracy: langClean.length > 0 ? (langCleanCorrect / langClean.length) * 100 : 0,
+        accuracy:
+          langClean.length > 0
+            ? (langCleanCorrect / langClean.length) * 100
+            : 0,
       },
       toxicStats: {
         total: langToxic.length,
         correct: langToxicCorrect,
-        accuracy: langToxic.length > 0 ? (langToxicCorrect / langToxic.length) * 100 : 0,
+        accuracy:
+          langToxic.length > 0
+            ? (langToxicCorrect / langToxic.length) * 100
+            : 0,
       },
       mildStats: {
         total: langMild.length,
         correct: langMildCorrect,
-        accuracy: langMild.length > 0 ? (langMildCorrect / langMild.length) * 100 : 0,
+        accuracy:
+          langMild.length > 0 ? (langMildCorrect / langMild.length) * 100 : 0,
       },
       confusionMatrix: {
         truePositives: langTP,
@@ -1612,15 +1653,19 @@ function calculateSummary(results: ExtendedTestResult[]): ComprehensiveSummary {
 
       if (!actualToxic && predictedToxic) {
         // False Positive
-        falsePositivesByCategory[category] = (falsePositivesByCategory[category] || 0) + 1;
+        falsePositivesByCategory[category] =
+          (falsePositivesByCategory[category] || 0) + 1;
       } else if (actualToxic && !predictedToxic) {
         // False Negative
-        falseNegativesByCategory[category] = (falseNegativesByCategory[category] || 0) + 1;
+        falseNegativesByCategory[category] =
+          (falseNegativesByCategory[category] || 0) + 1;
       }
 
       misclassificationDetails.push({
         id: r.testCase.id,
-        text: r.testCase.text.substring(0, 80) + (r.testCase.text.length > 80 ? "..." : ""),
+        text:
+          r.testCase.text.substring(0, 80) +
+          (r.testCase.text.length > 80 ? "..." : ""),
         expected: r.testCase.expectedLabel,
         predicted: r.finalLabel,
         category: r.testCase.category,
@@ -1796,87 +1841,246 @@ async function runTests(): Promise<void> {
   // PRINT COMPREHENSIVE SUMMARY
   // ===========================================
   console.log("\n" + "═".repeat(80));
-  console.log("📊 COMPREHENSIVE TEST SUMMARY - MULTILINGUAL CONTEXTUAL ANALYSIS");
+  console.log(
+    "📊 COMPREHENSIVE TEST SUMMARY - MULTILINGUAL CONTEXTUAL ANALYSIS"
+  );
   console.log("═".repeat(80));
-  
+
   // Basic stats
-  console.log("\n┌─────────────────────────────────────────────────────────────────────────────┐");
-  console.log("│                           OVERALL STATISTICS                                │");
-  console.log("├─────────────────────────────────────────────────────────────────────────────┤");
-  console.log(`│  Total Tests:          ${summary.totalTests.toString().padEnd(10)} │  Correct Predictions:  ${summary.correctPredictions.toString().padEnd(10)} │`);
-  console.log(`│  Overall Accuracy:     ${summary.accuracy.toFixed(2).padEnd(10)}% │  Total API Calls:      ${summary.totalApiCalls.toString().padEnd(10)} │`);
-  console.log("└─────────────────────────────────────────────────────────────────────────────┘");
+  console.log(
+    "\n┌─────────────────────────────────────────────────────────────────────────────┐"
+  );
+  console.log(
+    "│                           OVERALL STATISTICS                                │"
+  );
+  console.log(
+    "├─────────────────────────────────────────────────────────────────────────────┤"
+  );
+  console.log(
+    `│  Total Tests:          ${summary.totalTests
+      .toString()
+      .padEnd(10)} │  Correct Predictions:  ${summary.correctPredictions
+      .toString()
+      .padEnd(10)} │`
+  );
+  console.log(
+    `│  Overall Accuracy:     ${summary.accuracy
+      .toFixed(2)
+      .padEnd(10)}% │  Total API Calls:      ${summary.totalApiCalls
+      .toString()
+      .padEnd(10)} │`
+  );
+  console.log(
+    "└─────────────────────────────────────────────────────────────────────────────┘"
+  );
 
   // ===========================================
   // CONFUSION MATRIX
   // ===========================================
-  console.log("\n┌─────────────────────────────────────────────────────────────────────────────┐");
-  console.log("│                          CONFUSION MATRIX (Toxic vs Non-Toxic)             │");
-  console.log("├─────────────────────────────────────────────────────────────────────────────┤");
-  console.log("│                              Predicted                                      │");
-  console.log("│                        Toxic          Non-Toxic                            │");
-  console.log("│              ┌──────────────────┬──────────────────┐                       │");
-  console.log(`│    Actual    │  TP: ${summary.confusionMatrix.truePositives.toString().padEnd(10)} │  FN: ${summary.confusionMatrix.falseNegatives.toString().padEnd(10)} │  Toxic               │`);
-  console.log("│              ├──────────────────┼──────────────────┤                       │");
-  console.log(`│              │  FP: ${summary.confusionMatrix.falsePositives.toString().padEnd(10)} │  TN: ${summary.confusionMatrix.trueNegatives.toString().padEnd(10)} │  Non-Toxic           │`);
-  console.log("│              └──────────────────┴──────────────────┘                       │");
-  console.log("└─────────────────────────────────────────────────────────────────────────────┘");
+  console.log(
+    "\n┌─────────────────────────────────────────────────────────────────────────────┐"
+  );
+  console.log(
+    "│                          CONFUSION MATRIX (Toxic vs Non-Toxic)             │"
+  );
+  console.log(
+    "├─────────────────────────────────────────────────────────────────────────────┤"
+  );
+  console.log(
+    "│                              Predicted                                      │"
+  );
+  console.log(
+    "│                        Toxic          Non-Toxic                            │"
+  );
+  console.log(
+    "│              ┌──────────────────┬──────────────────┐                       │"
+  );
+  console.log(
+    `│    Actual    │  TP: ${summary.confusionMatrix.truePositives
+      .toString()
+      .padEnd(10)} │  FN: ${summary.confusionMatrix.falseNegatives
+      .toString()
+      .padEnd(10)} │  Toxic               │`
+  );
+  console.log(
+    "│              ├──────────────────┼──────────────────┤                       │"
+  );
+  console.log(
+    `│              │  FP: ${summary.confusionMatrix.falsePositives
+      .toString()
+      .padEnd(10)} │  TN: ${summary.confusionMatrix.trueNegatives
+      .toString()
+      .padEnd(10)} │  Non-Toxic           │`
+  );
+  console.log(
+    "│              └──────────────────┴──────────────────┘                       │"
+  );
+  console.log(
+    "└─────────────────────────────────────────────────────────────────────────────┘"
+  );
 
   // ===========================================
   // CLASSIFICATION METRICS
   // ===========================================
-  console.log("\n┌─────────────────────────────────────────────────────────────────────────────┐");
-  console.log("│                           CLASSIFICATION METRICS                           │");
-  console.log("├─────────────────────────────────────────────────────────────────────────────┤");
-  console.log(`│  Precision:            ${summary.precision.toFixed(2).padEnd(10)}%  (TP / (TP + FP))                         │`);
-  console.log(`│  Recall (Sensitivity): ${summary.recall.toFixed(2).padEnd(10)}%  (TP / (TP + FN))                         │`);
-  console.log(`│  Specificity:          ${summary.specificity.toFixed(2).padEnd(10)}%  (TN / (TN + FP))                         │`);
-  console.log(`│  F1 Score:             ${summary.f1Score.toFixed(2).padEnd(10)}%  (2 * P * R / (P + R))                     │`);
-  console.log(`│  Balanced Accuracy:    ${summary.balancedAccuracy.toFixed(2).padEnd(10)}%  ((Recall + Specificity) / 2)            │`);
-  console.log(`│  MCC:                  ${summary.mcc.toFixed(4).padEnd(10)}   (Matthews Correlation Coefficient)         │`);
-  console.log("└─────────────────────────────────────────────────────────────────────────────┘");
+  console.log(
+    "\n┌─────────────────────────────────────────────────────────────────────────────┐"
+  );
+  console.log(
+    "│                           CLASSIFICATION METRICS                           │"
+  );
+  console.log(
+    "├─────────────────────────────────────────────────────────────────────────────┤"
+  );
+  console.log(
+    `│  Precision:            ${summary.precision
+      .toFixed(2)
+      .padEnd(10)}%  (TP / (TP + FP))                         │`
+  );
+  console.log(
+    `│  Recall (Sensitivity): ${summary.recall
+      .toFixed(2)
+      .padEnd(10)}%  (TP / (TP + FN))                         │`
+  );
+  console.log(
+    `│  Specificity:          ${summary.specificity
+      .toFixed(2)
+      .padEnd(10)}%  (TN / (TN + FP))                         │`
+  );
+  console.log(
+    `│  F1 Score:             ${summary.f1Score
+      .toFixed(2)
+      .padEnd(10)}%  (2 * P * R / (P + R))                     │`
+  );
+  console.log(
+    `│  Balanced Accuracy:    ${summary.balancedAccuracy
+      .toFixed(2)
+      .padEnd(10)}%  ((Recall + Specificity) / 2)            │`
+  );
+  console.log(
+    `│  MCC:                  ${summary.mcc
+      .toFixed(4)
+      .padEnd(10)}   (Matthews Correlation Coefficient)         │`
+  );
+  console.log(
+    "└─────────────────────────────────────────────────────────────────────────────┘"
+  );
 
   // ===========================================
   // PER-CLASS ACCURACY
   // ===========================================
-  console.log("\n┌─────────────────────────────────────────────────────────────────────────────┐");
-  console.log("│                            PER-CLASS ACCURACY                              │");
-  console.log("├─────────────────────────────────────────────────────────────────────────────┤");
+  console.log(
+    "\n┌─────────────────────────────────────────────────────────────────────────────┐"
+  );
+  console.log(
+    "│                            PER-CLASS ACCURACY                              │"
+  );
+  console.log(
+    "├─────────────────────────────────────────────────────────────────────────────┤"
+  );
   const cleanBar = "█".repeat(Math.round(summary.cleanAccuracy / 10));
   const toxicBar = "█".repeat(Math.round(summary.toxicAccuracy / 10));
   const mildBar = "█".repeat(Math.round(summary.mildAccuracy / 10));
-  console.log(`│  Clean Accuracy:       ${summary.cleanAccuracy.toFixed(2).padEnd(10)}%  ${cleanBar.padEnd(12)}                     │`);
-  console.log(`│  Toxic Accuracy:       ${summary.toxicAccuracy.toFixed(2).padEnd(10)}%  ${toxicBar.padEnd(12)}                     │`);
-  console.log(`│  Mild Accuracy:        ${summary.mildAccuracy.toFixed(2).padEnd(10)}%  ${mildBar.padEnd(12)}                     │`);
-  console.log("└─────────────────────────────────────────────────────────────────────────────┘");
+  console.log(
+    `│  Clean Accuracy:       ${summary.cleanAccuracy
+      .toFixed(2)
+      .padEnd(10)}%  ${cleanBar.padEnd(12)}                     │`
+  );
+  console.log(
+    `│  Toxic Accuracy:       ${summary.toxicAccuracy
+      .toFixed(2)
+      .padEnd(10)}%  ${toxicBar.padEnd(12)}                     │`
+  );
+  console.log(
+    `│  Mild Accuracy:        ${summary.mildAccuracy
+      .toFixed(2)
+      .padEnd(10)}%  ${mildBar.padEnd(12)}                     │`
+  );
+  console.log(
+    "└─────────────────────────────────────────────────────────────────────────────┘"
+  );
 
   // ===========================================
   // LATENCY STATISTICS
   // ===========================================
-  console.log("\n┌─────────────────────────────────────────────────────────────────────────────┐");
-  console.log("│                           LATENCY STATISTICS                               │");
-  console.log("├─────────────────────────────────────────────────────────────────────────────┤");
-  console.log(`│  Total Time:           ${(summary.totalTimeMs / 1000).toFixed(2).padEnd(10)}s                                         │`);
-  console.log(`│  Average Latency:      ${summary.avgLatencyMs.toFixed(0).padEnd(10)}ms                                        │`);
-  console.log(`│  Min Latency:          ${summary.minLatencyMs.toFixed(0).padEnd(10)}ms                                        │`);
-  console.log(`│  Max Latency:          ${summary.maxLatencyMs.toFixed(0).padEnd(10)}ms                                        │`);
-  console.log(`│  Median Latency:       ${summary.medianLatencyMs.toFixed(0).padEnd(10)}ms                                        │`);
-  console.log(`│  95th Percentile:      ${summary.p95LatencyMs.toFixed(0).padEnd(10)}ms                                        │`);
-  console.log("└─────────────────────────────────────────────────────────────────────────────┘");
+  console.log(
+    "\n┌─────────────────────────────────────────────────────────────────────────────┐"
+  );
+  console.log(
+    "│                           LATENCY STATISTICS                               │"
+  );
+  console.log(
+    "├─────────────────────────────────────────────────────────────────────────────┤"
+  );
+  console.log(
+    `│  Total Time:           ${(summary.totalTimeMs / 1000)
+      .toFixed(2)
+      .padEnd(10)}s                                         │`
+  );
+  console.log(
+    `│  Average Latency:      ${summary.avgLatencyMs
+      .toFixed(0)
+      .padEnd(10)}ms                                        │`
+  );
+  console.log(
+    `│  Min Latency:          ${summary.minLatencyMs
+      .toFixed(0)
+      .padEnd(10)}ms                                        │`
+  );
+  console.log(
+    `│  Max Latency:          ${summary.maxLatencyMs
+      .toFixed(0)
+      .padEnd(10)}ms                                        │`
+  );
+  console.log(
+    `│  Median Latency:       ${summary.medianLatencyMs
+      .toFixed(0)
+      .padEnd(10)}ms                                        │`
+  );
+  console.log(
+    `│  95th Percentile:      ${summary.p95LatencyMs
+      .toFixed(0)
+      .padEnd(10)}ms                                        │`
+  );
+  console.log(
+    "└─────────────────────────────────────────────────────────────────────────────┘"
+  );
 
   // ===========================================
   // OBFUSCATION DETECTION
   // ===========================================
-  const obfuscationAccuracy = summary.obfuscationStats.detected > 0
-    ? (summary.obfuscationStats.correctlyClassified / summary.obfuscationStats.detected) * 100
-    : 0;
-  console.log("\n┌─────────────────────────────────────────────────────────────────────────────┐");
-  console.log("│                          OBFUSCATION DETECTION                             │");
-  console.log("├─────────────────────────────────────────────────────────────────────────────┤");
-  console.log(`│  Total Obfuscated:     ${summary.obfuscationStats.detected.toString().padEnd(10)}                                        │`);
-  console.log(`│  Correctly Classified: ${summary.obfuscationStats.correctlyClassified.toString().padEnd(10)}                                        │`);
-  console.log(`│  Obfuscation Accuracy: ${obfuscationAccuracy.toFixed(2).padEnd(10)}%                                        │`);
-  console.log("└─────────────────────────────────────────────────────────────────────────────┘");
+  const obfuscationAccuracy =
+    summary.obfuscationStats.detected > 0
+      ? (summary.obfuscationStats.correctlyClassified /
+          summary.obfuscationStats.detected) *
+        100
+      : 0;
+  console.log(
+    "\n┌─────────────────────────────────────────────────────────────────────────────┐"
+  );
+  console.log(
+    "│                          OBFUSCATION DETECTION                             │"
+  );
+  console.log(
+    "├─────────────────────────────────────────────────────────────────────────────┤"
+  );
+  console.log(
+    `│  Total Obfuscated:     ${summary.obfuscationStats.detected
+      .toString()
+      .padEnd(10)}                                        │`
+  );
+  console.log(
+    `│  Correctly Classified: ${summary.obfuscationStats.correctlyClassified
+      .toString()
+      .padEnd(10)}                                        │`
+  );
+  console.log(
+    `│  Obfuscation Accuracy: ${obfuscationAccuracy
+      .toFixed(2)
+      .padEnd(10)}%                                        │`
+  );
+  console.log(
+    "└─────────────────────────────────────────────────────────────────────────────┘"
+  );
 
   // ===========================================
   // ACCURACY BY LANGUAGE
@@ -1886,18 +2090,32 @@ async function runTests(): Promise<void> {
   console.log("═".repeat(80));
 
   // Overall language accuracy table
-  console.log("\n┌──────────────────────────────────────────────────────────────────────────────┐");
-  console.log("│ Language     │ Correct/Total │ Accuracy │ Precision │ Recall │ F1 Score     │");
-  console.log("├──────────────────────────────────────────────────────────────────────────────┤");
-  
+  console.log(
+    "\n┌──────────────────────────────────────────────────────────────────────────────┐"
+  );
+  console.log(
+    "│ Language     │ Correct/Total │ Accuracy │ Precision │ Recall │ F1 Score     │"
+  );
+  console.log(
+    "├──────────────────────────────────────────────────────────────────────────────┤"
+  );
+
   Object.entries(summary.languageDetailedStats)
     .sort(([a], [b]) => a.localeCompare(b))
     .forEach(([lang, stats]) => {
       console.log(
-        `│ ${lang.padEnd(12)} │ ${(stats.correct + "/" + stats.total).padEnd(13)} │ ${stats.accuracy.toFixed(1).padEnd(8)}% │ ${stats.precision.toFixed(1).padEnd(9)}% │ ${stats.recall.toFixed(1).padEnd(6)}% │ ${stats.f1Score.toFixed(1).padEnd(12)}% │`
+        `│ ${lang.padEnd(12)} │ ${(stats.correct + "/" + stats.total).padEnd(
+          13
+        )} │ ${stats.accuracy.toFixed(1).padEnd(8)}% │ ${stats.precision
+          .toFixed(1)
+          .padEnd(9)}% │ ${stats.recall.toFixed(1).padEnd(6)}% │ ${stats.f1Score
+          .toFixed(1)
+          .padEnd(12)}% │`
       );
     });
-  console.log("└──────────────────────────────────────────────────────────────────────────────┘");
+  console.log(
+    "└──────────────────────────────────────────────────────────────────────────────┘"
+  );
 
   // Detailed per-language breakdown
   console.log("\n📊 DETAILED BREAKDOWN BY LANGUAGE:");
@@ -1909,17 +2127,35 @@ async function runTests(): Promise<void> {
 
     console.log(`\n  🌐 ${lang.toUpperCase()}`);
     console.log(`  ${"─".repeat(40)}`);
-    console.log(`     Overall:    ${stats.correct}/${stats.total} (${stats.accuracy.toFixed(1)}%)`);
-    console.log(`     Clean:      ${stats.cleanStats.correct}/${stats.cleanStats.total} (${stats.cleanStats.accuracy.toFixed(1)}%)`);
-    console.log(`     Toxic:      ${stats.toxicStats.correct}/${stats.toxicStats.total} (${stats.toxicStats.accuracy.toFixed(1)}%)`);
+    console.log(
+      `     Overall:    ${stats.correct}/${
+        stats.total
+      } (${stats.accuracy.toFixed(1)}%)`
+    );
+    console.log(
+      `     Clean:      ${stats.cleanStats.correct}/${
+        stats.cleanStats.total
+      } (${stats.cleanStats.accuracy.toFixed(1)}%)`
+    );
+    console.log(
+      `     Toxic:      ${stats.toxicStats.correct}/${
+        stats.toxicStats.total
+      } (${stats.toxicStats.accuracy.toFixed(1)}%)`
+    );
     if (stats.mildStats.total > 0) {
-      console.log(`     Mild:       ${stats.mildStats.correct}/${stats.mildStats.total} (${stats.mildStats.accuracy.toFixed(1)}%)`);
+      console.log(
+        `     Mild:       ${stats.mildStats.correct}/${
+          stats.mildStats.total
+        } (${stats.mildStats.accuracy.toFixed(1)}%)`
+      );
     }
     console.log(`     Precision:  ${stats.precision.toFixed(2)}%`);
     console.log(`     Recall:     ${stats.recall.toFixed(2)}%`);
     console.log(`     F1 Score:   ${stats.f1Score.toFixed(2)}%`);
     console.log(`     Avg Latency: ${stats.avgLatencyMs.toFixed(0)}ms`);
-    console.log(`     Confusion Matrix: TP=${stats.confusionMatrix.truePositives} FP=${stats.confusionMatrix.falsePositives} TN=${stats.confusionMatrix.trueNegatives} FN=${stats.confusionMatrix.falseNegatives}`);
+    console.log(
+      `     Confusion Matrix: TP=${stats.confusionMatrix.truePositives} FP=${stats.confusionMatrix.falsePositives} TN=${stats.confusionMatrix.trueNegatives} FN=${stats.confusionMatrix.falseNegatives}`
+    );
   });
 
   // ===========================================
@@ -1928,23 +2164,33 @@ async function runTests(): Promise<void> {
   console.log("\n" + "═".repeat(80));
   console.log("📂 CATEGORY BREAKDOWN");
   console.log("═".repeat(80));
-  
+
   const sortedCategories = Object.entries(summary.categoryBreakdown).sort(
     ([, a], [, b]) => b.correct / b.total - a.correct / a.total
   );
-  
-  console.log("\n┌────────────────────────────┬─────────────┬──────────┬────────────────────┐");
-  console.log("│ Category                   │ Correct     │ Accuracy │ Visual             │");
-  console.log("├────────────────────────────┼─────────────┼──────────┼────────────────────┤");
-  
+
+  console.log(
+    "\n┌────────────────────────────┬─────────────┬──────────┬────────────────────┐"
+  );
+  console.log(
+    "│ Category                   │ Correct     │ Accuracy │ Visual             │"
+  );
+  console.log(
+    "├────────────────────────────┼─────────────┼──────────┼────────────────────┤"
+  );
+
   sortedCategories.forEach(([category, stats]) => {
     const catAccuracy = (stats.correct / stats.total) * 100;
     const bar = "█".repeat(Math.round(catAccuracy / 10));
     console.log(
-      `│ ${category.padEnd(26)} │ ${(stats.correct + "/" + stats.total).padEnd(11)} │ ${catAccuracy.toFixed(0).padEnd(7)}% │ ${bar.padEnd(18)} │`
+      `│ ${category.padEnd(26)} │ ${(stats.correct + "/" + stats.total).padEnd(
+        11
+      )} │ ${catAccuracy.toFixed(0).padEnd(7)}% │ ${bar.padEnd(18)} │`
     );
   });
-  console.log("└────────────────────────────┴─────────────┴──────────┴────────────────────┘");
+  console.log(
+    "└────────────────────────────┴─────────────┴──────────┴────────────────────┘"
+  );
 
   // ===========================================
   // ERROR ANALYSIS
@@ -1954,8 +2200,12 @@ async function runTests(): Promise<void> {
   console.log("═".repeat(80));
 
   const totalErrors = summary.errorAnalysis.misclassificationDetails.length;
-  const fpTotal = Object.values(summary.errorAnalysis.falsePositivesByCategory).reduce((a, b) => a + b, 0);
-  const fnTotal = Object.values(summary.errorAnalysis.falseNegativesByCategory).reduce((a, b) => a + b, 0);
+  const fpTotal = Object.values(
+    summary.errorAnalysis.falsePositivesByCategory
+  ).reduce((a, b) => a + b, 0);
+  const fnTotal = Object.values(
+    summary.errorAnalysis.falseNegativesByCategory
+  ).reduce((a, b) => a + b, 0);
 
   console.log(`\n  Total Misclassifications: ${totalErrors}`);
   console.log(`  False Positives (clean→toxic): ${fpTotal}`);
@@ -1983,12 +2233,14 @@ async function runTests(): Promise<void> {
   if (summary.errorAnalysis.misclassificationDetails.length > 0) {
     console.log("\n  📋 Sample Misclassifications (first 10):");
     console.log("  " + "─".repeat(76));
-    summary.errorAnalysis.misclassificationDetails.slice(0, 10).forEach((err) => {
-      console.log(`  #${err.id} [${err.language}] ${err.category}`);
-      console.log(`     Expected: ${err.expected} → Got: ${err.predicted}`);
-      console.log(`     Text: "${err.text}"`);
-      console.log("");
-    });
+    summary.errorAnalysis.misclassificationDetails
+      .slice(0, 10)
+      .forEach((err) => {
+        console.log(`  #${err.id} [${err.language}] ${err.category}`);
+        console.log(`     Expected: ${err.expected} → Got: ${err.predicted}`);
+        console.log(`     Text: "${err.text}"`);
+        console.log("");
+      });
   }
 
   // ===========================================
@@ -1997,28 +2249,70 @@ async function runTests(): Promise<void> {
   console.log("\n" + "═".repeat(80));
   console.log("🏆 FINAL SUMMARY");
   console.log("═".repeat(80));
-  
-  console.log("\n┌──────────────────────────────────────────────────────────────────────────────┐");
-  console.log("│                              KEY METRICS                                     │");
-  console.log("├──────────────────────────────────────────────────────────────────────────────┤");
-  console.log(`│  Overall Accuracy:       ${summary.accuracy.toFixed(2)}%`.padEnd(79) + "│");
-  console.log(`│  Precision:              ${summary.precision.toFixed(2)}%`.padEnd(79) + "│");
-  console.log(`│  Recall:                 ${summary.recall.toFixed(2)}%`.padEnd(79) + "│");
-  console.log(`│  F1 Score:               ${summary.f1Score.toFixed(2)}%`.padEnd(79) + "│");
-  console.log(`│  Clean Accuracy:         ${summary.cleanAccuracy.toFixed(2)}%`.padEnd(79) + "│");
-  console.log(`│  Toxic Accuracy:         ${summary.toxicAccuracy.toFixed(2)}%`.padEnd(79) + "│");
-  console.log(`│  Average Latency:        ${summary.avgLatencyMs.toFixed(0)}ms`.padEnd(79) + "│");
-  console.log("├──────────────────────────────────────────────────────────────────────────────┤");
-  console.log("│                           BY LANGUAGE                                        │");
-  console.log("├──────────────────────────────────────────────────────────────────────────────┤");
-  
+
+  console.log(
+    "\n┌──────────────────────────────────────────────────────────────────────────────┐"
+  );
+  console.log(
+    "│                              KEY METRICS                                     │"
+  );
+  console.log(
+    "├──────────────────────────────────────────────────────────────────────────────┤"
+  );
+  console.log(
+    `│  Overall Accuracy:       ${summary.accuracy.toFixed(2)}%`.padEnd(79) +
+      "│"
+  );
+  console.log(
+    `│  Precision:              ${summary.precision.toFixed(2)}%`.padEnd(79) +
+      "│"
+  );
+  console.log(
+    `│  Recall:                 ${summary.recall.toFixed(2)}%`.padEnd(79) + "│"
+  );
+  console.log(
+    `│  F1 Score:               ${summary.f1Score.toFixed(2)}%`.padEnd(79) + "│"
+  );
+  console.log(
+    `│  Clean Accuracy:         ${summary.cleanAccuracy.toFixed(2)}%`.padEnd(
+      79
+    ) + "│"
+  );
+  console.log(
+    `│  Toxic Accuracy:         ${summary.toxicAccuracy.toFixed(2)}%`.padEnd(
+      79
+    ) + "│"
+  );
+  console.log(
+    `│  Average Latency:        ${summary.avgLatencyMs.toFixed(0)}ms`.padEnd(
+      79
+    ) + "│"
+  );
+  console.log(
+    "├──────────────────────────────────────────────────────────────────────────────┤"
+  );
+  console.log(
+    "│                           BY LANGUAGE                                        │"
+  );
+  console.log(
+    "├──────────────────────────────────────────────────────────────────────────────┤"
+  );
+
   ["english", "tagalog", "bisaya"].forEach((lang) => {
     const stats = summary.languageDetailedStats[lang];
     if (stats) {
-      console.log(`│  ${lang.charAt(0).toUpperCase() + lang.slice(1).padEnd(19)}: ${stats.accuracy.toFixed(2)}% accuracy, F1: ${stats.f1Score.toFixed(2)}%, Latency: ${stats.avgLatencyMs.toFixed(0)}ms`.padEnd(79) + "│");
+      console.log(
+        `│  ${
+          lang.charAt(0).toUpperCase() + lang.slice(1).padEnd(19)
+        }: ${stats.accuracy.toFixed(2)}% accuracy, F1: ${stats.f1Score.toFixed(
+          2
+        )}%, Latency: ${stats.avgLatencyMs.toFixed(0)}ms`.padEnd(79) + "│"
+      );
     }
   });
-  console.log("└──────────────────────────────────────────────────────────────────────────────┘");
+  console.log(
+    "└──────────────────────────────────────────────────────────────────────────────┘"
+  );
 
   // Save results
   const outputData = {
