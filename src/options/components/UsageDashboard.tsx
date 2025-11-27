@@ -4,7 +4,7 @@ import { BarChart3, Lightbulb, RefreshCw } from "lucide-react";
 import { RateLimitCard } from "./dashboard/RateLimitCard";
 import { DailyUsageCard } from "./dashboard/DailyUsageCard";
 import { TotalStatsGrid } from "./dashboard/TotalStatsGrid";
-import { CostEstimateCard } from "./dashboard/CostEstimateCard";
+// import { CostEstimateCard } from "./dashboard/CostEstimateCard";
 import { RequestHistoryCard } from "./dashboard/RequestHistoryCard";
 import { QuickLinksCard } from "./dashboard/QuickLinksCard";
 import { useDashboardLogic } from "./dashboard/useDashboardLogic";
@@ -19,7 +19,7 @@ function UsageDashboard() {
     warningLevel,
     minutePercentage,
     tokens,
-    cost,
+    // cost,
     getProgressBarColor,
     getMinuteProgressBarColor,
     getWarningMessage,
@@ -80,7 +80,7 @@ function UsageDashboard() {
           estimatedTokens={tokens}
         />
 
-        <CostEstimateCard cost={cost} />
+        {/* <CostEstimateCard cost={cost} /> */}
 
         <RequestHistoryCard requestHistory={stats.requestHistory} />
 

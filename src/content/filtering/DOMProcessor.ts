@@ -28,6 +28,10 @@ export class DOMProcessor {
   // Tracks nodes already processed to avoid duplicate work
   private processedNodes = new WeakSet<Node>();
   private processedCount = 0;
+  // Start timestamp to measure UI latency relative to enable/config load
+  private startTimestamp: number | null = null;
+  // Track placeholder times for AI roundtrip latency (placeholder → final)
+  private placeholderTimes = new WeakMap<Node, number>();
 
   // Cache original text so placeholder races never lose it
   private originalTextMap = new WeakMap<Node, string>();
@@ -39,6 +43,11 @@ export class DOMProcessor {
       n.childNodes.forEach(walk);
     };
     walk(node);
+  }
+
+  // Baseline for latency logs; set by FilterProcessor after settings load
+  setStartTimestamp(ts: number): void {
+    this.startTimestamp = ts;
   }
 
   processPage(
@@ -167,6 +176,14 @@ export class DOMProcessor {
         filterResult.matchCount
       } word(s) in ${langName} (${filterResult.detectedLanguages.join(", ")})`
     );
+
+    // Latency since enable for regex masking
+    if (this.startTimestamp !== null) {
+      const delta = performance.now() - this.startTimestamp;
+      console.log(
+        `[JoSan Perf] Regex UI latency since enable: ${delta.toFixed(2)}ms`
+      );
+    }
   }
 
   applyAIFilter(
@@ -199,6 +216,25 @@ export class DOMProcessor {
         aiResult.confidence?.toFixed(2) || "unknown"
       })`
     );
+
+    // Latency metrics
+    const now = performance.now();
+    const phStart = this.placeholderTimes.get(textNode);
+    if (phStart !== undefined) {
+      const roundtrip = now - phStart;
+      console.log(
+        `[JoSan Perf] AI roundtrip latency (placeholder→final): ${roundtrip.toFixed(
+          2
+        )}ms`
+      );
+      this.placeholderTimes.delete(textNode);
+    }
+    if (this.startTimestamp !== null) {
+      const delta = now - this.startTimestamp;
+      console.log(
+        `[JoSan Perf] AI UI latency since enable: ${delta.toFixed(2)}ms`
+      );
+    }
   }
 
   setPlaceholder(textNode: Node, language: Language): void {
@@ -206,6 +242,7 @@ export class DOMProcessor {
     if (textNode.nodeValue?.startsWith("[Analyzing ")) return;
     const originalValue = textNode.nodeValue || "";
     this.originalTextMap.set(textNode, originalValue);
+    this.placeholderTimes.set(textNode, performance.now());
     textNode.nodeValue = `[Analyzing ${FastLanguageDetector.getLanguageName(
       language.code
     )} content...]`;
@@ -241,5 +278,7 @@ export class DOMProcessor {
     this.processedNodes = new WeakSet();
     this.processedCount = 0;
     this.originalTextMap = new WeakMap();
+    this.placeholderTimes = new WeakMap();
+    this.startTimestamp = null;
   }
 }

@@ -53,6 +53,13 @@ export class TextNormalizer {
     { pattern: /\bffs\b/gi, replacement: "for fucks sake" },
     { pattern: /\bass\b/gi, replacement: "ass" },
     { pattern: /\bss\b/gi, replacement: "ass" },
+    // Masked profanity using asterisks adjacent to context words
+    // Examples: "f*** you", "**** you", "you f***", "you ****"
+    { pattern: /\bf\*{2,}k\b/gi, replacement: "fuck" },
+    { pattern: /\bf\*{2,}\b/gi, replacement: "fuck" },
+    { pattern: /\b\*{3,}\s*you\b/gi, replacement: "fuck you" },
+    { pattern: /\byou\s*\*{3,}\b/gi, replacement: "you fuck" },
+    { pattern: /\b\*{2,}you\*{2,}\b/gi, replacement: "fuck you" },
     // Filipino/Tagalog obfuscations
     { pattern: /\bpt\b/gi, replacement: "puta" },
     { pattern: /\bptngn\b/gi, replacement: "putangina" },
@@ -157,6 +164,18 @@ export class TextNormalizer {
     if (afterLeet !== normalized) {
       transformations.push("leet_speak");
       normalized = afterLeet;
+    }
+
+    // Step 2.5: Detect masked profanity using asterisks near context words
+    const maskedAsteriskPatterns = [
+      /\bf\*{2,}k\b/i,
+      /\bf\*{2,}\b/i,
+      /\b\*{3,}\s*you\b/i,
+      /\byou\s*\*{3,}\b/i,
+      /\b\*{2,}you\*{2,}\b/i,
+    ];
+    if (maskedAsteriskPatterns.some((r) => r.test(normalized))) {
+      transformations.push("masked_asterisks");
     }
 
     // Step 3: Normalize vowel-removed words

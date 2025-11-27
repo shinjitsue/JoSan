@@ -1,13 +1,14 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import { Button } from "../components/ui/button";
 import { Alert, AlertDescription } from "../components/ui/alert";
-import { CheckCircle, RefreshCw, Sparkles, Loader2 } from "lucide-react";
+import { CheckCircle, RefreshCw, Loader2 } from "lucide-react";
 import { BasicSettings } from "./components/BasicSettings";
 import { AISettings } from "./components/AISettings";
 import { PlatformSettings } from "./components/PlatformSettings";
 import { CustomWords } from "./components/CustomWords";
 import { PrivacySettings } from "./components/PrivacySettings";
 import { ThemeSettings } from "./components/ThemeSettings";
+import { GiAngryEyes } from "react-icons/gi";
 
 const UsageDashboard = lazy(() => import("./components/UsageDashboard"));
 
@@ -167,7 +168,7 @@ function Options() {
             <div className="space-y-2">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg shadow-indigo-500/20">
-                  <Sparkles className="h-6 w-6 text-white" />
+                  <GiAngryEyes className="h-8 w-8 text-white" />
                 </div>
                 <h1 className="text-5xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-400 bg-clip-text text-transparent">
                   JoSan Settings

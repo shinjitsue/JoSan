@@ -1,4 +1,5 @@
-import { Sparkles, Bot, Shield } from "lucide-react";
+import { Bot, Shield } from "lucide-react";
+import { GiAngryEyes } from "react-icons/gi";
 
 interface HeaderProps {
   useAI: boolean;
@@ -10,7 +11,7 @@ export function Header({ useAI, isEnabled }: HeaderProps) {
     <div className="flex items-center justify-between mb-6">
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-md">
-          <Sparkles className="h-5 w-5 text-white" />
+          <GiAngryEyes className="h-8 w-8 text-white" />
         </div>
         <div>
           <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">

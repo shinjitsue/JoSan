@@ -109,6 +109,8 @@ export class FilterProcessor {
       console.log(
         `[JoSan] AI enabled: ${this.filterSettings.useAI}, Filter mild: ${this.filterSettings.filterMild}, Filter toxic: ${this.filterSettings.filterToxic}`
       );
+      // Set latency baseline timestamp right after settings are loaded/logged
+      this.domProcessor.setStartTimestamp(performance.now());
     } catch (error) {
       console.error("[JoSan] Failed to load settings:", error);
     }
