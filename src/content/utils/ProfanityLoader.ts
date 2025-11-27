@@ -1,11 +1,13 @@
 import { BloomFilter } from "./BloomFilter";
 import { TrieFilter } from "./TrieFilter";
+import { TextNormalizer } from "./TextNormalizer";
 
 export interface WordListData {
   bloom: BloomFilter;
   trie: TrieFilter;
   wordCount: number;
   language: string;
+  words?: string[]; // Store words for obfuscation detection
 }
 
 export class ProfanityLoader {
@@ -71,6 +73,7 @@ export class ProfanityLoader {
       trie,
       wordCount: words.length,
       language,
+      words, // Store words for obfuscation detection
     };
   }
 
@@ -100,6 +103,7 @@ export class ProfanityLoader {
         trie,
         wordCount: cached.wordCount,
         language,
+        words: cached.words, // Include words for obfuscation detection
       };
     } catch (error) {
       console.warn(`[JoSan] Failed to load ${language} from cache:`, error);
@@ -128,14 +132,88 @@ export class ProfanityLoader {
     }
   }
 
-  // Fast two-stage filtering
+  // Fast two-stage filtering with obfuscation detection
   static filterText(
     text: string,
     wordListData: WordListData,
     replacement: string = "*"
-  ): { filteredText: string; matchCount: number; detectedLanguages: string[] } {
+  ): {
+    filteredText: string;
+    matchCount: number;
+    detectedLanguages: string[];
+    obfuscationDetected?: boolean;
+    obfuscationTypes?: string[];
+  } {
     if (!text || text.length === 0) {
       return { filteredText: text, matchCount: 0, detectedLanguages: [] };
+    }
+
+    // Stage 0: Check for obfuscated profanity (leet speak, spaced, vowel removal)
+    const profanityList = wordListData.words || wordListData.trie.getAllWords();
+    const obfuscationResult = TextNormalizer.containsObfuscatedProfanity(
+      text,
+      profanityList
+    );
+
+    if (obfuscationResult.found) {
+      // Filter the obfuscated content by masking detected patterns
+      let filteredText = text;
+
+      // Create patterns to match obfuscated words and mask them
+      for (const match of obfuscationResult.matches) {
+        // Mask based on obfuscation type
+        if (obfuscationResult.obfuscationType.includes("spaced_profanity")) {
+          // Match spaced patterns like "f u c k" or "f.u.c.k"
+          const spacedPattern = match
+            .split("")
+            .map((c) => `[${c}${c.toUpperCase()}]`)
+            .join("[\\s.\\-_*#@!~\\`'\",;:/\\\\]+");
+          const spacedRegex = new RegExp(spacedPattern, "gi");
+          filteredText = filteredText.replace(spacedRegex, (m) =>
+            replacement.repeat(m.length)
+          );
+        }
+
+        if (obfuscationResult.obfuscationType.includes("leet_speak")) {
+          // Match leet speak patterns - find variations
+          const leetVariations = this.generateLeetVariations(match);
+          for (const variation of leetVariations) {
+            const leetRegex = new RegExp(`\\b${variation}\\b`, "gi");
+            filteredText = filteredText.replace(leetRegex, (m) =>
+              replacement.repeat(m.length)
+            );
+          }
+        }
+
+        if (obfuscationResult.obfuscationType.includes("vowel_removal")) {
+          // Match vowel-removed patterns
+          const vowelRemovedPattern = this.generateVowelRemovedPattern(match);
+          if (vowelRemovedPattern) {
+            const vowelRegex = new RegExp(`\\b${vowelRemovedPattern}\\b`, "gi");
+            filteredText = filteredText.replace(vowelRegex, (m) =>
+              replacement.repeat(m.length)
+            );
+          }
+        }
+      }
+
+      // If obfuscation was detected and matches found, use obfuscation-filtered text
+      // Then continue with normal filtering for any additional matches
+      const trieResult = wordListData.trie.filterText(
+        filteredText,
+        replacement
+      );
+
+      return {
+        filteredText: trieResult.filteredText,
+        matchCount: obfuscationResult.matches.length + trieResult.matchCount,
+        detectedLanguages: [
+          ...trieResult.detectedLanguages,
+          wordListData.language,
+        ].filter((v, i, a) => a.indexOf(v) === i),
+        obfuscationDetected: true,
+        obfuscationTypes: obfuscationResult.obfuscationType,
+      };
     }
 
     // Stage 1: Quick Bloom filter check
@@ -158,17 +236,84 @@ export class ProfanityLoader {
     return wordListData.trie.filterText(text, replacement);
   }
 
-  // Check if text might contain profanity (fast Bloom check)
+  // Generate leet speak variations for a word
+  private static generateLeetVariations(word: string): string[] {
+    const leetReverse: Record<string, string[]> = {
+      o: ["0", "\\(\\)"],
+      i: ["1", "!", "\\|"],
+      z: ["2"],
+      e: ["3", "€", "£"],
+      a: ["4", "@"],
+      s: ["5", "\\$"],
+      g: ["6", "9"],
+      t: ["7", "\\+"],
+      b: ["8"],
+    };
+
+    const variations: string[] = [word];
+
+    // Generate common variations
+    let pattern = "";
+    for (const char of word.toLowerCase()) {
+      if (leetReverse[char]) {
+        pattern += `[${char}${leetReverse[char].join("")}]`;
+      } else {
+        pattern += char;
+      }
+    }
+    variations.push(pattern);
+
+    return variations;
+  }
+
+  // Generate pattern for vowel-removed words
+  private static generateVowelRemovedPattern(word: string): string | null {
+    const vowels = ["a", "e", "i", "o", "u"];
+    const consonantsOnly = word
+      .toLowerCase()
+      .split("")
+      .filter((c) => !vowels.includes(c))
+      .join("");
+
+    if (consonantsOnly.length >= 2 && consonantsOnly !== word) {
+      return consonantsOnly;
+    }
+    return null;
+  }
+
+  // Check if text might contain profanity (fast Bloom check + obfuscation check)
   static mightContainProfanity(
     text: string,
     wordListData: WordListData
   ): boolean {
+    // Check for obfuscated profanity first
+    const profanityList = wordListData.words || wordListData.trie.getAllWords();
+    const obfuscationResult = TextNormalizer.containsObfuscatedProfanity(
+      text,
+      profanityList
+    );
+    if (obfuscationResult.found) {
+      return true;
+    }
+
+    // Then check with Bloom filter
     const words = text.toLowerCase().match(/\b\w+\b/g) || [];
     return words.some((word) => wordListData.bloom.mightContain(word));
   }
 
-  // Precise check using Trie
+  // Precise check using Trie + obfuscation detection
   static containsProfanity(text: string, wordListData: WordListData): boolean {
+    // Check for obfuscated profanity
+    const profanityList = wordListData.words || wordListData.trie.getAllWords();
+    const obfuscationResult = TextNormalizer.containsObfuscatedProfanity(
+      text,
+      profanityList
+    );
+    if (obfuscationResult.found) {
+      return true;
+    }
+
+    // Then check with Trie
     const result = wordListData.trie.filterText(text);
     return result.matchCount > 0;
   }

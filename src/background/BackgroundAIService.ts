@@ -427,7 +427,7 @@ export class BackgroundAIService {
             Authorization: `Bearer ${this.apiKey}`,
           },
           body: JSON.stringify({
-            model: "gpt-5-mini",
+            model: "gpt-4o-mini",
             messages: [
               { role: "system", content: prompt.system },
               { role: "user", content: prompt.user },
