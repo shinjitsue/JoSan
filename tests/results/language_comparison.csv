@@ -1,0 +1,4 @@
+Language,Regex Accuracy,AI Accuracy,Regex F1,AI F1,Regex Latency,AI Latency,Accuracy Δ
+English,77.0%,99.0%,71.6%,99.0%,0.267ms,1110ms,+22.0pp
+Tagalog,74.0%,81.0%,66.7%,78.2%,0.246ms,884ms,+7.0pp
+Bisaya,75.0%,74.0%,69.9%,71.6%,0.148ms,861ms,+-1.0pp

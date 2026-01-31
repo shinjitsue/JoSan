@@ -1,0 +1,9 @@
+Metric,Regex-Only,AI-Enhanced,Improvement
+Overall Accuracy,75.33%,84.67%,+9.34pp
+Precision,91.30%,95.73%,+4.43pp
+Recall,56.00%,74.67%,+18.67pp
+F1 Score,69.42%,83.90%,+14.48pp
+Avg Latency,0.221ms,952.000ms,4308x slower
+False Positives,8,5,-3
+False Negatives,66,38,-28
+Total Errors,74,43,-31
