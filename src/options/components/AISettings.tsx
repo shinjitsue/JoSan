@@ -25,10 +25,12 @@ interface AISettingsProps {
   useAI: boolean;
   filterMild: boolean;
   filterToxic: boolean;
+  filterMode: "interactive" | "strict";
   openaiApiKey: string;
   onUseAIChange: (useAI: boolean) => void;
   onFilterMildChange: (filterMild: boolean) => void;
   onFilterToxicChange: (filterToxic: boolean) => void;
+  onFilterModeChange: (mode: "interactive" | "strict") => void;
   onApiKeyChange: (apiKey: string) => void;
 }
 
@@ -38,10 +40,12 @@ export function AISettings({
   useAI,
   filterMild,
   filterToxic,
+  filterMode,
   openaiApiKey,
   onUseAIChange,
   onFilterMildChange,
   onFilterToxicChange,
+  onFilterModeChange,
   onApiKeyChange,
 }: AISettingsProps) {
   const [showApiKey, setShowApiKey] = useState(false);
@@ -278,6 +282,204 @@ export function AISettings({
                     Harmless content (never filtered)
                   </span>
                 </div>
+              </div>
+            </div>
+
+            {/* Filtering Mode */}
+            <div className="space-y-4 rounded-xl border-2 bg-white dark:bg-gray-900/50 p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01]">
+              <h3 className="font-semibold text-lg flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/50 dark:to-purple-900/50">
+                  <Eye className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                </div>
+                Content Visibility Mode
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Choose how filtered content is displayed on the page
+              </p>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                {/* Interactive Mode Card */}
+                <button
+                  type="button"
+                  onClick={() => onFilterModeChange("interactive")}
+                  className={`relative cursor-pointer p-5 rounded-xl border-2 transition-all duration-300 text-left group hover:shadow-lg ${
+                    filterMode === "interactive"
+                      ? "border-indigo-400 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/40 dark:to-purple-950/40 shadow-md ring-2 ring-indigo-200 dark:ring-indigo-800"
+                      : "border-gray-200 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-700"
+                  }`}
+                >
+                  {/* Selection indicator */}
+                  <div
+                    className={`absolute top-3 right-3 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+                      filterMode === "interactive"
+                        ? "border-indigo-500 bg-indigo-500"
+                        : "border-gray-300 dark:border-gray-600"
+                    }`}
+                  >
+                    {filterMode === "interactive" && (
+                      <CheckCircle className="h-4 w-4 text-white" />
+                    )}
+                  </div>
+
+                  {/* Icon */}
+                  <div
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-300 ${
+                      filterMode === "interactive"
+                        ? "bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30"
+                        : "bg-gray-100 dark:bg-gray-800 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/30"
+                    }`}
+                  >
+                    <Eye
+                      className={`h-6 w-6 transition-colors duration-300 ${
+                        filterMode === "interactive"
+                          ? "text-white"
+                          : "text-gray-500 group-hover:text-indigo-500"
+                      }`}
+                    />
+                  </div>
+
+                  {/* Content */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`font-bold text-lg transition-colors duration-300 ${
+                          filterMode === "interactive"
+                            ? "text-indigo-700 dark:text-indigo-300"
+                            : "text-gray-700 dark:text-gray-300"
+                        }`}
+                      >
+                        Interactive
+                      </span>
+                      <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300">
+                        Default
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Filtered content shows a badge. Click to reveal the
+                      original text, and hide it again anytime.
+                    </p>
+                  </div>
+
+                  {/* Features list */}
+                  <div className="mt-4 space-y-2">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                      Click eye icon to reveal content
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                      Hide content again with one click
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                      Full control over what you see
+                    </div>
+                  </div>
+
+                  {/* Preview */}
+                  <div className="mt-4 p-3 rounded-lg bg-white/80 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
+                    <span className="text-xs text-muted-foreground mb-2 block">
+                      Preview:
+                    </span>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-950/30 dark:to-pink-950/30 border border-red-200 dark:border-red-800">
+                      <span className="text-red-600 dark:text-red-400 font-semibold text-sm">
+                        Harmful Content Blocked
+                      </span>
+                      <span className="flex items-center justify-center w-5 h-5 rounded-full bg-white dark:bg-gray-800 border border-red-200 dark:border-red-700">
+                        <Eye className="h-3 w-3 text-red-500" />
+                      </span>
+                    </div>
+                  </div>
+                </button>
+
+                {/* Strict Mode Card */}
+                <button
+                  type="button"
+                  onClick={() => onFilterModeChange("strict")}
+                  className={`relative cursor-pointer p-5 rounded-xl border-2 transition-all duration-300 text-left group hover:shadow-lg ${
+                    filterMode === "strict"
+                      ? "border-red-400 bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/40 dark:to-orange-950/40 shadow-md ring-2 ring-red-200 dark:ring-red-800"
+                      : "border-gray-200 dark:border-gray-700 hover:border-red-300 dark:hover:border-red-700"
+                  }`}
+                >
+                  {/* Selection indicator */}
+                  <div
+                    className={`absolute top-3 right-3 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+                      filterMode === "strict"
+                        ? "border-red-500 bg-red-500"
+                        : "border-gray-300 dark:border-gray-600"
+                    }`}
+                  >
+                    {filterMode === "strict" && (
+                      <CheckCircle className="h-4 w-4 text-white" />
+                    )}
+                  </div>
+
+                  {/* Icon */}
+                  <div
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-300 ${
+                      filterMode === "strict"
+                        ? "bg-gradient-to-br from-red-500 to-orange-600 shadow-lg shadow-red-500/30"
+                        : "bg-gray-100 dark:bg-gray-800 group-hover:bg-red-100 dark:group-hover:bg-red-900/30"
+                    }`}
+                  >
+                    <EyeOff
+                      className={`h-6 w-6 transition-colors duration-300 ${
+                        filterMode === "strict"
+                          ? "text-white"
+                          : "text-gray-500 group-hover:text-red-500"
+                      }`}
+                    />
+                  </div>
+
+                  {/* Content */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`font-bold text-lg transition-colors duration-300 ${
+                          filterMode === "strict"
+                            ? "text-red-700 dark:text-red-300"
+                            : "text-gray-700 dark:text-gray-300"
+                        }`}
+                      >
+                        Strict
+                      </span>
+                      <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300">
+                        Maximum Protection
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Permanently blocks harmful content. No option to reveal
+                      filtered text.
+                    </p>
+                  </div>
+
+                  {/* Features list */}
+                  <div className="mt-4 space-y-2">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                      Content is permanently hidden
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                      No reveal option available
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                      Best for sensitive users
+                    </div>
+                  </div>
+
+                  {/* Preview */}
+                  <div className="mt-4 p-3 rounded-lg bg-white/80 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700">
+                    <span className="text-xs text-muted-foreground mb-2 block">
+                      Preview:
+                    </span>
+                    <span className="inline-block px-3 py-1.5 rounded-md bg-red-100 dark:bg-red-950/50 border border-red-300 dark:border-red-800 text-red-700 dark:text-red-400 font-semibold text-sm">
+                      Harmful Content Blocked
+                    </span>
+                  </div>
+                </button>
               </div>
             </div>
           </div>

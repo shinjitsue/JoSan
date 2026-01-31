@@ -36,6 +36,12 @@ export class DOMProcessor {
   // Cache original text so placeholder races never lose it
   private originalTextMap = new WeakMap<Node, string>();
 
+  // Track AI replacements so we can update them when results arrive
+  private aiReplacementMap = new WeakMap<Node, HTMLElement>();
+
+  // Filter mode: "interactive" allows reveal, "strict" blocks permanently
+  private filterMode: "interactive" | "strict" = "interactive";
+
   // Invalidate a node (and descendants) so it can be reprocessed
   invalidate(node: Node): void {
     const walk = (n: Node) => {
@@ -48,6 +54,11 @@ export class DOMProcessor {
   // Baseline for latency logs; set by FilterProcessor after settings load
   setStartTimestamp(ts: number): void {
     this.startTimestamp = ts;
+  }
+
+  // Set the filter mode (interactive or strict)
+  setFilterMode(mode: "interactive" | "strict"): void {
+    this.filterMode = mode;
   }
 
   processPage(
@@ -196,25 +207,37 @@ export class DOMProcessor {
     const langName =
       aiResult.language || FastLanguageDetector.getLanguageName(language.code);
 
-    const filteredText = this.getFilteredText(originalText, level);
-    const parent = textNode.parentElement;
+    // Create replacement based on filter mode
+    const replacement =
+      this.filterMode === "interactive"
+        ? this.createInteractiveReplacement(
+            originalText,
+            level,
+            aiResult.reason
+          )
+        : this.createStrictReplacement(originalText, level);
 
-    if (parent) {
-      const span = document.createElement("span");
-      span.textContent = filteredText;
-      span.style.cssText = this.getFilterStyle(level);
-      span.title = `Content filtered: ${aiResult.reason || level}`;
-      span.setAttribute("data-josan-filtered", level);
-      parent.replaceChild(span, textNode);
-      this.processedNodes.add(span);
+    // Check if we previously created an element replacement for this node
+    const existing = this.aiReplacementMap.get(textNode);
+    if (existing && existing.parentElement) {
+      // Replace the existing element with the new replacement
+      existing.parentElement.replaceChild(replacement, existing);
+      this.processedNodes.add(replacement);
+      this.aiReplacementMap.set(textNode, replacement);
+    } else if (textNode.parentElement) {
+      // Replace text node with replacement
+      textNode.parentElement.replaceChild(replacement, textNode);
+      this.processedNodes.add(replacement);
+      this.aiReplacementMap.set(textNode, replacement);
     } else {
-      textNode.nodeValue = filteredText;
+      // Fallback when no parent - just set text
+      textNode.nodeValue = this.getFilteredText(originalText, level);
     }
 
     console.log(
       `[JoSan AI] Content filtered: ${level} in ${langName} (confidence: ${
         aiResult.confidence?.toFixed(2) || "unknown"
-      })`
+      }) [Mode: ${this.filterMode}]`
     );
 
     // Latency metrics
@@ -260,14 +283,330 @@ export class DOMProcessor {
     return `Content Filtered`;
   }
 
-  private getFilterStyle(level: string): string {
+  // Get colors based on severity level
+  private getLevelColors(level: string): {
+    bg: string;
+    border: string;
+    text: string;
+    hoverBg: string;
+    gradient: string;
+    shadow: string;
+  } {
     if (level === "toxic") {
-      return "background-color: #fee; color: #c33; padding: 2px 6px; border-radius: 4px; border: 1px solid #fcc; cursor: help; font-size: 0.875em; font-weight: 500;";
+      return {
+        bg: "#fef2f2",
+        border: "#fecaca",
+        text: "#dc2626",
+        hoverBg: "#fee2e2",
+        gradient: "linear-gradient(135deg, #fef2f2 0%, #fce7f3 100%)",
+        shadow: "rgba(220, 38, 38, 0.15)",
+      };
     }
     if (level === "mild") {
-      return "background-color: #fff3cd; color: #856404; padding: 2px 6px; border-radius: 4px; border: 1px solid #ffeaa7; cursor: help; font-size: 0.875em;";
+      return {
+        bg: "#fffbeb",
+        border: "#fde68a",
+        text: "#d97706",
+        hoverBg: "#fef3c7",
+        gradient: "linear-gradient(135deg, #fffbeb 0%, #fef9c3 100%)",
+        shadow: "rgba(217, 119, 6, 0.15)",
+      };
     }
-    return "background-color: #f8f9fa; color: #6c757d; padding: 2px 6px; border-radius: 4px; border: 1px solid #dee2e6; cursor: help; font-size: 0.875em;";
+    return {
+      bg: "#f3f4f6",
+      border: "#e5e7eb",
+      text: "#6b7280",
+      hoverBg: "#e5e7eb",
+      gradient: "linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)",
+      shadow: "rgba(107, 114, 128, 0.15)",
+    };
+  }
+
+  // Create STRICT mode replacement - just colored text, no interaction
+  private createStrictReplacement(
+    originalText: string,
+    level: string
+  ): HTMLSpanElement {
+    const colors = this.getLevelColors(level);
+    const filteredText = this.getFilteredText(originalText, level);
+
+    const span = document.createElement("span");
+    span.setAttribute("data-josan-filtered", level);
+    span.setAttribute("data-josan-mode", "strict");
+    span.style.cssText = `
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: ${colors.text};
+      font-weight: 600;
+      background: ${colors.gradient};
+      padding: 4px 12px;
+      border-radius: 8px;
+      border: 1px solid ${colors.border};
+      font-size: 0.875em;
+      box-shadow: 0 1px 3px ${colors.shadow};
+    `;
+
+    span.textContent = filteredText;
+
+    return span;
+  }
+
+  // Create INTERACTIVE mode replacement - users can reveal/hide content
+  private createInteractiveReplacement(
+    originalText: string,
+    level: string,
+    reason?: string
+  ): HTMLSpanElement {
+    const colors = this.getLevelColors(level);
+    const filteredText = this.getFilteredText(originalText, level);
+
+    // Main container
+    const container = document.createElement("span");
+    container.setAttribute("data-josan-filtered", level);
+    container.setAttribute("data-josan-mode", "interactive");
+    container.style.cssText = `
+      display: inline;
+      position: relative;
+    `;
+
+    // Badge element (shown when content is hidden)
+    const badge = document.createElement("span");
+    badge.className = "josan-badge";
+    badge.style.cssText = `
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: ${colors.gradient};
+      border: 1.5px solid ${colors.border};
+      color: ${colors.text};
+      font-weight: 600;
+      font-size: 0.85em;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 6px ${colors.shadow};
+      user-select: none;
+    `;
+
+    // Text for badge
+    const badgeText = document.createElement("span");
+    badgeText.textContent = filteredText;
+    badgeText.style.cssText = "white-space: nowrap;";
+
+    // Eye icon button (reveal button)
+    const eyeBtn = document.createElement("button");
+    eyeBtn.type = "button";
+    eyeBtn.setAttribute("aria-label", "Reveal content");
+    eyeBtn.title = "Click to reveal content";
+    eyeBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+    eyeBtn.style.cssText = `
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1.5px solid ${colors.border};
+      color: ${colors.text};
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0;
+      margin-left: 4px;
+      flex-shrink: 0;
+    `;
+
+    badge.appendChild(badgeText);
+    badge.appendChild(eyeBtn);
+
+    // Original content element (hidden initially)
+    const originalContent = document.createElement("span");
+    originalContent.className = "josan-original";
+    originalContent.style.cssText = `
+      display: none;
+      align-items: center;
+      gap: 8px;
+    `;
+
+    // The actual text with styling
+    const textSpan = document.createElement("span");
+    textSpan.textContent = originalText;
+    textSpan.style.cssText = `
+      padding: 5px 12px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.06) 100%);
+      border: 1.5px dashed ${colors.border};
+      color: inherit;
+      font-style: italic;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    `;
+
+    // Hide button with eye-off icon
+    const hideBtn = document.createElement("button");
+    hideBtn.type = "button";
+    hideBtn.setAttribute("aria-label", "Hide content");
+    hideBtn.title = "Click to hide content";
+    hideBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+    hideBtn.style.cssText = `
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: ${colors.bg};
+      border: 1.5px solid ${colors.border};
+      color: ${colors.text};
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0;
+      flex-shrink: 0;
+    `;
+
+    originalContent.appendChild(textSpan);
+    originalContent.appendChild(hideBtn);
+
+    container.appendChild(badge);
+    container.appendChild(originalContent);
+
+    // State management
+    let isRevealed = false;
+
+    const showOriginal = () => {
+      isRevealed = true;
+      badge.style.cssText = `
+        display: none;
+        opacity: 0;
+        transform: scale(0.95);
+      `;
+      originalContent.style.cssText = `
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        animation: josan-fade-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      `;
+    };
+
+    const showBadge = () => {
+      isRevealed = false;
+      originalContent.style.cssText = `
+        display: none;
+        opacity: 0;
+        transform: scale(0.95);
+      `;
+      badge.style.cssText = `
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 14px;
+        border-radius: 20px;
+        background: ${colors.gradient};
+        border: 1.5px solid ${colors.border};
+        color: ${colors.text};
+        font-weight: 600;
+        font-size: 0.85em;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 6px ${colors.shadow};
+        user-select: none;
+        animation: josan-fade-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      `;
+    };
+
+    // Event handlers
+    eyeBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      showOriginal();
+    });
+
+    badge.addEventListener("click", (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      showOriginal();
+    });
+
+    hideBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      showBadge();
+    });
+
+    // Hover effects for badge
+    badge.addEventListener("mouseenter", () => {
+      if (!isRevealed) {
+        badge.style.transform = "translateY(-2px)";
+        badge.style.boxShadow = `0 6px 16px ${colors.shadow}`;
+      }
+    });
+
+    badge.addEventListener("mouseleave", () => {
+      if (!isRevealed) {
+        badge.style.transform = "translateY(0)";
+        badge.style.boxShadow = `0 2px 6px ${colors.shadow}`;
+      }
+    });
+
+    // Hover effects for buttons
+    [eyeBtn, hideBtn].forEach((btn) => {
+      btn.addEventListener("mouseenter", () => {
+        btn.style.transform = "scale(1.15)";
+        btn.style.boxShadow = `0 3px 10px ${colors.shadow}`;
+      });
+      btn.addEventListener("mouseleave", () => {
+        btn.style.transform = "scale(1)";
+        btn.style.boxShadow = "none";
+      });
+    });
+
+    // Set tooltip
+    container.title = reason
+      ? `Filtered: ${reason}`
+      : `Content classified as ${level} - Click to reveal`;
+
+    // Inject keyframe animation if not already present
+    this.injectAnimationStyles();
+
+    return container;
+  }
+
+  // Inject CSS animation styles into the document
+  private injectAnimationStyles(): void {
+    const styleId = "josan-animation-styles";
+    if (document.getElementById(styleId)) return;
+
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = `
+      @keyframes josan-fade-in {
+        from {
+          opacity: 0;
+          transform: scale(0.95) translateY(-2px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+      
+      @keyframes josan-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+      }
+      
+      [data-josan-filtered] {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+      
+      [data-josan-mode="interactive"] .josan-badge:focus-visible,
+      [data-josan-mode="interactive"] button:focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: 2px;
+      }
+    `;
+    document.head.appendChild(style);
   }
 
   getProcessedNodesCount(): number {
@@ -279,6 +618,7 @@ export class DOMProcessor {
     this.processedCount = 0;
     this.originalTextMap = new WeakMap();
     this.placeholderTimes = new WeakMap();
+    this.aiReplacementMap = new WeakMap();
     this.startTimestamp = null;
   }
 }

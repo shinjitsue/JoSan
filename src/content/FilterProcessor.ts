@@ -9,6 +9,7 @@ interface FilterSettings {
   useAI: boolean;
   filterMild: boolean;
   filterToxic: boolean;
+  filterMode: "interactive" | "strict";
 }
 
 interface WordListSet {
@@ -40,6 +41,7 @@ export class FilterProcessor {
     useAI: false,
     filterMild: false,
     filterToxic: true,
+    filterMode: "interactive",
   };
   private wordLists: WordListSet = {
     english: null,
@@ -111,6 +113,9 @@ export class FilterProcessor {
       );
       // Set latency baseline timestamp right after settings are loaded/logged
       this.domProcessor.setStartTimestamp(performance.now());
+      // Set filter mode for DOM processor
+      this.domProcessor.setFilterMode(this.filterSettings.filterMode);
+      console.log(`[JoSan] Filter mode: ${this.filterSettings.filterMode}`);
     } catch (error) {
       console.error("[JoSan] Failed to load settings:", error);
     }
@@ -225,7 +230,24 @@ export class FilterProcessor {
     this.activeAiRequests.set(textNode, requestId);
     this.performanceStats.aiRequests++;
 
-    this.domProcessor.setPlaceholder(textNode, language);
+    // Immediately mask content (no "Analyzing" placeholder) while AI runs
+    try {
+      this.domProcessor.applyAIFilter(
+        textNode,
+        fullOriginal,
+        {
+          id: requestId,
+          action: "filter",
+          classification: "pending",
+          confidence: 1,
+          language: language.code,
+          reason: "Pending AI analysis",
+        },
+        language
+      );
+    } catch (e) {
+      console.warn("[JoSan] Failed to set immediate mask:", e);
+    }
 
     try {
       const aiResult = await this.contentAIProxy.processWithAI(
@@ -264,12 +286,17 @@ export class FilterProcessor {
         );
 
         if (fallbackResult.filterResult.matchCount > 0) {
-          this.domProcessor.applyRegexFilter(
+          // Keep the immediate masked element; update it to strict/interactive generic
+          this.domProcessor.applyAIFilter(
             textNode,
+            fullOriginal,
             {
-              filteredText: fallbackResult.filterResult.filteredText,
-              matchCount: fallbackResult.filterResult.matchCount,
-              detectedLanguages: fallbackResult.filterResult.detectedLanguages,
+              id: requestId,
+              action: "filter",
+              classification: "mild", // fallback to a safe label
+              confidence: 0.5,
+              language: language.code,
+              reason: "Regex fallback",
             },
             language
           );
@@ -287,7 +314,7 @@ export class FilterProcessor {
       if (aiResult.action === "filter") {
         this.domProcessor.applyAIFilter(
           textNode,
-          originalText,
+          fullOriginal,
           aiResult,
           language
         );

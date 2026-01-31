@@ -21,6 +21,7 @@ interface Settings {
   useAI: boolean;
   filterMild: boolean;
   filterToxic: boolean;
+  filterMode: "interactive" | "strict";
   openaiApiKey: string;
 }
 
@@ -47,6 +48,7 @@ function Options() {
     useAI: false,
     filterMild: false,
     filterToxic: true,
+    filterMode: "interactive",
     openaiApiKey: "",
   });
   const [saved, setSaved] = useState(false);
@@ -101,6 +103,7 @@ function Options() {
         useAI: false,
         filterMild: false,
         filterToxic: true,
+        filterMode: "interactive",
         openaiApiKey: "",
       },
       (items) => {
@@ -130,7 +133,14 @@ function Options() {
             ];
 
         // Apply sanitized settings
-        setSettings({ ...(items as Settings), enabledPlatforms } as Settings);
+        const itemsTyped = items as Partial<Settings>;
+        const merged: Settings = {
+          ...(items as Settings),
+          enabledPlatforms,
+          filterMode:
+            itemsTyped.filterMode === "strict" ? "strict" : "interactive",
+        };
+        setSettings(merged);
       }
     );
   }, []);
@@ -220,6 +230,7 @@ function Options() {
             useAI={settings.useAI}
             filterMild={settings.filterMild}
             filterToxic={settings.filterToxic}
+            filterMode={settings.filterMode}
             openaiApiKey={settings.openaiApiKey}
             onUseAIChange={(useAI) => updateSetting("useAI", useAI)}
             onFilterMildChange={(filterMild) =>
@@ -228,6 +239,7 @@ function Options() {
             onFilterToxicChange={(filterToxic) =>
               updateSetting("filterToxic", filterToxic)
             }
+            onFilterModeChange={(mode) => updateSetting("filterMode", mode)}
             onApiKeyChange={(apiKey) => updateSetting("openaiApiKey", apiKey)}
           />
 

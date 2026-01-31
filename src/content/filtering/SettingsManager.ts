@@ -5,6 +5,7 @@ interface FilterSettings {
   useAI: boolean;
   filterMild: boolean;
   filterToxic: boolean;
+  filterMode: "interactive" | "strict";
 }
 
 interface WordListSet {
@@ -26,6 +27,7 @@ export class SettingsManager {
     useAI: false,
     filterMild: false,
     filterToxic: true,
+    filterMode: "interactive",
   };
 
   private isEnabled = true;
@@ -90,6 +92,7 @@ export class SettingsManager {
         useAI: false,
         filterMild: false,
         filterToxic: true,
+        filterMode: "interactive",
         openaiApiKey: "",
       });
 
@@ -99,6 +102,7 @@ export class SettingsManager {
         useAI: result.useAI,
         filterMild: result.filterMild,
         filterToxic: result.filterToxic,
+        filterMode: result.filterMode === "strict" ? "strict" : "interactive",
       };
 
       // Send API key to background service if AI is enabled
