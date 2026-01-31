@@ -29,3 +29,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Release - Private keys (CRITICAL: never commit)
+release/*.pem
+*.pem
+
+# Build artifacts at root level
+dist.crx
