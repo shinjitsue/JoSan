@@ -1,0 +1,163 @@
+# Automated Release Workflow for JoSan Chrome Extension
+# Triggers on push to main when version changes in manifest.json
+
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "manifest.json" # Only trigger when manifest version changes
+
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      skip_build:
+        description: "Skip build (use existing dist)"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write # Required for creating releases
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+      version_changed: ${{ steps.check_change.outputs.changed }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # Need previous commit to compare
+
+      - name: Get version from manifest
+        id: get_version
+        run: |
+          VERSION=$(jq -r '.version' manifest.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "📦 Current version: $VERSION"
+
+      - name: Check if version changed
+        id: check_change
+        run: |
+          # Get version from previous commit
+          git show HEAD~1:manifest.json > /tmp/old_manifest.json 2>/dev/null || echo '{"version":"0.0.0"}' > /tmp/old_manifest.json
+          OLD_VERSION=$(jq -r '.version' /tmp/old_manifest.json)
+          NEW_VERSION=$(jq -r '.version' manifest.json)
+
+          if [ "$OLD_VERSION" != "$NEW_VERSION" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "✅ Version changed: $OLD_VERSION → $NEW_VERSION"
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ Version unchanged: $NEW_VERSION"
+          fi
+
+  build-and-release:
+    needs: check-version
+    if: needs.check-version.outputs.version_changed == 'true' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build extension
+        if: github.event.inputs.skip_build != 'true'
+        run: npm run build
+
+      - name: Get version info
+        id: version_info
+        run: |
+          VERSION=$(jq -r '.version' manifest.json)
+          VERSION_NAME=$(jq -r '.version_name // .version' manifest.json)
+          MAJOR_VERSION=$(echo $VERSION | cut -d. -f1)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "major_version=$MAJOR_VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create release directories
+        run: |
+          mkdir -p release/v${{ steps.version_info.outputs.major_version }}
+          mkdir -p release/latest
+
+      - name: Create ZIP archive
+        run: |
+          cd dist
+          zip -r ../release/v${{ steps.version_info.outputs.major_version }}/josan-v${{ steps.version_info.outputs.version }}.zip .
+          cp ../release/v${{ steps.version_info.outputs.major_version }}/josan-v${{ steps.version_info.outputs.version }}.zip ../release/latest/josan-latest.zip
+          cd ..
+          echo "📦 Created ZIP archive"
+
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          VERSION="${{ steps.version_info.outputs.version }}"
+          DATE=$(date +%Y-%m-%d)
+
+          # Extract changelog section for this version if exists
+          if grep -q "\[$VERSION\]" CHANGELOG.md 2>/dev/null; then
+            # Extract section between this version and next version header
+            NOTES=$(sed -n "/## \[$VERSION\]/,/## \[/p" CHANGELOG.md | head -n -1)
+          else
+            NOTES="## What's Changed
+
+          - See commit history for detailed changes
+          "
+          fi
+
+          # Write to file for the release
+          cat > release_notes.md << EOF
+          # JoSan v$VERSION
+
+          **Release Date:** $DATE
+          **Full Changelog:** https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md
+
+          $NOTES
+
+          ## Installation
+
+          1. Download \`josan-v$VERSION.zip\` below
+          2. Extract to a folder
+          3. Open Chrome → \`chrome://extensions/\`
+          4. Enable "Developer mode"
+          5. Click "Load unpacked" and select the extracted folder
+
+          ---
+          *Built with ❤️ for a cleaner social media experience*
+          EOF
+
+          echo "📝 Generated release notes"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version_info.outputs.version }}
+          name: JoSan v${{ steps.version_info.outputs.version }}
+          body_path: release_notes.md
+          draft: false
+          prerelease: ${{ contains(steps.version_info.outputs.version_name, 'Beta') || contains(steps.version_info.outputs.version_name, 'Alpha') || contains(steps.version_info.outputs.version_name, 'RC') }}
+          files: |
+            release/v${{ steps.version_info.outputs.major_version }}/josan-v${{ steps.version_info.outputs.version }}.zip
+          generate_release_notes: true # Adds auto-generated notes from commits
+
+      - name: Summary
+        run: |
+          echo "## 🎉 Release Created Successfully!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** v${{ steps.version_info.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Tag:** v${{ steps.version_info.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Release:** https://github.com/${{ github.repository }}/releases/tag/v${{ steps.version_info.outputs.version }}" >> $GITHUB_STEP_SUMMARY

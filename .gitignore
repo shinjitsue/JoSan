@@ -12,7 +12,10 @@ node_modules
 dist
 dist-ssr
 *.local
-.github
+# GitHub configs (ignore most, but allow workflows)
+.github/*
+!.github/workflows/
+!.github/workflows/**
 
 # Environment variables
 .env
