@@ -1,0 +1,5174 @@
+{
+  "testType": "ai",
+  "timestamp": "2026-02-01T07:16:08.661Z",
+  "totalTests": 300,
+  "correctPredictions": 183,
+  "overallAccuracy": 0.61,
+  "precision": 0.73125,
+  "recall": 0.78,
+  "f1Score": 0.7548387096774193,
+  "confusionMatrix": {
+    "truePositives": 117,
+    "falsePositives": 43,
+    "trueNegatives": 107,
+    "falseNegatives": 33
+  },
+  "latencyStats": {
+    "totalTimeMs": 80.28999999999999,
+    "avgLatencyMs": 0.22678499999999902,
+    "minLatencyMs": 0.08220000000000027,
+    "maxLatencyMs": 2.4454000000000065,
+    "medianLatencyMs": 0.19579999999999131,
+    "p95LatencyMs": 0.39910000000000423
+  },
+  "obfuscationStats": {
+    "totalObfuscated": 113,
+    "correctlyClassified": 79,
+    "accuracy": 0.6991150442477876
+  },
+  "byLanguage": [
+    {
+      "language": "english",
+      "total": 100,
+      "correct": 48,
+      "accuracy": 0.48,
+      "truePositives": 33,
+      "falsePositives": 17,
+      "trueNegatives": 33,
+      "falseNegatives": 17,
+      "precision": 0.66,
+      "recall": 0.66,
+      "f1Score": 0.66,
+      "avgLatencyMs": 0.27333399999999985
+    },
+    {
+      "language": "tagalog",
+      "total": 100,
+      "correct": 67,
+      "accuracy": 0.67,
+      "truePositives": 43,
+      "falsePositives": 14,
+      "trueNegatives": 36,
+      "falseNegatives": 7,
+      "precision": 0.7543859649122807,
+      "recall": 0.86,
+      "f1Score": 0.8037383177570094,
+      "avgLatencyMs": 0.218382
+    },
+    {
+      "language": "bisaya",
+      "total": 100,
+      "correct": 68,
+      "accuracy": 0.68,
+      "truePositives": 41,
+      "falsePositives": 12,
+      "trueNegatives": 38,
+      "falseNegatives": 9,
+      "precision": 0.7735849056603774,
+      "recall": 0.82,
+      "f1Score": 0.796116504854369,
+      "avgLatencyMs": 0.18863899999999717
+    }
+  ],
+  "byCategory": [
+    {
+      "category": "scunthorpe",
+      "total": 26,
+      "correct": 20,
+      "accuracy": 0.7692307692307693
+    },
+    {
+      "category": "academic",
+      "total": 24,
+      "correct": 18,
+      "accuracy": 0.75
+    },
+    {
+      "category": "reporting",
+      "total": 11,
+      "correct": 7,
+      "accuracy": 0.6363636363636364
+    },
+    {
+      "category": "medical",
+      "total": 16,
+      "correct": 7,
+      "accuracy": 0.4375
+    },
+    {
+      "category": "literary",
+      "total": 3,
+      "correct": 3,
+      "accuracy": 1
+    },
+    {
+      "category": "gaming",
+      "total": 8,
+      "correct": 6,
+      "accuracy": 0.75
+    },
+    {
+      "category": "sports",
+      "total": 8,
+      "correct": 8,
+      "accuracy": 1
+    },
+    {
+      "category": "cooking",
+      "total": 11,
+      "correct": 6,
+      "accuracy": 0.5454545454545454
+    },
+    {
+      "category": "technical",
+      "total": 3,
+      "correct": 1,
+      "accuracy": 0.3333333333333333
+    },
+    {
+      "category": "frustration",
+      "total": 16,
+      "correct": 15,
+      "accuracy": 0.9375
+    },
+    {
+      "category": "criticism",
+      "total": 11,
+      "correct": 7,
+      "accuracy": 0.6363636363636364
+    },
+    {
+      "category": "homophones",
+      "total": 5,
+      "correct": 4,
+      "accuracy": 0.8
+    },
+    {
+      "category": "leet_speak",
+      "total": 24,
+      "correct": 17,
+      "accuracy": 0.7083333333333334
+    },
+    {
+      "category": "spaced",
+      "total": 18,
+      "correct": 14,
+      "accuracy": 0.7777777777777778
+    },
+    {
+      "category": "vowel_removal",
+      "total": 6,
+      "correct": 0,
+      "accuracy": 0
+    },
+    {
+      "category": "direct",
+      "total": 21,
+      "correct": 15,
+      "accuracy": 0.7142857142857143
+    },
+    {
+      "category": "threat",
+      "total": 17,
+      "correct": 5,
+      "accuracy": 0.29411764705882354
+    },
+    {
+      "category": "hate",
+      "total": 17,
+      "correct": 0,
+      "accuracy": 0
+    },
+    {
+      "category": "bullying",
+      "total": 17,
+      "correct": 6,
+      "accuracy": 0.35294117647058826
+    },
+    {
+      "category": "subtle",
+      "total": 17,
+      "correct": 8,
+      "accuracy": 0.47058823529411764
+    },
+    {
+      "category": "mixed",
+      "total": 5,
+      "correct": 3,
+      "accuracy": 0.6
+    },
+    {
+      "category": "religious",
+      "total": 8,
+      "correct": 5,
+      "accuracy": 0.625
+    },
+    {
+      "category": "acronym",
+      "total": 4,
+      "correct": 4,
+      "accuracy": 1
+    },
+    {
+      "category": "compound",
+      "total": 4,
+      "correct": 4,
+      "accuracy": 1
+    }
+  ],
+  "results": [
+    {
+      "testId": 1,
+      "language": "english",
+      "text": "I play bass guitar in a local band every weekend",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "scunthorpe",
+      "isCorrect": false,
+      "processingTimeMs": 0.6504999999999939,
+      "matchCount": 1,
+      "matchedWords": [
+        "bass"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 2,
+      "language": "english",
+      "text": "The classic cocktail party was absolutely elegant",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "scunthorpe",
+      "isCorrect": false,
+      "processingTimeMs": 0.40680000000000405,
+      "matchCount": 1,
+      "matchedWords": [
+        "cocktail"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 3,
+      "language": "english",
+      "text": "She won the breaststroke competition at the Olympics",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.33899999999999864,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 4,
+      "language": "english",
+      "text": "The assassin in the movie had a tragic backstory",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "scunthorpe",
+      "isCorrect": false,
+      "processingTimeMs": 0.3182999999999936,
+      "matchCount": 1,
+      "matchedWords": [
+        "assassin"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 5,
+      "language": "english",
+      "text": "Scunthorpe is a lovely town in Lincolnshire, England",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "scunthorpe",
+      "isCorrect": false,
+      "processingTimeMs": 0.2627999999999986,
+      "matchCount": 1,
+      "matchedWords": [
+        "scunthorpe"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 6,
+      "language": "english",
+      "text": "The massage therapist helped relieve my back pain",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.241800000000012,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 7,
+      "language": "english",
+      "text": "We need to analyze the data before making conclusions",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.22460000000000946,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 8,
+      "language": "english",
+      "text": "The assembly line workers were very efficient today",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.2522000000000162,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 9,
+      "language": "english",
+      "text": "Buckingham Palace is a beautiful historical landmark",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.2878000000000043,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 10,
+      "language": "english",
+      "text": "The therapist recommended cognitive behavioral therapy",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.18180000000000973,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 11,
+      "language": "english",
+      "text": "The study examined how hate speech affects online communities",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "academic",
+      "isCorrect": false,
+      "processingTimeMs": 0.183400000000006,
+      "matchCount": 1,
+      "matchedWords": [
+        "hate"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 12,
+      "language": "english",
+      "text": "Research shows that profanity usage varies across cultures",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.17079999999998563,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 13,
+      "language": "english",
+      "text": "The documentary explored the history of racial slurs in America",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "academic",
+      "isCorrect": false,
+      "processingTimeMs": 0.19199999999997885,
+      "matchCount": 1,
+      "matchedWords": [
+        "racial"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 14,
+      "language": "english",
+      "text": "Psychologists study the psychological impact of bullying on children",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.19729999999998427,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 15,
+      "language": "english",
+      "text": "The professor lectured on sexual harassment in the workplace",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "academic",
+      "isCorrect": false,
+      "processingTimeMs": 0.17429999999998813,
+      "matchCount": 1,
+      "matchedWords": [
+        "sexual"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 16,
+      "language": "english",
+      "text": "This book analyzes toxic masculinity in modern media",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.28010000000000446,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 17,
+      "language": "english",
+      "text": "The course covers the ethics of violent video games",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.2411000000000172,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 18,
+      "language": "english",
+      "text": "Researchers found that aggressive behavior decreases with age",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.27609999999998536,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 19,
+      "language": "english",
+      "text": "The witness said 'he called me a bad name' during testimony",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "reporting",
+      "isCorrect": true,
+      "processingTimeMs": 0.2569000000000017,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 20,
+      "language": "english",
+      "text": "The content filter detected the word 'shit' in 42 posts",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "reporting",
+      "isCorrect": true,
+      "processingTimeMs": 0.5906999999999982,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 21,
+      "language": "english",
+      "text": "Users complained about seeing explicit content on the platform",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "reporting",
+      "isCorrect": true,
+      "processingTimeMs": 0.24139999999999873,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 22,
+      "language": "english",
+      "text": "The patient complained of penile discomfort after the procedure",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "medical",
+      "isCorrect": false,
+      "processingTimeMs": 0.2313000000000045,
+      "matchCount": 1,
+      "matchedWords": [
+        "penile"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 23,
+      "language": "english",
+      "text": "Breast cancer awareness month is in October every year",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "medical",
+      "isCorrect": true,
+      "processingTimeMs": 0.2866999999999962,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 24,
+      "language": "english",
+      "text": "The urologist specializes in erectile dysfunction treatment",
+      "expectedLabel": "clean",
+      "predictedLabel": "toxic",
+      "category": "medical",
+      "isCorrect": false,
+      "processingTimeMs": 0.2647000000000048,
+      "matchCount": 2,
+      "matchedWords": [
+        "urologist",
+        "erectile"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 25,
+      "language": "english",
+      "text": "Testicular self-examination is important for early detection",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "medical",
+      "isCorrect": false,
+      "processingTimeMs": 0.25329999999999586,
+      "matchCount": 1,
+      "matchedWords": [
+        "testicular"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 26,
+      "language": "english",
+      "text": "The character screamed in anger but the dialogue was censored",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "literary",
+      "isCorrect": true,
+      "processingTimeMs": 0.27549999999999386,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 27,
+      "language": "english",
+      "text": "The novel depicts the harsh realities of prison life",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "literary",
+      "isCorrect": true,
+      "processingTimeMs": 0.20570000000000732,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 28,
+      "language": "english",
+      "text": "Shakespeare used crude humor throughout his comedies",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "literary",
+      "isCorrect": true,
+      "processingTimeMs": 0.14949999999998909,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 29,
+      "language": "english",
+      "text": "He got killed in the game and had to respawn at base",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "gaming",
+      "isCorrect": false,
+      "processingTimeMs": 0.1799000000000035,
+      "matchCount": 1,
+      "matchedWords": [
+        "killed"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 30,
+      "language": "english",
+      "text": "The boxer destroyed his opponent in the third round",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "sports",
+      "isCorrect": true,
+      "processingTimeMs": 0.1436999999999955,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 31,
+      "language": "english",
+      "text": "That team got absolutely murdered on the scoreboard yesterday",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "sports",
+      "isCorrect": true,
+      "processingTimeMs": 0.1938000000000102,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 32,
+      "language": "english",
+      "text": "The sniper headshot was incredible, what a play!",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "gaming",
+      "isCorrect": false,
+      "processingTimeMs": 0.4117999999999995,
+      "matchCount": 1,
+      "matchedWords": [
+        "sniper"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 33,
+      "language": "english",
+      "text": "Beat the eggs vigorously until peaks form",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "cooking",
+      "isCorrect": false,
+      "processingTimeMs": 0.1577999999999804,
+      "matchCount": 1,
+      "matchedWords": [
+        "beat"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 34,
+      "language": "english",
+      "text": "Whip the cream until it's stiff and glossy",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "cooking",
+      "isCorrect": true,
+      "processingTimeMs": 0.1858000000000004,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 35,
+      "language": "english",
+      "text": "The spotted dick is a traditional British dessert",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "cooking",
+      "isCorrect": false,
+      "processingTimeMs": 0.19900000000001228,
+      "matchCount": 1,
+      "matchedWords": [
+        "dick"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 36,
+      "language": "english",
+      "text": "The slave device must be connected to the master controller",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "technical",
+      "isCorrect": false,
+      "processingTimeMs": 0.21389999999999532,
+      "matchCount": 1,
+      "matchedWords": [
+        "slave"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 37,
+      "language": "english",
+      "text": "Execute the kill command to terminate the process",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "technical",
+      "isCorrect": false,
+      "processingTimeMs": 0.19370000000000687,
+      "matchCount": 1,
+      "matchedWords": [
+        "kill"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 38,
+      "language": "english",
+      "text": "The daemon process runs in the background continuously",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "technical",
+      "isCorrect": true,
+      "processingTimeMs": 0.1852000000000089,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 39,
+      "language": "english",
+      "text": "This is so frustrating, I've been trying for hours!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "frustration",
+      "isCorrect": true,
+      "processingTimeMs": 0.3697999999999979,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 40,
+      "language": "english",
+      "text": "Ugh, I can't believe this happened again",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "frustration",
+      "isCorrect": true,
+      "processingTimeMs": 0.180499999999995,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 41,
+      "language": "english",
+      "text": "This situation is absolutely terrible and disappointing",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "frustration",
+      "isCorrect": true,
+      "processingTimeMs": 0.2161000000000115,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 42,
+      "language": "english",
+      "text": "I'm so angry right now I could scream",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "frustration",
+      "isCorrect": true,
+      "processingTimeMs": 0.17449999999999477,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 43,
+      "language": "english",
+      "text": "Your argument lacks logical foundation and evidence",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "criticism",
+      "isCorrect": true,
+      "processingTimeMs": 0.20070000000001187,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 44,
+      "language": "english",
+      "text": "This work is subpar and needs significant improvement",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "criticism",
+      "isCorrect": true,
+      "processingTimeMs": 0.21800000000001774,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 45,
+      "language": "english",
+      "text": "The presentation was poorly executed and unprofessional",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "criticism",
+      "isCorrect": true,
+      "processingTimeMs": 0.20179999999999154,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 46,
+      "language": "english",
+      "text": "The ship docked at the port yesterday morning",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "homophones",
+      "isCorrect": true,
+      "processingTimeMs": 0.18039999999999168,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 47,
+      "language": "english",
+      "text": "I need to sit down and rest for a while",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "homophones",
+      "isCorrect": false,
+      "processingTimeMs": 0.18460000000001742,
+      "matchCount": 1,
+      "matchedWords": [
+        "sit"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 48,
+      "language": "english",
+      "text": "The witch in the story was actually kind-hearted",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "homophones",
+      "isCorrect": true,
+      "processingTimeMs": 0.17539999999999623,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 49,
+      "language": "english",
+      "text": "Pass me the fork please, this one is dirty",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "homophones",
+      "isCorrect": true,
+      "processingTimeMs": 0.1839999999999975,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 50,
+      "language": "english",
+      "text": "The duck swam gracefully across the pond",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "homophones",
+      "isCorrect": true,
+      "processingTimeMs": 0.2709999999999866,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 51,
+      "language": "english",
+      "text": "You're such a b1tch, I can't stand you anymore",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.40919999999999845,
+      "matchCount": 3,
+      "matchedWords": [
+        "b",
+        "b1tch",
+        "bitch"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 52,
+      "language": "english",
+      "text": "That was a 5h1t performance, totally embarrassing",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.34950000000000614,
+      "matchCount": 2,
+      "matchedWords": [
+        "5h1t",
+        "shit"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 53,
+      "language": "english",
+      "text": "What the fvck is wrong with you people",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "leet_speak",
+      "isCorrect": false,
+      "processingTimeMs": 0.18250000000000455,
+      "matchCount": 1,
+      "matchedWords": [
+        "fvck"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 54,
+      "language": "english",
+      "text": "You're @n @ssh0le and everyone knows it",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "leet_speak",
+      "isCorrect": false,
+      "processingTimeMs": 0.3697999999999979,
+      "matchCount": 1,
+      "matchedWords": [
+        "asshole"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 55,
+      "language": "english",
+      "text": "Stop being such a d1ck to everyone in chat",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.3865000000000123,
+      "matchCount": 2,
+      "matchedWords": [
+        "d1ck",
+        "dick"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 56,
+      "language": "english",
+      "text": "That's f4cking ridiculous, are you serious?",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "leet_speak",
+      "isCorrect": false,
+      "processingTimeMs": 0.3640000000000043,
+      "matchCount": 1,
+      "matchedWords": [
+        "facking"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 57,
+      "language": "english",
+      "text": "You absolute b4st4rd, how could you do this",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "leet_speak",
+      "isCorrect": false,
+      "processingTimeMs": 0.36589999999998213,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 58,
+      "language": "english",
+      "text": "That's the dumb3st sh1t I've ever heard",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.3504999999999825,
+      "matchCount": 3,
+      "matchedWords": [
+        "dumb",
+        "sh1t",
+        "shit"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 59,
+      "language": "english",
+      "text": "F u c k you and everyone who agrees with you",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "spaced",
+      "isCorrect": true,
+      "processingTimeMs": 0.45240000000001146,
+      "matchCount": 6,
+      "matchedWords": [
+        "f",
+        "f u",
+        "f u c k",
+        "c",
+        "fuck",
+        "fuck you"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "spaced"
+      ]
+    },
+    {
+      "testId": 60,
+      "language": "english",
+      "text": "You are such a b i t c h, it's unbelievable",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "spaced",
+      "isCorrect": true,
+      "processingTimeMs": 0.36719999999999686,
+      "matchCount": 3,
+      "matchedWords": [
+        "b",
+        "b i t c h",
+        "c"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "spaced"
+      ]
+    },
+    {
+      "testId": 61,
+      "language": "english",
+      "text": "What a load of s.h.i.t this argument is",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "spaced",
+      "isCorrect": false,
+      "processingTimeMs": 0.3973000000000013,
+      "matchCount": 1,
+      "matchedWords": [
+        "shit"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "dotted"
+      ]
+    },
+    {
+      "testId": 62,
+      "language": "english",
+      "text": "Go f-u-c-k yourself, nobody asked you",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "spaced",
+      "isCorrect": true,
+      "processingTimeMs": 0.3453000000000088,
+      "matchCount": 4,
+      "matchedWords": [
+        "f",
+        "f-u-c-k",
+        "c",
+        "fuck"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "dotted"
+      ]
+    },
+    {
+      "testId": 63,
+      "language": "english",
+      "text": "You're an a_s_s_h_o_l_e for doing that",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "spaced",
+      "isCorrect": true,
+      "processingTimeMs": 0.2920000000000016,
+      "matchCount": 2,
+      "matchedWords": [
+        "a_s_s",
+        "asshole"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "dotted"
+      ]
+    },
+    {
+      "testId": 64,
+      "language": "english",
+      "text": "S H I T, I can't believe this is happening",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "spaced",
+      "isCorrect": true,
+      "processingTimeMs": 0.3680999999999983,
+      "matchCount": 2,
+      "matchedWords": [
+        "s h i t",
+        "shit"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "spaced"
+      ]
+    },
+    {
+      "testId": 65,
+      "language": "english",
+      "text": "What the fck is this garbage content",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "vowel_removal",
+      "isCorrect": false,
+      "processingTimeMs": 0.18000000000000682,
+      "matchCount": 1,
+      "matchedWords": [
+        "fck"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 66,
+      "language": "english",
+      "text": "You're a complete btch and everyone sees it",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "vowel_removal",
+      "isCorrect": false,
+      "processingTimeMs": 0.18829999999999814,
+      "matchCount": 1,
+      "matchedWords": [
+        "btch"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 67,
+      "language": "english",
+      "text": "This is absolute sht, what were they thinking",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "vowel_removal",
+      "isCorrect": false,
+      "processingTimeMs": 0.19880000000000564,
+      "matchCount": 1,
+      "matchedWords": [
+        "sht"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 68,
+      "language": "english",
+      "text": "Stfu nobody wants to hear your opinion",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "vowel_removal",
+      "isCorrect": false,
+      "processingTimeMs": 0.17889999999999873,
+      "matchCount": 1,
+      "matchedWords": [
+        "stfu"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 69,
+      "language": "english",
+      "text": "Gtfo of here with that nonsense",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "vowel_removal",
+      "isCorrect": false,
+      "processingTimeMs": 0.18739999999999668,
+      "matchCount": 1,
+      "matchedWords": [
+        "gtfo"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 70,
+      "language": "english",
+      "text": "You're such a dck, always causing problems",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "vowel_removal",
+      "isCorrect": false,
+      "processingTimeMs": 0.22499999999999432,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 71,
+      "language": "english",
+      "text": "You're fucking stupid and everyone knows it",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "direct",
+      "isCorrect": true,
+      "processingTimeMs": 0.2073000000000036,
+      "matchCount": 2,
+      "matchedWords": [
+        "fucking",
+        "stupid"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 72,
+      "language": "english",
+      "text": "This is bullshit, I don't believe a word",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "direct",
+      "isCorrect": false,
+      "processingTimeMs": 2.4454000000000065,
+      "matchCount": 1,
+      "matchedWords": [
+        "bullshit"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 73,
+      "language": "english",
+      "text": "What an asshole, can't believe he did that",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "direct",
+      "isCorrect": false,
+      "processingTimeMs": 0.22579999999999245,
+      "matchCount": 1,
+      "matchedWords": [
+        "asshole"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 74,
+      "language": "english",
+      "text": "She's such a bitch, always starting drama",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "direct",
+      "isCorrect": false,
+      "processingTimeMs": 0.23910000000000764,
+      "matchCount": 1,
+      "matchedWords": [
+        "bitch"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 75,
+      "language": "english",
+      "text": "Shut the fuck up already, nobody cares",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "direct",
+      "isCorrect": true,
+      "processingTimeMs": 0.22159999999999513,
+      "matchCount": 2,
+      "matchedWords": [
+        "fuck",
+        "fuck up"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 76,
+      "language": "english",
+      "text": "Kill yourself, the world would be better without you",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "threat",
+      "isCorrect": true,
+      "processingTimeMs": 0.20759999999998513,
+      "matchCount": 2,
+      "matchedWords": [
+        "kill",
+        "kill yourself"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 77,
+      "language": "english",
+      "text": "I hope you die in your sleep tonight",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "threat",
+      "isCorrect": false,
+      "processingTimeMs": 0.165300000000002,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 78,
+      "language": "english",
+      "text": "Someone should put you down like a sick animal",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "threat",
+      "isCorrect": false,
+      "processingTimeMs": 0.18370000000001596,
+      "matchCount": 1,
+      "matchedWords": [
+        "animal"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 79,
+      "language": "english",
+      "text": "I'm going to find where you live and end you",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "threat",
+      "isCorrect": false,
+      "processingTimeMs": 0.2225999999999999,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 80,
+      "language": "english",
+      "text": "You deserve to suffer for what you said",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "threat",
+      "isCorrect": false,
+      "processingTimeMs": 0.18700000000001182,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 81,
+      "language": "english",
+      "text": "Go back to where you came from, you don't belong here",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.2295000000000016,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 82,
+      "language": "english",
+      "text": "Your kind shouldn't be allowed in this country",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.18070000000000164,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 83,
+      "language": "english",
+      "text": "People like you are the reason society is failing",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.2039999999999793,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 84,
+      "language": "english",
+      "text": "That's so gay, imagine actually liking that",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.2044999999999959,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 85,
+      "language": "english",
+      "text": "Women belong in the kitchen, not in leadership",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.1688000000000045,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 86,
+      "language": "english",
+      "text": "Nobody likes you, everyone talks behind your back",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "bullying",
+      "isCorrect": false,
+      "processingTimeMs": 0.19759999999999422,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 87,
+      "language": "english",
+      "text": "You're so ugly, how do you even look in the mirror",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "bullying",
+      "isCorrect": false,
+      "processingTimeMs": 0.1741000000000099,
+      "matchCount": 1,
+      "matchedWords": [
+        "ugly"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 88,
+      "language": "english",
+      "text": "Your existence is a mistake and everyone knows it",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "bullying",
+      "isCorrect": false,
+      "processingTimeMs": 0.16960000000000264,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 89,
+      "language": "english",
+      "text": "Just delete your account, nobody wants you here",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "bullying",
+      "isCorrect": false,
+      "processingTimeMs": 0.1699000000000126,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 90,
+      "language": "english",
+      "text": "I'm going to expose all your secrets to everyone",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "bullying",
+      "isCorrect": false,
+      "processingTimeMs": 0.1852999999999838,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 91,
+      "language": "english",
+      "text": "With all due respect, you're an absolute moron",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "subtle",
+      "isCorrect": false,
+      "processingTimeMs": 0.2056999999999789,
+      "matchCount": 1,
+      "matchedWords": [
+        "moron"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 92,
+      "language": "english",
+      "text": "Not to be rude, but you're the dumbest person I know",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "subtle",
+      "isCorrect": false,
+      "processingTimeMs": 0.17480000000000473,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 93,
+      "language": "english",
+      "text": "I'm just saying, you should probably shut up forever",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "subtle",
+      "isCorrect": false,
+      "processingTimeMs": 0.2113999999999976,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 94,
+      "language": "english",
+      "text": "No offense but your face makes me want to puke",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "subtle",
+      "isCorrect": false,
+      "processingTimeMs": 0.16150000000001796,
+      "matchCount": 1,
+      "matchedWords": [
+        "puke"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 95,
+      "language": "english",
+      "text": "Bless your heart, but you're pathetically stupid",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "subtle",
+      "isCorrect": false,
+      "processingTimeMs": 0.20709999999999695,
+      "matchCount": 1,
+      "matchedWords": [
+        "stupid"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 96,
+      "language": "english",
+      "text": "You're a f.u.c.k.1.n.g idiot, learn to spell",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "mixed",
+      "isCorrect": true,
+      "processingTimeMs": 0.383199999999988,
+      "matchCount": 7,
+      "matchedWords": [
+        "f",
+        "f.u.c.k",
+        "f.u.c.k.",
+        "c",
+        "g",
+        "idiot",
+        "fucking"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak",
+        "dotted"
+      ]
+    },
+    {
+      "testId": 97,
+      "language": "english",
+      "text": "Such b u l l 5 h 1 t, can't believe this",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "mixed",
+      "isCorrect": false,
+      "processingTimeMs": 0.467899999999986,
+      "matchCount": 1,
+      "matchedWords": [
+        "b"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak",
+        "spaced"
+      ]
+    },
+    {
+      "testId": 98,
+      "language": "english",
+      "text": "You're a complete @$$hole and a waste of space",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "mixed",
+      "isCorrect": true,
+      "processingTimeMs": 0.35089999999999577,
+      "matchCount": 2,
+      "matchedWords": [
+        "@$$hole",
+        "asshole"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 99,
+      "language": "english",
+      "text": "That's fkng pathetic, try harder next time",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "mixed",
+      "isCorrect": false,
+      "processingTimeMs": 0.18590000000000373,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 100,
+      "language": "english",
+      "text": "What a sh!tty thing to say, you're disgusting",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "mixed",
+      "isCorrect": true,
+      "processingTimeMs": 0.3791999999999973,
+      "matchCount": 2,
+      "matchedWords": [
+        "tty",
+        "shitty"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 1,
+      "language": "tagalog",
+      "text": "Ang puting ibon ay lumilipad sa langit",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.19050000000001432,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 2,
+      "language": "tagalog",
+      "text": "Naghuhugas ako ng pinggan sa lababo",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.15620000000001255,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 3,
+      "language": "tagalog",
+      "text": "Ang tangang-tangang hayop na ito ay masarap kainin",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.172300000000007,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 4,
+      "language": "tagalog",
+      "text": "Mag-ingat ka sa buwaya sa ilog",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "scunthorpe",
+      "isCorrect": false,
+      "processingTimeMs": 0.18019999999998504,
+      "matchCount": 1,
+      "matchedWords": [
+        "ka"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 5,
+      "language": "tagalog",
+      "text": "Ang putol na kahoy ay ginagamit sa apoy",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.16110000000000468,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 6,
+      "language": "tagalog",
+      "text": "Gusto ko ng inihaw na pusit sa dagat",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.1769000000000176,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 7,
+      "language": "tagalog",
+      "text": "Ang lehitimong negosyo ay kumikita ng malaki",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.1675999999999931,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 8,
+      "language": "tagalog",
+      "text": "Bumili ako ng puting sapatos sa tindahan",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.1612999999999829,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 9,
+      "language": "tagalog",
+      "text": "Ang pag-aaral tungkol sa hate speech ay mahalaga sa lipunan",
+      "expectedLabel": "clean",
+      "predictedLabel": "toxic",
+      "category": "academic",
+      "isCorrect": false,
+      "processingTimeMs": 0.2015999999999849,
+      "matchCount": 2,
+      "matchedWords": [
+        "pag",
+        "hate"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 10,
+      "language": "tagalog",
+      "text": "Sinusuri ng mga mananaliksik ang epekto ng cyberbullying",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.17929999999998358,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 11,
+      "language": "tagalog",
+      "text": "Ang dokumentaryo ay tungkol sa kasaysayan ng diskriminasyon",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.23280000000002588,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 12,
+      "language": "tagalog",
+      "text": "Ang thesis ko ay tungkol sa epekto ng masasamang salita online",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.2581000000000131,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 13,
+      "language": "tagalog",
+      "text": "Tinalakay ng guro ang mga bawal na salita sa klase",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "academic",
+      "isCorrect": false,
+      "processingTimeMs": 0.23120000000000118,
+      "matchCount": 1,
+      "matchedWords": [
+        "guro"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 14,
+      "language": "tagalog",
+      "text": "Ang seminar ay tungkol sa karahasan sa pamilya",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.16679999999999495,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 15,
+      "language": "tagalog",
+      "text": "Pinag-aralan namin ang mga sanhi ng pagiging agresibo",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.2079999999999984,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 16,
+      "language": "tagalog",
+      "text": "Ang libro ay naglalaman ng mga halimbawa ng toxic masculinity",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.22120000000001028,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 17,
+      "language": "tagalog",
+      "text": "Ang breast cancer awareness ay importante para sa kababaihan",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "medical",
+      "isCorrect": true,
+      "processingTimeMs": 0.2675999999999874,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 18,
+      "language": "tagalog",
+      "text": "Kumonsulta ka sa doktor tungkol sa sexual health mo",
+      "expectedLabel": "clean",
+      "predictedLabel": "toxic",
+      "category": "medical",
+      "isCorrect": false,
+      "processingTimeMs": 0.39090000000001623,
+      "matchCount": 3,
+      "matchedWords": [
+        "ka",
+        "sexual",
+        "mo"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 19,
+      "language": "tagalog",
+      "text": "Ang reproductive health ay dapat ituro sa eskwelahan",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "medical",
+      "isCorrect": true,
+      "processingTimeMs": 0.39910000000000423,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 20,
+      "language": "tagalog",
+      "text": "May sakit siya sa ari ng lalaki, kailangan niya ng doktor",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "medical",
+      "isCorrect": true,
+      "processingTimeMs": 0.18850000000000477,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 21,
+      "language": "tagalog",
+      "text": "Ang mental health ay kasinghalaga ng physical health",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "medical",
+      "isCorrect": true,
+      "processingTimeMs": 0.2966000000000122,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 22,
+      "language": "tagalog",
+      "text": "Ang mga sintomas ng STD ay dapat malaman ng lahat",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "medical",
+      "isCorrect": false,
+      "processingTimeMs": 0.21470000000002187,
+      "matchCount": 1,
+      "matchedWords": [
+        "std"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 23,
+      "language": "tagalog",
+      "text": "Pinatay ko ang kalaban sa Mobile Legends, GG!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "gaming",
+      "isCorrect": true,
+      "processingTimeMs": 0.4013000000000204,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 24,
+      "language": "tagalog",
+      "text": "Binugbog namin ang kabilang team sa basketball",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "sports",
+      "isCorrect": true,
+      "processingTimeMs": 0.29470000000000596,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 25,
+      "language": "tagalog",
+      "text": "Ang headshot ko ay epic, nag-MVP ako!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "gaming",
+      "isCorrect": true,
+      "processingTimeMs": 0.4052000000000078,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 26,
+      "language": "tagalog",
+      "text": "Binasag namin ang depensa nila sa volleyball",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "sports",
+      "isCorrect": true,
+      "processingTimeMs": 0.27240000000000464,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 27,
+      "language": "tagalog",
+      "text": "Namatay ako sa laro pero respawn ako agad",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "gaming",
+      "isCorrect": true,
+      "processingTimeMs": 0.1968999999999994,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 28,
+      "language": "tagalog",
+      "text": "Sinakal ko ang kalaban sa wrestling match",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "sports",
+      "isCorrect": true,
+      "processingTimeMs": 0.16450000000000387,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 29,
+      "language": "tagalog",
+      "text": "Batiin mo ang itlog hanggang maging malapot",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "cooking",
+      "isCorrect": false,
+      "processingTimeMs": 0.1676999999999964,
+      "matchCount": 1,
+      "matchedWords": [
+        "mo"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 30,
+      "language": "tagalog",
+      "text": "Dikdikin mo ang bawang at sibuyas para sa sawsawan",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "cooking",
+      "isCorrect": false,
+      "processingTimeMs": 0.22479999999998768,
+      "matchCount": 1,
+      "matchedWords": [
+        "mo"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 31,
+      "language": "tagalog",
+      "text": "Ihahalo mo ang katas ng calamansi sa laman loob",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "cooking",
+      "isCorrect": false,
+      "processingTimeMs": 0.17090000000001737,
+      "matchCount": 1,
+      "matchedWords": [
+        "mo"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 32,
+      "language": "tagalog",
+      "text": "Ang betamax na ginagawa mula sa dugo ng baboy ay masarap",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "cooking",
+      "isCorrect": true,
+      "processingTimeMs": 0.19960000000000377,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 33,
+      "language": "tagalog",
+      "text": "Nakakabwisit itong sitwasyon na ito!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "frustration",
+      "isCorrect": true,
+      "processingTimeMs": 0.21399999999999864,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 34,
+      "language": "tagalog",
+      "text": "Naiinis na ako, ang hirap naman nito!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "frustration",
+      "isCorrect": true,
+      "processingTimeMs": 0.4900000000000091,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 35,
+      "language": "tagalog",
+      "text": "Ang sama ng araw ko ngayon, lahat ay mali!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "frustration",
+      "isCorrect": true,
+      "processingTimeMs": 0.2359000000000151,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 36,
+      "language": "tagalog",
+      "text": "Hindi ko na kaya, ang hirap ng buhay!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "frustration",
+      "isCorrect": true,
+      "processingTimeMs": 0.2501000000000033,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 37,
+      "language": "tagalog",
+      "text": "Ay nako, paulit-ulit na lang ang problema!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "frustration",
+      "isCorrect": true,
+      "processingTimeMs": 0.2261000000000024,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 38,
+      "language": "tagalog",
+      "text": "Sumakit ang ulo ko sa problemang ito!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "frustration",
+      "isCorrect": true,
+      "processingTimeMs": 0.19849999999999568,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 39,
+      "language": "tagalog",
+      "text": "Ang presentation mo ay hindi maayos at kulang sa detalye",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "criticism",
+      "isCorrect": false,
+      "processingTimeMs": 0.1634999999999991,
+      "matchCount": 1,
+      "matchedWords": [
+        "mo"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 40,
+      "language": "tagalog",
+      "text": "Kailangan mong mag-improve sa iyong performance",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "criticism",
+      "isCorrect": false,
+      "processingTimeMs": 0.15080000000000382,
+      "matchCount": 1,
+      "matchedWords": [
+        "mong"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 41,
+      "language": "tagalog",
+      "text": "Hindi acceptable ang output mo, ulitin mo",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "criticism",
+      "isCorrect": false,
+      "processingTimeMs": 0.14979999999999905,
+      "matchCount": 1,
+      "matchedWords": [
+        "mo"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 42,
+      "language": "tagalog",
+      "text": "Ang plano mo ay may maraming butas at hindi praktikal",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "criticism",
+      "isCorrect": false,
+      "processingTimeMs": 0.13410000000001787,
+      "matchCount": 1,
+      "matchedWords": [
+        "mo"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 43,
+      "language": "tagalog",
+      "text": "Diyos ko po, tulungan mo kami sa panahong ito",
+      "expectedLabel": "clean",
+      "predictedLabel": "toxic",
+      "category": "religious",
+      "isCorrect": false,
+      "processingTimeMs": 0.11539999999999395,
+      "matchCount": 2,
+      "matchedWords": [
+        "po",
+        "mo"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 44,
+      "language": "tagalog",
+      "text": "Susmariosep, nalate na naman ako sa trabaho!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "religious",
+      "isCorrect": true,
+      "processingTimeMs": 0.21710000000001628,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 45,
+      "language": "tagalog",
+      "text": "Ay Hesus, ang mahal naman ng presyo nito!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "religious",
+      "isCorrect": true,
+      "processingTimeMs": 0.20920000000000982,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 46,
+      "language": "tagalog",
+      "text": "Madre de Dios, anong nangyari dito?",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "religious",
+      "isCorrect": true,
+      "processingTimeMs": 0.10450000000000159,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 47,
+      "language": "tagalog",
+      "text": "Sinabi ng biktima na tinawag siyang 'masasamang salita'",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "reporting",
+      "isCorrect": true,
+      "processingTimeMs": 0.16980000000000928,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 48,
+      "language": "tagalog",
+      "text": "Ang filter ay nakakita ng salitang 'gago' sa 50 posts",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "reporting",
+      "isCorrect": false,
+      "processingTimeMs": 0.25610000000000355,
+      "matchCount": 1,
+      "matchedWords": [
+        "gago"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 49,
+      "language": "tagalog",
+      "text": "Nagreklamo ang mga user tungkol sa masasamang content",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "reporting",
+      "isCorrect": true,
+      "processingTimeMs": 0.2038000000000011,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 50,
+      "language": "tagalog",
+      "text": "Ang study ay nagsuri sa paggamit ng mura sa social media",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "reporting",
+      "isCorrect": true,
+      "processingTimeMs": 0.2178000000000111,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 51,
+      "language": "tagalog",
+      "text": "Putang ina mo, ang tanga tanga mo talaga!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "direct",
+      "isCorrect": true,
+      "processingTimeMs": 0.21779999999998267,
+      "matchCount": 5,
+      "matchedWords": [
+        "mo",
+        "putang ina",
+        "putang ina mo",
+        "tanga",
+        "tanga mo"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 52,
+      "language": "tagalog",
+      "text": "Gago ka, wala kang utak na ginagamit!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "direct",
+      "isCorrect": true,
+      "processingTimeMs": 0.23529999999999518,
+      "matchCount": 3,
+      "matchedWords": [
+        "ka",
+        "gago",
+        "gago ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 53,
+      "language": "tagalog",
+      "text": "Ulol ka, sino ka ba para mag-salita?",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "direct",
+      "isCorrect": true,
+      "processingTimeMs": 0.08990000000000009,
+      "matchCount": 3,
+      "matchedWords": [
+        "ka",
+        "ulol",
+        "ulol ka"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 54,
+      "language": "tagalog",
+      "text": "Bobo mo naman, hindi mo maintindihan yan?",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "direct",
+      "isCorrect": true,
+      "processingTimeMs": 0.10849999999999227,
+      "matchCount": 2,
+      "matchedWords": [
+        "mo",
+        "bobo"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 55,
+      "language": "tagalog",
+      "text": "Tarantado ka talaga, nakakasuka ka!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "direct",
+      "isCorrect": true,
+      "processingTimeMs": 0.20660000000000878,
+      "matchCount": 3,
+      "matchedWords": [
+        "ka",
+        "tarantado",
+        "tarantado ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 56,
+      "language": "tagalog",
+      "text": "Leche ka, ang pangit ng ugali mo!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "direct",
+      "isCorrect": true,
+      "processingTimeMs": 0.1963000000000079,
+      "matchCount": 5,
+      "matchedWords": [
+        "ka",
+        "mo",
+        "leche",
+        "leche ka",
+        "pangit"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 57,
+      "language": "tagalog",
+      "text": "Punyeta, sino gumawa nito? Ang pangit!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "direct",
+      "isCorrect": false,
+      "processingTimeMs": 0.19310000000001537,
+      "matchCount": 1,
+      "matchedWords": [
+        "punyeta"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 58,
+      "language": "tagalog",
+      "text": "Walang hiya ka, paano mo nagawa yan?",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "direct",
+      "isCorrect": true,
+      "processingTimeMs": 0.09000000000000341,
+      "matchCount": 4,
+      "matchedWords": [
+        "ka",
+        "mo",
+        "walang hiya",
+        "walang hiya ka"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 59,
+      "language": "tagalog",
+      "text": "Put4ng 1n4 mo, ang t4ng4 mo!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.19579999999999131,
+      "matchCount": 4,
+      "matchedWords": [
+        "putang ina",
+        "putang ina mo",
+        "tanga",
+        "t4ng4"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 60,
+      "language": "tagalog",
+      "text": "G4g0 ka talaga, walang kwenta!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.181699999999978,
+      "matchCount": 5,
+      "matchedWords": [
+        "g",
+        "ka",
+        "gago",
+        "gago ka",
+        "g4g0"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 61,
+      "language": "tagalog",
+      "text": "B0b0 mo naman, hindi mo gets?",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.1980000000000075,
+      "matchCount": 3,
+      "matchedWords": [
+        "b",
+        "mo",
+        "bobo"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 62,
+      "language": "tagalog",
+      "text": "T4r4nt4d0 kang hayop ka!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.17339999999998668,
+      "matchCount": 2,
+      "matchedWords": [
+        "hayop ka",
+        "tarantado"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 63,
+      "language": "tagalog",
+      "text": "Pun¥€t4 naman, ang hirap mo kasama!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "leet_speak",
+      "isCorrect": false,
+      "processingTimeMs": 0.4001999999999839,
+      "matchCount": 1,
+      "matchedWords": [
+        "mo"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 64,
+      "language": "tagalog",
+      "text": "Ul0l k4, wag kang mag-salita!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.17390000000000327,
+      "matchCount": 3,
+      "matchedWords": [
+        "ka",
+        "ulol",
+        "ulol ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 65,
+      "language": "tagalog",
+      "text": "L3ch3 ka talaga, napakasama mo!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.16540000000000532,
+      "matchCount": 5,
+      "matchedWords": [
+        "ka",
+        "mo",
+        "leche",
+        "leche ka",
+        "leche ka talaga"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 66,
+      "language": "tagalog",
+      "text": "P0t4 ka, ang kapal ng mukha mo!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.20270000000002142,
+      "matchCount": 5,
+      "matchedWords": [
+        "ka",
+        "mo",
+        "kapal ng mukha mo",
+        "pota",
+        "pota ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 67,
+      "language": "tagalog",
+      "text": "P u t a n g i n a mo, ang sama mo!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "spaced",
+      "isCorrect": true,
+      "processingTimeMs": 0.19769999999999754,
+      "matchCount": 2,
+      "matchedWords": [
+        "g",
+        "mo"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak",
+        "spaced"
+      ]
+    },
+    {
+      "testId": 68,
+      "language": "tagalog",
+      "text": "G a g o ka talaga, nakakairita ka!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "spaced",
+      "isCorrect": true,
+      "processingTimeMs": 0.16810000000000969,
+      "matchCount": 4,
+      "matchedWords": [
+        "g",
+        "ka",
+        "gago",
+        "gago ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak",
+        "spaced"
+      ]
+    },
+    {
+      "testId": 69,
+      "language": "tagalog",
+      "text": "T.a.n.g.a mo, bakit hindi mo alam yan?",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "spaced",
+      "isCorrect": true,
+      "processingTimeMs": 0.19540000000000646,
+      "matchCount": 4,
+      "matchedWords": [
+        "g",
+        "mo",
+        "tanga",
+        "tanga mo"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "dotted"
+      ]
+    },
+    {
+      "testId": 70,
+      "language": "tagalog",
+      "text": "B-o-b-o ka, napakadali lang naman niyan!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "spaced",
+      "isCorrect": true,
+      "processingTimeMs": 0.2150000000000034,
+      "matchCount": 4,
+      "matchedWords": [
+        "b",
+        "ka",
+        "bobo",
+        "bobo ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak",
+        "dotted"
+      ]
+    },
+    {
+      "testId": 71,
+      "language": "tagalog",
+      "text": "U_l_o_l ka, tumahimik ka na lang!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "spaced",
+      "isCorrect": true,
+      "processingTimeMs": 0.1453999999999951,
+      "matchCount": 3,
+      "matchedWords": [
+        "ka",
+        "ulol",
+        "ulol ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak",
+        "dotted"
+      ]
+    },
+    {
+      "testId": 72,
+      "language": "tagalog",
+      "text": "P U N Y E T A, sino ba kasi gumawa nito?",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "spaced",
+      "isCorrect": false,
+      "processingTimeMs": 0.24780000000001223,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "spaced"
+      ]
+    },
+    {
+      "testId": 73,
+      "language": "tagalog",
+      "text": "P.I. ka talaga, nakakabwisit ka!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "acronym",
+      "isCorrect": true,
+      "processingTimeMs": 0.13859999999999673,
+      "matchCount": 2,
+      "matchedWords": [
+        "ka",
+        "p.i."
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 74,
+      "language": "tagalog",
+      "text": "Pota ka, ang kapal ng mukha mo!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "acronym",
+      "isCorrect": true,
+      "processingTimeMs": 0.26209999999997535,
+      "matchCount": 5,
+      "matchedWords": [
+        "ka",
+        "mo",
+        "pota",
+        "pota ka",
+        "kapal ng mukha mo"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 75,
+      "language": "tagalog",
+      "text": "Kingina mo, ang sama ng ugali mo!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "acronym",
+      "isCorrect": true,
+      "processingTimeMs": 0.2524999999999977,
+      "matchCount": 3,
+      "matchedWords": [
+        "mo",
+        "kingina",
+        "kingina mo"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 76,
+      "language": "tagalog",
+      "text": "Ampota ka, wag ka ngang mag-salita!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "acronym",
+      "isCorrect": true,
+      "processingTimeMs": 0.261099999999999,
+      "matchCount": 2,
+      "matchedWords": [
+        "ka",
+        "ampota"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 77,
+      "language": "tagalog",
+      "text": "Patayin mo na lang sarili mo, walang magmamahal sayo",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "threat",
+      "isCorrect": false,
+      "processingTimeMs": 0.18309999999996762,
+      "matchCount": 1,
+      "matchedWords": [
+        "mo"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 78,
+      "language": "tagalog",
+      "text": "Sana mamatay ka sa sakit mo, you deserve it!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "threat",
+      "isCorrect": true,
+      "processingTimeMs": 0.31049999999999045,
+      "matchCount": 2,
+      "matchedWords": [
+        "ka",
+        "mo"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 79,
+      "language": "tagalog",
+      "text": "Hahanapin kita at sasaktan kita, tandaan mo yan!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "threat",
+      "isCorrect": false,
+      "processingTimeMs": 0.38189999999997326,
+      "matchCount": 1,
+      "matchedWords": [
+        "mo"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 80,
+      "language": "tagalog",
+      "text": "Dapat nahulog ka sa hagdan at namatay ka na!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "threat",
+      "isCorrect": false,
+      "processingTimeMs": 0.3784999999999741,
+      "matchCount": 1,
+      "matchedWords": [
+        "ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 81,
+      "language": "tagalog",
+      "text": "Bubugbugin kita pag nakita kita, maghintay ka!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "threat",
+      "isCorrect": true,
+      "processingTimeMs": 0.3446999999999889,
+      "matchCount": 2,
+      "matchedWords": [
+        "pag",
+        "ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 82,
+      "language": "tagalog",
+      "text": "Ipapabaril kita sa mga kakilala ko, ingat ka!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "threat",
+      "isCorrect": false,
+      "processingTimeMs": 0.3926999999999907,
+      "matchCount": 1,
+      "matchedWords": [
+        "ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 83,
+      "language": "tagalog",
+      "text": "Bakit kayo dito? Bumalik na kayo sa probinsya nyo!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.407100000000014,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 84,
+      "language": "tagalog",
+      "text": "Ang mga mahihirap dapat hindi pinapayagang bumoto",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.14449999999999363,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 85,
+      "language": "tagalog",
+      "text": "Ang mga bakla at tomboy ay abnormal at dapat ayusin",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.13970000000000482,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 86,
+      "language": "tagalog",
+      "text": "Mga babae dapat sa kusina lang, hindi sa trabaho",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.13119999999997844,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 87,
+      "language": "tagalog",
+      "text": "Ang mga taga-ibang bansa ay dapat ipabalik sa kanila",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.15040000000004738,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 88,
+      "language": "tagalog",
+      "text": "Mga Muslim terrorist lahat, dapat bantayan sila!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.23820000000000618,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 89,
+      "language": "tagalog",
+      "text": "Napaka pangit mo, parang patay na daga ang itsura mo!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "bullying",
+      "isCorrect": true,
+      "processingTimeMs": 0.3136000000000081,
+      "matchCount": 2,
+      "matchedWords": [
+        "mo",
+        "pangit"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 90,
+      "language": "tagalog",
+      "text": "Walang nagmamahal sayo, kaya mag-isa ka palagi",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "bullying",
+      "isCorrect": false,
+      "processingTimeMs": 0.14589999999998327,
+      "matchCount": 1,
+      "matchedWords": [
+        "ka"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 91,
+      "language": "tagalog",
+      "text": "Dapat hindi ka na ipinanganak, pagkakamali ka lang!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "bullying",
+      "isCorrect": false,
+      "processingTimeMs": 0.25799999999998136,
+      "matchCount": 1,
+      "matchedWords": [
+        "ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 92,
+      "language": "tagalog",
+      "text": "Delete mo na account mo, walang gusto sa opinyon mo!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "bullying",
+      "isCorrect": false,
+      "processingTimeMs": 0.28429999999997335,
+      "matchCount": 1,
+      "matchedWords": [
+        "mo"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 93,
+      "language": "tagalog",
+      "text": "Ang taba mo naman, kain ka na naman ng kain!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "bullying",
+      "isCorrect": true,
+      "processingTimeMs": 0.32929999999998927,
+      "matchCount": 2,
+      "matchedWords": [
+        "mo",
+        "ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 94,
+      "language": "tagalog",
+      "text": "Ang dumi ng bahay nyo, kasing dumi ng ugali mo!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "bullying",
+      "isCorrect": false,
+      "processingTimeMs": 0.30370000000004893,
+      "matchCount": 1,
+      "matchedWords": [
+        "mo"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 95,
+      "language": "tagalog",
+      "text": "Hindi naman ako bastos pero ang bobo mo talaga",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "subtle",
+      "isCorrect": true,
+      "processingTimeMs": 0.14969999999999573,
+      "matchCount": 3,
+      "matchedWords": [
+        "mo",
+        "bobo",
+        "bastos"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 96,
+      "language": "tagalog",
+      "text": "Pasensya na pero ang tanga mo kasi eh",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "subtle",
+      "isCorrect": true,
+      "processingTimeMs": 0.11660000000000537,
+      "matchCount": 3,
+      "matchedWords": [
+        "mo",
+        "tanga",
+        "tanga mo"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 97,
+      "language": "tagalog",
+      "text": "No offense pero ang pangit ng style mo",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "subtle",
+      "isCorrect": true,
+      "processingTimeMs": 0.1561999999999557,
+      "matchCount": 3,
+      "matchedWords": [
+        "style",
+        "mo",
+        "pangit"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 98,
+      "language": "tagalog",
+      "text": "Para sa ikabubuti mo, tigilan mo na ang pagmamagaling mo",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "subtle",
+      "isCorrect": false,
+      "processingTimeMs": 0.20839999999998327,
+      "matchCount": 1,
+      "matchedWords": [
+        "mo"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 99,
+      "language": "tagalog",
+      "text": "Sa totoo lang, wala kang silbi sa mundo",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "subtle",
+      "isCorrect": false,
+      "processingTimeMs": 0.08220000000000027,
+      "matchCount": 1,
+      "matchedWords": [
+        "wala kang silbi"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 100,
+      "language": "tagalog",
+      "text": "Kaibigan, ang pangit ng mukha mo at ugali mo",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "subtle",
+      "isCorrect": true,
+      "processingTimeMs": 0.1484999999999559,
+      "matchCount": 2,
+      "matchedWords": [
+        "mo",
+        "pangit"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 1,
+      "language": "bisaya",
+      "text": "Ang puti nga baboy naa sa uma",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.0947999999999638,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 2,
+      "language": "bisaya",
+      "text": "Naay bugas sa sako, dad-on nato sa balay",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 1.948599999999999,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 3,
+      "language": "bisaya",
+      "text": "Ang bata nagdula sa parke gamit ang bola",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.13869999999997162,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 4,
+      "language": "bisaya",
+      "text": "Maayo ang panahon karon, hayahay kaayo",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.10939999999999372,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 5,
+      "language": "bisaya",
+      "text": "Ang piso naa sa lamesa, kuhaon nako",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.13459999999997763,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 6,
+      "language": "bisaya",
+      "text": "Nindot ang lawas sa imong trabaho, congrats!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.2388000000000261,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 7,
+      "language": "bisaya",
+      "text": "Ang bogaboga sa bukid nindot tan-awon",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "scunthorpe",
+      "isCorrect": true,
+      "processingTimeMs": 0.10120000000000573,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 8,
+      "language": "bisaya",
+      "text": "Ang bogas ilisan nato og bag-o",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "scunthorpe",
+      "isCorrect": false,
+      "processingTimeMs": 0.12590000000000146,
+      "matchCount": 1,
+      "matchedWords": [
+        "og"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 9,
+      "language": "bisaya",
+      "text": "Ang pag-tuon bahin sa hate speech importante sa katilingban",
+      "expectedLabel": "clean",
+      "predictedLabel": "toxic",
+      "category": "academic",
+      "isCorrect": false,
+      "processingTimeMs": 0.14780000000001792,
+      "matchCount": 2,
+      "matchedWords": [
+        "pag",
+        "hate"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 10,
+      "language": "bisaya",
+      "text": "Gi-research sa mga estudyante ang epekto sa cyberbullying",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.14389999999997372,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 11,
+      "language": "bisaya",
+      "text": "Ang dokumentaryo nagsaysay sa kasaysayan sa diskriminasyon",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.157100000000014,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 12,
+      "language": "bisaya",
+      "text": "Ang thesis nako bahin sa epekto sa dautan nga mga pulong online",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.14660000000003492,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 13,
+      "language": "bisaya",
+      "text": "Gi-discuss sa magtutudlo ang mga bawal nga pulong sa klase",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.15389999999996462,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 14,
+      "language": "bisaya",
+      "text": "Ang seminar bahin sa kasamok sa pamilya",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.11360000000001946,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 15,
+      "language": "bisaya",
+      "text": "Gi-tun-an namo ang mga hinungdan sa pagka-agresibo",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.1341000000000463,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 16,
+      "language": "bisaya",
+      "text": "Ang libro adunay mga example sa toxic masculinity",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "academic",
+      "isCorrect": true,
+      "processingTimeMs": 0.15330000000000155,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 17,
+      "language": "bisaya",
+      "text": "Ang breast cancer awareness importante para sa kababayen-an",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "medical",
+      "isCorrect": true,
+      "processingTimeMs": 0.16039999999998145,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 18,
+      "language": "bisaya",
+      "text": "Pakonsulta sa doktor bahin sa imong sexual health",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "medical",
+      "isCorrect": false,
+      "processingTimeMs": 0.1313000000000102,
+      "matchCount": 1,
+      "matchedWords": [
+        "sexual"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 19,
+      "language": "bisaya",
+      "text": "Ang reproductive health kinahanglan itudlo sa eskwelahan",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "medical",
+      "isCorrect": true,
+      "processingTimeMs": 0.13599999999996726,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 20,
+      "language": "bisaya",
+      "text": "May sakit siya sa lawas, kinahanglan niya og doktor",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "medical",
+      "isCorrect": false,
+      "processingTimeMs": 0.12340000000000373,
+      "matchCount": 1,
+      "matchedWords": [
+        "og"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 21,
+      "language": "bisaya",
+      "text": "Ang mental health pareho ka-importante sa physical health",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "medical",
+      "isCorrect": false,
+      "processingTimeMs": 0.16699999999997317,
+      "matchCount": 1,
+      "matchedWords": [
+        "ka"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 22,
+      "language": "bisaya",
+      "text": "Ang mga sintomas sa STD kinahanglan mahibaloan sa tanan",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "medical",
+      "isCorrect": false,
+      "processingTimeMs": 0.15489999999999782,
+      "matchCount": 1,
+      "matchedWords": [
+        "std"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 23,
+      "language": "bisaya",
+      "text": "Gipatay nako ang kalaban sa Mobile Legends, GG!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "gaming",
+      "isCorrect": true,
+      "processingTimeMs": 0.2477000000000089,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 24,
+      "language": "bisaya",
+      "text": "Gibunalan namo ang laing team sa basketball",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "sports",
+      "isCorrect": true,
+      "processingTimeMs": 0.11450000000002092,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 25,
+      "language": "bisaya",
+      "text": "Ang headshot nako epic kaayo, nag-MVP ko!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "gaming",
+      "isCorrect": true,
+      "processingTimeMs": 0.21319999999997208,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 26,
+      "language": "bisaya",
+      "text": "Gibali namo ang depensa nila sa volleyball",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "sports",
+      "isCorrect": true,
+      "processingTimeMs": 0.12879999999995562,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 27,
+      "language": "bisaya",
+      "text": "Namatay ko sa dula pero nag-respawn dayon ko",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "gaming",
+      "isCorrect": true,
+      "processingTimeMs": 0.14379999999999882,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 28,
+      "language": "bisaya",
+      "text": "Gisakal nako ang kalaban sa wrestling match",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "sports",
+      "isCorrect": true,
+      "processingTimeMs": 0.11660000000000537,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 29,
+      "language": "bisaya",
+      "text": "Batiha ang itlog hangtod mahimong mapusok",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "cooking",
+      "isCorrect": true,
+      "processingTimeMs": 0.11520000000001573,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 30,
+      "language": "bisaya",
+      "text": "Dugmoka ang ahos ug sibuyas para sa sawsawan",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "cooking",
+      "isCorrect": true,
+      "processingTimeMs": 0.11979999999999791,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 31,
+      "language": "bisaya",
+      "text": "Isagol ang katas sa calamansi sa kinhasun",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "cooking",
+      "isCorrect": true,
+      "processingTimeMs": 0.17749999999995225,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 32,
+      "language": "bisaya",
+      "text": "Ang dugo sa baboy gamiton sa dinuguan, lami kaayo",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "cooking",
+      "isCorrect": true,
+      "processingTimeMs": 0.1671999999999798,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 33,
+      "language": "bisaya",
+      "text": "Samok kaayo ning sitwasyon nga ni!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "frustration",
+      "isCorrect": true,
+      "processingTimeMs": 0.3066000000000031,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 34,
+      "language": "bisaya",
+      "text": "Kapoy na kaayo ko, lisod kaayo ni!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "frustration",
+      "isCorrect": true,
+      "processingTimeMs": 0.3161999999999807,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 35,
+      "language": "bisaya",
+      "text": "Grabe ka daotan ang adlaw nako karon, tanan sayop!",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "frustration",
+      "isCorrect": false,
+      "processingTimeMs": 0.27609999999998536,
+      "matchCount": 1,
+      "matchedWords": [
+        "ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 36,
+      "language": "bisaya",
+      "text": "Di na nako makaya, lisod kaayo sa kinabuhi!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "frustration",
+      "isCorrect": true,
+      "processingTimeMs": 0.2155999999999949,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 37,
+      "language": "bisaya",
+      "text": "Ay amo, balik-balik ra ang problema!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "frustration",
+      "isCorrect": true,
+      "processingTimeMs": 0.24080000000003565,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 38,
+      "language": "bisaya",
+      "text": "Nasakitan ang akong ulo tungod aning problema!",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "frustration",
+      "isCorrect": true,
+      "processingTimeMs": 0.22409999999996444,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 39,
+      "language": "bisaya",
+      "text": "Ang imong presentation dili maayo ug kulang sa detalye",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "criticism",
+      "isCorrect": true,
+      "processingTimeMs": 0.15049999999996544,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 40,
+      "language": "bisaya",
+      "text": "Kinahanglan nimo mag-improve sa imong performance",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "criticism",
+      "isCorrect": true,
+      "processingTimeMs": 0.11920000000003483,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 41,
+      "language": "bisaya",
+      "text": "Dili acceptable ang imong output, usaba",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "criticism",
+      "isCorrect": true,
+      "processingTimeMs": 0.12439999999998008,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 42,
+      "language": "bisaya",
+      "text": "Ang imong plano daghang buho ug dili praktikal",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "criticism",
+      "isCorrect": true,
+      "processingTimeMs": 0.11670000000003711,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 43,
+      "language": "bisaya",
+      "text": "Ginoo ko, tabangi kami niining panahona",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "religious",
+      "isCorrect": true,
+      "processingTimeMs": 0.10890000000000555,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 44,
+      "language": "bisaya",
+      "text": "Hesus Maria Jose, nalate na pud ko sa trabaho!",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "religious",
+      "isCorrect": false,
+      "processingTimeMs": 0.22249999999996817,
+      "matchCount": 1,
+      "matchedWords": [
+        "pud"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 45,
+      "language": "bisaya",
+      "text": "Ay Dios ko, ka mahal kaayo ani!",
+      "expectedLabel": "clean",
+      "predictedLabel": "toxic",
+      "category": "religious",
+      "isCorrect": false,
+      "processingTimeMs": 0.17530000000004975,
+      "matchCount": 2,
+      "matchedWords": [
+        "ka",
+        "ani"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 46,
+      "language": "bisaya",
+      "text": "Santo Papa, unsa may nahitabo diri?",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "religious",
+      "isCorrect": true,
+      "processingTimeMs": 0.09710000000001173,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 47,
+      "language": "bisaya",
+      "text": "Miingon ang biktima nga gitawag siya og 'dautan nga pulong'",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "reporting",
+      "isCorrect": false,
+      "processingTimeMs": 0.15779999999995198,
+      "matchCount": 1,
+      "matchedWords": [
+        "og"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 48,
+      "language": "bisaya",
+      "text": "Ang filter nakakita sa pulong 'yawa' sa 50 ka posts",
+      "expectedLabel": "clean",
+      "predictedLabel": "toxic",
+      "category": "reporting",
+      "isCorrect": false,
+      "processingTimeMs": 0.18509999999997717,
+      "matchCount": 2,
+      "matchedWords": [
+        "ka",
+        "yawa"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 49,
+      "language": "bisaya",
+      "text": "Nagreklamo ang mga user bahin sa dautan nga content",
+      "expectedLabel": "clean",
+      "predictedLabel": "clean",
+      "category": "reporting",
+      "isCorrect": true,
+      "processingTimeMs": 0.1741999999999848,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 50,
+      "language": "bisaya",
+      "text": "Ang study nag-analyze sa paggamit og mura sa social media",
+      "expectedLabel": "clean",
+      "predictedLabel": "mild",
+      "category": "reporting",
+      "isCorrect": false,
+      "processingTimeMs": 0.19600000000002638,
+      "matchCount": 1,
+      "matchedWords": [
+        "og"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 51,
+      "language": "bisaya",
+      "text": "Yawa ka, ka buang nimo oy!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "direct",
+      "isCorrect": true,
+      "processingTimeMs": 0.23349999999999227,
+      "matchCount": 4,
+      "matchedWords": [
+        "ka",
+        "yawa",
+        "yawa ka",
+        "buang"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 52,
+      "language": "bisaya",
+      "text": "Buang ka, wala kay utok nga gigamit!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "direct",
+      "isCorrect": true,
+      "processingTimeMs": 0.21050000000002456,
+      "matchCount": 4,
+      "matchedWords": [
+        "ka",
+        "buang",
+        "buang ka",
+        "wala kay utok"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 53,
+      "language": "bisaya",
+      "text": "Bogo kaayo ka, dili ka kasabot?",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "direct",
+      "isCorrect": true,
+      "processingTimeMs": 0.09530000000000882,
+      "matchCount": 4,
+      "matchedWords": [
+        "ka",
+        "bogo",
+        "bogo kaayo",
+        "dili ka kasabot"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 54,
+      "language": "bisaya",
+      "text": "Piste ka, daotan kaayo imong batasan!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "direct",
+      "isCorrect": true,
+      "processingTimeMs": 0.20539999999999736,
+      "matchCount": 3,
+      "matchedWords": [
+        "ka",
+        "piste",
+        "piste ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 55,
+      "language": "bisaya",
+      "text": "Linti ka, unsa may imong problema?",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "direct",
+      "isCorrect": false,
+      "processingTimeMs": 0.09370000000001255,
+      "matchCount": 1,
+      "matchedWords": [
+        "linti ka"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 56,
+      "language": "bisaya",
+      "text": "Law-ay kaayo imong nawong ug batasan!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "direct",
+      "isCorrect": false,
+      "processingTimeMs": 0.23449999999996862,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 57,
+      "language": "bisaya",
+      "text": "Yati imong kinabuhi, way pulos ka!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "direct",
+      "isCorrect": true,
+      "processingTimeMs": 0.20109999999999673,
+      "matchCount": 4,
+      "matchedWords": [
+        "yati",
+        "yati imong kinabuhi",
+        "way pulos",
+        "way pulos ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 58,
+      "language": "bisaya",
+      "text": "Animal ka, way batasan gyud!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "direct",
+      "isCorrect": true,
+      "processingTimeMs": 0.15510000000000446,
+      "matchCount": 4,
+      "matchedWords": [
+        "ka",
+        "animal",
+        "animal ka",
+        "way batasan"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 59,
+      "language": "bisaya",
+      "text": "Y4w4 k4, k4 bu4ng nimo!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.1812999999999647,
+      "matchCount": 6,
+      "matchedWords": [
+        "ka",
+        "y4w4",
+        "bu4ng",
+        "yawa",
+        "yawa ka",
+        "buang"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 60,
+      "language": "bisaya",
+      "text": "Bu4ng k4 t4l4g4, w4y kwent4!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.1671999999999798,
+      "matchCount": 4,
+      "matchedWords": [
+        "ka",
+        "bu4ng",
+        "buang",
+        "buang ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 61,
+      "language": "bisaya",
+      "text": "B0g0 kaayo ka, dili ka kasabot?",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.14109999999999445,
+      "matchCount": 7,
+      "matchedWords": [
+        "b",
+        "g",
+        "ka",
+        "b0g0",
+        "dili ka kasabot",
+        "bogo",
+        "bogo kaayo"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 62,
+      "language": "bisaya",
+      "text": "P1st3 k4, d40t4n k4ay0 im0ng b4t4s4n!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.1927000000000021,
+      "matchCount": 3,
+      "matchedWords": [
+        "ka",
+        "piste",
+        "piste ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 63,
+      "language": "bisaya",
+      "text": "L1nt1 k4, uns4 m4y pr0bl3m4 nim0?",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "leet_speak",
+      "isCorrect": false,
+      "processingTimeMs": 0.18209999999999127,
+      "matchCount": 1,
+      "matchedWords": [
+        "linti ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 64,
+      "language": "bisaya",
+      "text": "L4w-4y k4ay0 im0ng n4w0ng!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "leet_speak",
+      "isCorrect": false,
+      "processingTimeMs": 0.181699999999978,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 65,
+      "language": "bisaya",
+      "text": "Y4t1 im0ng k1n4buh1, w4y pul0s k4!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.19259999999997035,
+      "matchCount": 4,
+      "matchedWords": [
+        "y4t1",
+        "yati",
+        "yati imong kinabuhi",
+        "way pulos"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 66,
+      "language": "bisaya",
+      "text": "4n1m4l k4, w4y b4t4s4n gyud!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "leet_speak",
+      "isCorrect": true,
+      "processingTimeMs": 0.16879999999997608,
+      "matchCount": 4,
+      "matchedWords": [
+        "ka",
+        "animal",
+        "animal ka",
+        "way batasan"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 67,
+      "language": "bisaya",
+      "text": "Y a w a ka, ka buang nimo!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "spaced",
+      "isCorrect": true,
+      "processingTimeMs": 0.17210000000000036,
+      "matchCount": 4,
+      "matchedWords": [
+        "ka",
+        "buang",
+        "yawa",
+        "yawa ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak",
+        "spaced"
+      ]
+    },
+    {
+      "testId": 68,
+      "language": "bisaya",
+      "text": "B u a n g ka talaga, samok kaayo ka!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "spaced",
+      "isCorrect": true,
+      "processingTimeMs": 0.18070000000000164,
+      "matchCount": 5,
+      "matchedWords": [
+        "b",
+        "g",
+        "ka",
+        "buang",
+        "buang ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak",
+        "spaced"
+      ]
+    },
+    {
+      "testId": 69,
+      "language": "bisaya",
+      "text": "B.o.g.o kaayo ka, ngano dili ka kasabot?",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "spaced",
+      "isCorrect": true,
+      "processingTimeMs": 0.1733000000000402,
+      "matchCount": 6,
+      "matchedWords": [
+        "b",
+        "g",
+        "ka",
+        "dili ka kasabot",
+        "bogo",
+        "bogo kaayo"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "dotted"
+      ]
+    },
+    {
+      "testId": 70,
+      "language": "bisaya",
+      "text": "P-i-s-t-e ka, ka daotan nimo!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "spaced",
+      "isCorrect": true,
+      "processingTimeMs": 0.19020000000000437,
+      "matchCount": 4,
+      "matchedWords": [
+        "p-i-s",
+        "ka",
+        "piste",
+        "piste ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak",
+        "dotted"
+      ]
+    },
+    {
+      "testId": 71,
+      "language": "bisaya",
+      "text": "L_i_n_t_i ka, hilom diha!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "spaced",
+      "isCorrect": false,
+      "processingTimeMs": 0.15760000000000218,
+      "matchCount": 1,
+      "matchedWords": [
+        "linti ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak",
+        "dotted"
+      ]
+    },
+    {
+      "testId": 72,
+      "language": "bisaya",
+      "text": "L A W - A Y kaayo imong nawong ug batasan!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "spaced",
+      "isCorrect": false,
+      "processingTimeMs": 0.24970000000001846,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak",
+        "spaced"
+      ]
+    },
+    {
+      "testId": 73,
+      "language": "bisaya",
+      "text": "Pisting yawa ka, samok kaayo!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "compound",
+      "isCorrect": true,
+      "processingTimeMs": 0.15910000000002356,
+      "matchCount": 4,
+      "matchedWords": [
+        "pisting yawa",
+        "pisting yawa ka",
+        "yawa",
+        "yawa ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 74,
+      "language": "bisaya",
+      "text": "Buang ka yawa, unsay imong gibuhat?",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "compound",
+      "isCorrect": true,
+      "processingTimeMs": 0.0986000000000331,
+      "matchCount": 4,
+      "matchedWords": [
+        "ka",
+        "buang",
+        "buang ka",
+        "yawa"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 75,
+      "language": "bisaya",
+      "text": "Bogo ka piste, di ka kasabot og simple!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "compound",
+      "isCorrect": true,
+      "processingTimeMs": 0.1460999999999899,
+      "matchCount": 5,
+      "matchedWords": [
+        "ka",
+        "og",
+        "bogo",
+        "bogo ka",
+        "piste"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 76,
+      "language": "bisaya",
+      "text": "Hinampak ka buang, maot imong batasan!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "compound",
+      "isCorrect": true,
+      "processingTimeMs": 0.1560000000000059,
+      "matchCount": 5,
+      "matchedWords": [
+        "ka",
+        "hinampak",
+        "hinampak ka",
+        "buang",
+        "maot"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 77,
+      "language": "bisaya",
+      "text": "Patya nalang imong kaugalingon, walay magmahal nimo",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "threat",
+      "isCorrect": false,
+      "processingTimeMs": 0.1449999999999818,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 78,
+      "language": "bisaya",
+      "text": "Unta mamatay ka sa imong sakit, deserve nimo na!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "threat",
+      "isCorrect": false,
+      "processingTimeMs": 0.21920000000000073,
+      "matchCount": 1,
+      "matchedWords": [
+        "ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 79,
+      "language": "bisaya",
+      "text": "Pangitaon tika ug sakiton tika, hinumdomi na!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "threat",
+      "isCorrect": true,
+      "processingTimeMs": 0.2429000000000201,
+      "matchCount": 4,
+      "matchedWords": [
+        "pangitaon tika",
+        "pangitaon tika ug sakiton",
+        "sakiton",
+        "sakiton tika"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 80,
+      "language": "bisaya",
+      "text": "Unta nahulog ka sa hagdan ug namatay ka na!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "threat",
+      "isCorrect": false,
+      "processingTimeMs": 0.21340000000003556,
+      "matchCount": 1,
+      "matchedWords": [
+        "ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 81,
+      "language": "bisaya",
+      "text": "Bunalan tika inig kita nato, hulat lang!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "threat",
+      "isCorrect": false,
+      "processingTimeMs": 0.21229999999997062,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 82,
+      "language": "bisaya",
+      "text": "Ipapusil tika sa akong mga kaila, pag-amping ka!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "threat",
+      "isCorrect": true,
+      "processingTimeMs": 0.2630999999999517,
+      "matchCount": 2,
+      "matchedWords": [
+        "pag",
+        "ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 83,
+      "language": "bisaya",
+      "text": "Ngano naa mo diri? Balik na mo sa inyong probinsya!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.283299999999997,
+      "matchCount": 1,
+      "matchedWords": [
+        "mo"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 84,
+      "language": "bisaya",
+      "text": "Ang mga pobre dili dapat tugotan nga mobotar",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.13269999999999982,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 85,
+      "language": "bisaya",
+      "text": "Ang mga bayot ug tomboy abnormal ug kinahanglan ayohon",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.17099999999999227,
+      "matchCount": 1,
+      "matchedWords": [
+        "bayot"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 86,
+      "language": "bisaya",
+      "text": "Mga babaye dapat sa kusina ra, dili sa trabaho",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.13949999999999818,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 87,
+      "language": "bisaya",
+      "text": "Ang mga taga-laing nasud kinahanglan ipabalik sa ila",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.134399999999971,
+      "matchCount": 1,
+      "matchedWords": [
+        "ila"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 88,
+      "language": "bisaya",
+      "text": "Mga Muslim terorista tanan, kinahanglan bantayan sila!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "hate",
+      "isCorrect": false,
+      "processingTimeMs": 0.24440000000004147,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 89,
+      "language": "bisaya",
+      "text": "Ka pangit nimo, sama sa patay nga ilaga imong itsura!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "bullying",
+      "isCorrect": true,
+      "processingTimeMs": 0.3205000000000382,
+      "matchCount": 2,
+      "matchedWords": [
+        "ka",
+        "pangit"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 90,
+      "language": "bisaya",
+      "text": "Walay nagmahal nimo, maoy ra ka kanunay",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "bullying",
+      "isCorrect": true,
+      "processingTimeMs": 0.1278000000000361,
+      "matchCount": 6,
+      "matchedWords": [
+        "ka",
+        "walay nagmahal",
+        "walay nagmahal nimo",
+        "maoy ra",
+        "maoy ra ka",
+        "maoy ra ka kanunay"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 91,
+      "language": "bisaya",
+      "text": "Dapat wala ka gipanganak, sayop ka lang!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "bullying",
+      "isCorrect": false,
+      "processingTimeMs": 0.22039999999998372,
+      "matchCount": 1,
+      "matchedWords": [
+        "ka"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 92,
+      "language": "bisaya",
+      "text": "Delete na imong account, walay gusto sa imong opinyon!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "clean",
+      "category": "bullying",
+      "isCorrect": false,
+      "processingTimeMs": 0.23820000000000618,
+      "matchCount": 0,
+      "matchedWords": [],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 93,
+      "language": "bisaya",
+      "text": "Ka tambok nimo, kaon napud ka og kaon!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "bullying",
+      "isCorrect": true,
+      "processingTimeMs": 0.1967999999999961,
+      "matchCount": 3,
+      "matchedWords": [
+        "ka",
+        "og",
+        "tambok"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 94,
+      "language": "bisaya",
+      "text": "Ka hugaw sa inyong balay, sama ka hugaw sa imong batasan!",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "bullying",
+      "isCorrect": true,
+      "processingTimeMs": 0.26209999999997535,
+      "matchCount": 2,
+      "matchedWords": [
+        "ka",
+        "hugaw"
+      ],
+      "obfuscationDetected": true,
+      "obfuscationTypes": [
+        "leet_speak"
+      ]
+    },
+    {
+      "testId": 95,
+      "language": "bisaya",
+      "text": "Dili ko bastos pero bogo ka gyud talaga",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "subtle",
+      "isCorrect": true,
+      "processingTimeMs": 0.08839999999997872,
+      "matchCount": 4,
+      "matchedWords": [
+        "ka",
+        "bastos",
+        "bogo",
+        "bogo ka"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 96,
+      "language": "bisaya",
+      "text": "Pasensya na pero buang ka man gud",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "subtle",
+      "isCorrect": true,
+      "processingTimeMs": 0.08789999999999054,
+      "matchCount": 3,
+      "matchedWords": [
+        "ka",
+        "buang",
+        "buang ka"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 97,
+      "language": "bisaya",
+      "text": "No offense pero law-ay kaayo imong style",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "subtle",
+      "isCorrect": false,
+      "processingTimeMs": 0.12010000000003629,
+      "matchCount": 1,
+      "matchedWords": [
+        "style"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 98,
+      "language": "bisaya",
+      "text": "Para sa imong kaayohan, undanga na ang imong pagpangita og away",
+      "expectedLabel": "toxic",
+      "predictedLabel": "mild",
+      "category": "subtle",
+      "isCorrect": false,
+      "processingTimeMs": 0.17559999999997444,
+      "matchCount": 1,
+      "matchedWords": [
+        "og"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 99,
+      "language": "bisaya",
+      "text": "Sa tinuod lang, walay pulos ka sa kalibutan",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "subtle",
+      "isCorrect": true,
+      "processingTimeMs": 0.1180999999999699,
+      "matchCount": 3,
+      "matchedWords": [
+        "ka",
+        "walay pulos",
+        "walay pulos ka"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    },
+    {
+      "testId": 100,
+      "language": "bisaya",
+      "text": "Higala, ka pangit sa imong nawong ug batasan",
+      "expectedLabel": "toxic",
+      "predictedLabel": "toxic",
+      "category": "subtle",
+      "isCorrect": true,
+      "processingTimeMs": 0.12009999999997945,
+      "matchCount": 2,
+      "matchedWords": [
+        "ka",
+        "pangit"
+      ],
+      "obfuscationDetected": false,
+      "obfuscationTypes": []
+    }
+  ],
+  "errors": []
+}

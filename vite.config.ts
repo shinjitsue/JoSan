@@ -11,6 +11,7 @@ export default defineConfig({
       input: {
         popup: resolve(__dirname, "popup.html"),
         options: resolve(__dirname, "options.html"),
+        annotation: resolve(__dirname, "annotation.html"),
         content: resolve(__dirname, "src/content/index.ts"),
         background: resolve(__dirname, "src/background/index.ts"),
       },

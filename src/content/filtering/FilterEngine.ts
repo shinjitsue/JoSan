@@ -22,11 +22,13 @@ interface FilterResult {
 
 export class FilterEngine {
   private static readonly MIN_TEXT_LENGTH = 10;
+  // Fallback threshold: when language confidence is below this, run all word lists
+  private static readonly LANGUAGE_FALLBACK_THRESHOLD = 0.5;
 
   static analyzeText(
     text: string,
     wordLists: WordListSet,
-    customWordList: WordListData | null
+    customWordList: WordListData | null,
   ): {
     language: Language;
     filterResult: FilterResult;
@@ -42,16 +44,18 @@ export class FilterEngine {
     };
 
     // Step 2: Multi-language Bloom+Trie filtering (highly optimized)
+    // Pass language confidence for fallback logic
     const filterResult = this.applyMultiLanguageFilter(
       text,
       wordLists,
-      customWordList
+      customWordList,
+      language.confidence,
     );
 
     // Step 3: Determine if AI is needed
     const needsAI = FastLanguageDetector.shouldUseAI(
       text,
-      filterResult.matchCount
+      filterResult.matchCount,
     );
 
     return { language, filterResult, needsAI };
@@ -60,29 +64,49 @@ export class FilterEngine {
   private static applyMultiLanguageFilter(
     text: string,
     wordLists: WordListSet,
-    customWordList: WordListData | null
+    customWordList: WordListData | null,
+    languageConfidence: number = 1.0,
   ): FilterResult {
     let filteredText = text;
     let totalMatches = 0;
     const allDetectedLanguages = new Set<string>();
 
+    // Determine if we should use fallback mode (run all word lists)
+    const useFallbackMode =
+      languageConfidence < this.LANGUAGE_FALLBACK_THRESHOLD;
+
     // Fast pre-screening with Bloom filters
-    const activeWordLists: WordListData[] = [];
+    let activeWordLists: WordListData[] = [];
 
-    Object.values(wordLists).forEach((wordList) => {
-      if (wordList && ProfanityLoader.mightContainProfanity(text, wordList)) {
-        activeWordLists.push(wordList);
+    if (useFallbackMode) {
+      // Fallback mode: include all word lists regardless of Bloom filter results
+      // This catches cases where language detection is uncertain
+      console.log(
+        `[JoSan] Language confidence low (${(languageConfidence * 100).toFixed(1)}%), using fallback mode - checking all word lists`,
+      );
+      activeWordLists = Object.values(wordLists).filter(
+        (wl): wl is WordListData => wl !== null,
+      );
+      if (customWordList) {
+        activeWordLists.push(customWordList);
       }
-    });
+    } else {
+      // Normal mode: use Bloom filters for pre-screening
+      Object.values(wordLists).forEach((wordList) => {
+        if (wordList && ProfanityLoader.mightContainProfanity(text, wordList)) {
+          activeWordLists.push(wordList);
+        }
+      });
 
-    if (
-      customWordList &&
-      ProfanityLoader.mightContainProfanity(text, customWordList)
-    ) {
-      activeWordLists.push(customWordList);
+      if (
+        customWordList &&
+        ProfanityLoader.mightContainProfanity(text, customWordList)
+      ) {
+        activeWordLists.push(customWordList);
+      }
     }
 
-    // If no Bloom filters triggered, text is clean
+    // If no word lists to check, text is clean
     if (activeWordLists.length === 0) {
       return {
         filteredText,
@@ -94,7 +118,7 @@ export class FilterEngine {
     console.log(
       `[JoSan] Bloom pre-screen: ${activeWordLists.length}/${
         Object.keys(wordLists).length + (customWordList ? 1 : 0)
-      } word lists need checking`
+      } word lists need checking${useFallbackMode ? " (fallback mode)" : ""}`,
     );
 
     // Apply Trie filtering only on word lists that passed Bloom screening
@@ -105,7 +129,7 @@ export class FilterEngine {
         filteredText = result.filteredText;
         totalMatches += result.matchCount;
         result.detectedLanguages.forEach((lang) =>
-          allDetectedLanguages.add(lang)
+          allDetectedLanguages.add(lang),
         );
       }
     });
@@ -134,7 +158,7 @@ export class FilterEngine {
   static quickProfanityCheck(
     text: string,
     wordLists: WordListSet,
-    customWordList: WordListData | null
+    customWordList: WordListData | null,
   ): boolean {
     const allWordLists = [
       ...Object.values(wordLists).filter(Boolean),
@@ -142,7 +166,7 @@ export class FilterEngine {
     ] as WordListData[];
 
     return allWordLists.some((wordList) =>
-      ProfanityLoader.mightContainProfanity(text, wordList)
+      ProfanityLoader.mightContainProfanity(text, wordList),
     );
   }
 
@@ -150,7 +174,7 @@ export class FilterEngine {
   static benchmarkFilter(
     text: string,
     wordLists: WordListSet,
-    customWordList: WordListData | null
+    customWordList: WordListData | null,
   ): {
     bloomTime: number;
     trieTime: number;
@@ -163,7 +187,7 @@ export class FilterEngine {
     const hasPotentialMatches = this.quickProfanityCheck(
       text,
       wordLists,
-      customWordList
+      customWordList,
     );
     const bloomTime = performance.now() - bloomStart;
 

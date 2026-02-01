@@ -1547,3 +1547,336 @@ lolo
 chupa
 chupaa
 chupaon
+
+# ===== PHASE 1 EXPANSION: THREAT VERBS =====
+sakiton
+sakiton tika
+sakiton jud tika
+sakiton nako imong nawng
+sakiton nako imong utok
+patyon
+patyon tika
+patyon jud tika
+patyon ka buang
+patyon ka yawa
+bugbugon
+bugbugon tika
+bugbugon imong nawng
+bugbugon ka
+samaran
+samaran tika
+samaran ka
+samaran imong nawng
+ihigot
+ihigot tika
+ihigot ka
+dugmukon
+dugmukon tika
+dugmukon ka
+dugmokon tika
+hatakon
+hatakon tika
+hatakon imong nawng
+tuslukan
+tuslukan tika
+tuslukan ka
+sumbagon
+sumbagon tika
+sumbagon imong nawng
+sumbagon ka
+sipahon
+sipahon tika
+sipahon ka
+sipahon imong nawng
+pangitaon tika
+pangitaon tika ug sakiton
+pangitaon ka nako
+pangitaon ka ug patyon
+sundon tika
+sundon tika sa balay
+sundon ka nako
+hulaton tika
+hulaton tika sa gawas
+hulaton ka sa eskwelahan
+ipakita tika unsay sakit
+ipakita tika unsay kasakit
+mapahimuslan ka
+mapahimuslan tika
+
+# ===== PHASE 1 EXPANSION: INSULTS =====
+tanga
+tanga ka
+tanga kaayo ka
+tanga jud ka
+tanga imong utok
+gago
+gago ka
+gago kaayo ka
+gago jud ka
+gago imong batasan
+lawog
+lawog ka
+lawog imong nawng
+lawog kag nawng
+lawog imong dagway
+lawog kaayo ka
+laway
+laway ka
+laway imong nawng
+lurong
+lurong ka
+lurong kaayo ka
+lugaw
+lugaw imong utok
+lugaw imong utak
+abal abal ka
+abal imong utok
+walay utak
+walay utok
+walay batasan
+ulitawo way nahigugma
+dalaga walay nahigugma
+grabe kag pangit
+grabe imong kapangit
+grabe ka ka pangit
+walay nawng
+way nawng
+way dagway
+walay dagway
+lapuk
+lapok
+lapok ka
+lapuk ka
+lapuk imong nawng
+lapok imong nawng
+hugaw
+hugaw ka
+hugaw imong batasan
+hugaw imong nawng
+tikas
+tikas ka
+tikas kaayo
+tikas imong nawng
+manok
+manok ka
+manok imong nawng
+anghel sa impyerno
+anak sa yawa
+anak sa pisti
+anak sa buang
+anak sa demonyo
+
+# ===== PHASE 1 EXPANSION: BULLYING PHRASES =====
+walay pulos
+walay pulos ka
+walay pulos imong kinabuhi
+way pulos
+way pulos ka
+way pulos imong kinabuhi
+walay kwenta
+walay kwenta ka
+walay kwenta imong buhat
+way kwenta
+way kwenta ka
+way kwenta imong kinabuhi
+maoy ra
+maoy ra ka
+maoy ra ka kanunay
+maoy jud ra ka
+way nahigugma
+walay nahigugma
+walay nahigugma nimo
+way nagmahal
+walay nagmahal
+walay nagmahal nimo
+nganong buhi pa ka
+nganong buhi pa man ka
+nganong naa pa ka
+ayaw na lang ug buhi
+ayaw na lang pagbuhi
+mas maayo kung wala ka
+mas maayo kung patay ka
+mamatay ka na lang
+mamatay na lang ka
+mag-inusara ka forever
+mag-inusara ka hangtod
+wala kay higala
+walay higala nimo
+wala kay friends
+walay friends nimo
+walay magkahigala nimo
+dili ka worth it
+dili ka worth
+dili ka importante
+dili ka special
+walay nag appreciate nimo
+way nag appreciate
+walay nag care nimo
+way nag care
+walay gusto nimo
+way gusto nimo
+dili ka ganahan sa bisan kinsa
+walay ganahan nimo
+way ganahan nimo
+wa ka nahigugmahi
+wala ka nahigugmahi
+wa jud kay pulos
+dili ka belong
+dili ka kasulod
+dili ka kauban
+
+# ===== PHASE 1 EXPANSION: OBFUSCATED VARIANTS =====
+b0g0
+b0go
+bog0
+bu4ng
+bu@ng
+bua.ng
+bu4.ng
+g4g0
+g4go
+gag0
+g@go
+y4w4
+y@wa
+yaw4
+y4wa
+p1st1
+p1sti
+pist1
+p!sti
+p!st!
+l1nt3
+l1nte
+lint3
+l!nte
+t4ng4
+t@nga
+tang4
+t4nga
+l4w0g
+l@wog
+law0g
+l4wog
+b4y0t
+b@yot
+bay0t
+b4yot
+b1l4t
+b!lat
+bil4t
+b1lat
+1y0t
+!yot
+iy0t
+1yot
+0t3n
+ot3n
+0ten
+y4t1
+y@ti
+yat1
+y4ti
+lus1
+lus!
+ch0pa
+chup4
+ch0p4
+p4ky0
+pakyo
+p@kyo
+p4kyo
+
+# ===== PHASE 1 EXPANSION: EXTENDED PROFANITY =====
+putang ina
+putangina
+pota
+potang ina
+potangina
+p.u.t.a
+p.o.t.a
+puki
+pukingina
+tang ina
+tangina
+tarantado
+tarantada
+ulul
+ulol
+gagi
+animal ra ka
+mananap ra ka
+hayop ka
+hayup ka
+bastos
+bastos ka
+bastos kaayo ka
+bastos jud ka
+bastos imong batasan
+walay respeto
+way respeto
+way respeto imong batasan
+walay modo
+way modo
+way modo ka
+dili pareho tawo
+dili ka tawo
+dili ra tawo
+murag hayop
+murag mananap
+murag animal
+
+# ===== PHASE 1 EXPANSION: THREAT PHRASES =====
+magbayad ka
+magbayad jud ka
+magbayad ka nako
+magbayad ka sa akoa
+bayran tika
+bayran ka nako
+bayran ka sa akong gihimo
+hulaton ka sa gawas
+hulaton tika gawas
+hulaton tika sa imo balay
+bantay ka
+bantayan tika
+bantayan ka nako
+bantayan imong lakaw
+matod nimo lang
+matod nimo ra na
+bantog na ka
+pakyas ka
+palpak ka
+tanga ra ka
+guba imong ulo
+guba imong utok
+
+# ===== PHASE 1 EXPANSION: SOCIAL EXCLUSION =====
+ayaw na ug chat
+ayaw na ug message
+ayaw na ug tawag
+ayaw na magpakita
+ayaw na magpaduol
+likay sa akoa
+likay gikan nako
+palayo sa akoa
+palayo gikan nako
+dili ka dapat dinhi
+dili ka belong dinhi
+wala kay luna dinhi
+layo gikan nako
+palayo ka nako
+hawa nako
+hawa sa akoa
+ayaw paduol
+ayaw na paduol
+dili ka ganahan diri
+wala kay pulos diri
+wala kay kasulbaran
+wala kay paglaom
+desperado ka
+losyang ka
+losyang imong nawng
+walay gana sa imong nawng
+walay gana imong dagway
+grabe kag ka pangit
+grabe imong ka pangit

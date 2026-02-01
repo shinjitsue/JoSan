@@ -51,6 +51,12 @@ interface LanguageContext {
   mixed: string;
 }
 
+interface FewShotExample {
+  text: string;
+  label: "CLEAN" | "MILD" | "TOXIC";
+  reason: string;
+}
+
 export class BackgroundAIService {
   private static processingQueue: Map<
     string,
@@ -67,6 +73,7 @@ export class BackgroundAIService {
   private static readonly MAX_CACHE_SIZE = 1000;
   private static readonly BATCH_SIZE = 5;
   private static readonly BATCH_TIMEOUT = 100; // ms
+  private static readonly PH_LANGUAGES = ["tl", "bis"];
   private static consecutiveFailures = 0;
   private static cooldownUntil = 0;
   private static readonly FAILURE_THRESHOLD = 5;
@@ -77,7 +84,7 @@ export class BackgroundAIService {
   }
 
   static async processText(
-    request: AIProcessingRequest
+    request: AIProcessingRequest,
   ): Promise<AIProcessingResponse> {
     if (Date.now() < this.cooldownUntil) {
       return {
@@ -111,7 +118,7 @@ export class BackgroundAIService {
       } else {
         this.batchTimeout = setTimeout(
           () => this.processBatch(),
-          this.BATCH_TIMEOUT
+          this.BATCH_TIMEOUT,
         );
       }
     });
@@ -132,8 +139,8 @@ export class BackgroundAIService {
     // Process each language group in parallel
     const results = await Promise.allSettled(
       Object.entries(languageGroups).map(([languageCode, requests]) =>
-        this.processLanguageGroup(languageCode, requests)
-      )
+        this.processLanguageGroup(languageCode, requests),
+      ),
     );
 
     // Handle results and notify callbacks
@@ -170,7 +177,7 @@ export class BackgroundAIService {
   }
 
   private static groupByLanguage(
-    requests: AIProcessingRequest[]
+    requests: AIProcessingRequest[],
   ): Record<string, AIProcessingRequest[]> {
     const groups: Record<string, AIProcessingRequest[]> = {};
 
@@ -187,10 +194,10 @@ export class BackgroundAIService {
 
   private static async processLanguageGroup(
     language: string,
-    requests: AIProcessingRequest[]
+    requests: AIProcessingRequest[],
   ): Promise<AIProcessingResponse[]> {
     console.log(
-      `[JoSan AI] Processing language group "${language}" (${requests.length} request(s))`
+      `[JoSan AI] Processing language group "${language}" (${requests.length} request(s))`,
     );
     const results: AIProcessingResponse[] = [];
 
@@ -206,7 +213,7 @@ export class BackgroundAIService {
       } catch (error) {
         console.error(
           `[JoSan AI] Error processing request ${request.id}:`,
-          error
+          error,
         );
         results.push({ id: request.id, action: "error" });
       }
@@ -216,7 +223,7 @@ export class BackgroundAIService {
   }
 
   private static async processSingleRequest(
-    request: AIProcessingRequest
+    request: AIProcessingRequest,
   ): Promise<AIProcessingResponse> {
     try {
       // Step 1: Quick heuristics to skip obvious cases
@@ -244,7 +251,7 @@ export class BackgroundAIService {
         const contextualResult = await this.contextualCheck(
           request.text,
           request.language,
-          omniResult
+          omniResult,
         );
         finalResult = {
           ...contextualResult,
@@ -254,7 +261,7 @@ export class BackgroundAIService {
 
       // Step 4: Determine action based on user settings
       const shouldFilter = await this.shouldFilterBasedOnSettings(
-        finalResult.classification
+        finalResult.classification,
       );
 
       this.consecutiveFailures = 0;
@@ -276,7 +283,7 @@ export class BackgroundAIService {
         console.warn(
           `[JoSan AI] Entering cooldown ${this.COOLDOWN_MS / 1000}s (failures=${
             this.consecutiveFailures
-          })`
+          })`,
         );
       }
       return {
@@ -290,7 +297,7 @@ export class BackgroundAIService {
   private static shouldSkipAI(
     text: string,
     regexMatches: number,
-    language: { code: string; confidence: number }
+    language: { code: string; confidence: number },
   ): boolean {
     if (text.length < 15) return true;
     if (regexMatches >= 3) return true; // Obviously profane
@@ -305,16 +312,24 @@ export class BackgroundAIService {
   }
 
   private static shouldUseContextualCheck(
-    request: AIProcessingRequest
+    request: AIProcessingRequest,
   ): boolean {
+    // Always use contextual check for PH languages (improved accuracy)
+    if (this.isPHLanguage(request.language.code)) {
+      return request.text.length > 20;
+    }
     return (
       request.text.length > 30 &&
       (request.language.code === "mixed" || request.language.confidence < 0.7)
     );
   }
 
+  private static isPHLanguage(languageCode: string): boolean {
+    return this.PH_LANGUAGES.includes(languageCode);
+  }
+
   private static async omniModerationCheck(
-    text: string
+    text: string,
   ): Promise<OmniModerationResult> {
     try {
       // Rate limiting check
@@ -355,7 +370,7 @@ export class BackgroundAIService {
   }
 
   private static parseOmniResult(
-    omniData: OpenAIModerationData
+    omniData: OpenAIModerationData,
   ): OmniModerationResult {
     const scores = omniData.category_scores || {};
     const categories = omniData.categories || {};
@@ -371,7 +386,7 @@ export class BackgroundAIService {
       scores["sexual/minors"] || 0,
       scores["self-harm"] || 0,
       scores["self-harm/intent"] || 0,
-      scores["self-harm/instructions"] || 0
+      scores["self-harm/instructions"] || 0,
     );
 
     let classification: "clean" | "mild" | "toxic" | "ambiguous" = "clean";
@@ -392,14 +407,15 @@ export class BackgroundAIService {
         classification = "mild";
       }
     } else {
-      if (maxScore > 0.2) {
+      // Lower threshold for ambiguous detection - will be refined by contextual check
+      if (maxScore > 0.15) {
         classification = "ambiguous";
         needsContextualCheck = true;
       }
     }
 
     const flaggedCategories = Object.keys(categories).filter(
-      (k) => categories[k]
+      (k) => categories[k],
     );
 
     return {
@@ -413,7 +429,7 @@ export class BackgroundAIService {
   private static async contextualCheck(
     text: string,
     language: { code: string; confidence: number },
-    omniResult: OmniModerationResult
+    omniResult: OmniModerationResult,
   ): Promise<ContextualResult> {
     try {
       const prompt = this.buildContextualPrompt(text, language, omniResult);
@@ -435,7 +451,7 @@ export class BackgroundAIService {
             max_tokens: 50,
             temperature: 0.1,
           }),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -467,30 +483,116 @@ export class BackgroundAIService {
   private static buildContextualPrompt(
     text: string,
     language: { code: string; confidence: number },
-    omniResult: OmniModerationResult
+    omniResult: OmniModerationResult,
   ): { system: string; user: string } {
     const languageContext: LanguageContext = {
       en: "English",
-      tl: "Tagalog/Filipino - Consider cultural context, honorifics (po, opo), and indirect speech patterns",
-      bis: "Bisaya - Consider regional expressions, cultural nuances, and local context",
-      mixed: "Mixed languages - Analyze each language component",
+      tl: "Tagalog/Filipino - Consider cultural context, honorifics (po, opo), and indirect speech patterns. Watch for threats disguised as jokes, bullying patterns, and obfuscated profanity.",
+      bis: "Bisaya/Cebuano - Consider regional expressions, cultural nuances, local context, and Visayan idioms. Watch for threats, bullying, and disguised insults.",
+      mixed: "Mixed languages - Analyze each language component carefully",
     };
 
     const langName =
       languageContext[language.code as keyof LanguageContext] ||
       "Unknown language";
 
+    // Include few-shot examples for PH languages
+    const fewShotExamples = this.getFewShotExamples(language.code);
+    const examplesBlock =
+      fewShotExamples.length > 0
+        ? `\n\nExamples:\n${fewShotExamples
+            .map((ex) => `"${ex.text}" → ${ex.label} (${ex.reason})`)
+            .join("\n")}\n`
+        : "";
+
     return {
-      system: `You are an expert content moderator for ${langName} content. Classify as CLEAN, MILD, or TOXIC only. Consider cultural context and intent. Respond with just the classification.`,
+      system: `You are an expert content moderator for ${langName} content. Classify as CLEAN, MILD, or TOXIC only. Consider cultural context, intent, and gaming terminology. Be especially careful with:\n- Scunthorpe-type false positives (clean words containing profane substrings)\n- Gaming context ("kill", "patay" in game discussions are usually CLEAN)\n- Bullying and isolation tactics (TOXIC even without explicit profanity)\n- Direct threats (TOXIC regardless of language style)${examplesBlock}\nRespond with just the classification.`,
       user: `Text: "${text}"\nInitial assessment: ${
         omniResult.classification
       } (${omniResult.confidence.toFixed(2)})\nClassification:`,
     };
   }
 
+  private static getFewShotExamples(languageCode: string): FewShotExample[] {
+    const tagalogExamples: FewShotExample[] = [
+      {
+        text: "Ang puting ibon ay lumilipad",
+        label: "CLEAN",
+        reason: "puting means white, not profanity",
+      },
+      {
+        text: "Pinatay ko kalaban sa ML",
+        label: "CLEAN",
+        reason: "gaming context - Mobile Legends",
+      },
+      {
+        text: "Ang galing mo maglaro!",
+        label: "CLEAN",
+        reason: "genuine compliment",
+      },
+      {
+        text: "Hindi ako bastos pero ang bobo mo",
+        label: "TOXIC",
+        reason: "disguised insult",
+      },
+      {
+        text: "Hahanapin kita at sasaktan kita",
+        label: "TOXIC",
+        reason: "direct threat",
+      },
+      {
+        text: "Walang nagmamahal sayo, kaya mag-isa ka palagi",
+        label: "TOXIC",
+        reason: "bullying/isolation",
+      },
+    ];
+
+    const bisayaExamples: FewShotExample[] = [
+      {
+        text: "Ang puti nga baboy naa sa uma",
+        label: "CLEAN",
+        reason: "puti means white, not profanity",
+      },
+      {
+        text: "Gipatay nako kalaban sa ML",
+        label: "CLEAN",
+        reason: "gaming context - Mobile Legends",
+      },
+      {
+        text: "Nindot kaayo imong balay",
+        label: "CLEAN",
+        reason: "genuine compliment",
+      },
+      {
+        text: "Dili ko bastos pero bogo ka",
+        label: "TOXIC",
+        reason: "disguised insult",
+      },
+      {
+        text: "Pangitaon tika ug sakiton tika",
+        label: "TOXIC",
+        reason: "direct threat",
+      },
+      {
+        text: "Walay nagmahal nimo, maoy ra ka kanunay",
+        label: "TOXIC",
+        reason: "bullying/isolation",
+      },
+    ];
+
+    switch (languageCode) {
+      case "tl":
+        return tagalogExamples;
+      case "bis":
+        return bisayaExamples;
+      default:
+        return [];
+    }
+  }
+
   private static parseContextualResult(
     gptResponse: string,
-    fallback: OmniModerationResult
+    fallback: OmniModerationResult,
   ): ContextualResult {
     const cleanResponse = gptResponse.toUpperCase().trim();
 
@@ -525,7 +627,7 @@ export class BackgroundAIService {
   }
 
   private static async shouldFilterBasedOnSettings(
-    classification: string
+    classification: string,
   ): Promise<boolean> {
     try {
       const result = await chrome.storage.local.get({
@@ -556,7 +658,7 @@ export class BackgroundAIService {
   private static cacheResult(
     text: string,
     language: string,
-    result: AIProcessingResponse
+    result: AIProcessingResponse,
   ): void {
     const cacheKey = this.getCacheKey(text, language);
     this.resultCache.set(cacheKey, {
@@ -577,7 +679,7 @@ export class BackgroundAIService {
     }
 
     console.log(
-      `[JoSan AI] Cache cleaned, ${this.resultCache.size} entries remaining`
+      `[JoSan AI] Cache cleaned, ${this.resultCache.size} entries remaining`,
     );
   }
 
