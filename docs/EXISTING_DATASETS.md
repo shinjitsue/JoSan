@@ -7,35 +7,39 @@ This document lists existing datasets suitable for training the JoSan content mo
 ## 📋 CURRENT STATUS CHECKLIST
 
 > **Last Updated**: February 1, 2026  
-> **Total Annotations Loaded**: 2,660
+> **Total Annotations Loaded**: 12,251
 
 ### ✅ Already Downloaded & Included (DO NOT re-download)
 
 | Dataset                                    | Status          | Count | Type  | Language          | File Location                                      |
 | ------------------------------------------ | --------------- | ----- | ----- | ----------------- | -------------------------------------------------- |
 | **syke9p3/multilabel-tagalog-hate-speech** | ✅ **INCLUDED** | 1,260 | TOXIC | Tagalog           | `data/existing-datasets/combined_annotations.json` |
+| **jcblaise/hatespeech_filipino**           | ✅ **INCLUDED** | 8,410 | TOXIC | Tagalog           | `data/existing-datasets/combined_annotations.json` |
 | **jfernandez/cebuano-filipino-sentences**  | ✅ **INCLUDED** | 1,400 | CLEAN | TL/BIS (700 each) | `data/existing-datasets/combined_annotations.json` |
+| **Translated Bisaya Toxic**                | ✅ **INCLUDED** | 1,181 | TOXIC | Bisaya            | `data/existing-datasets/combined_annotations.json` |
 
 **Breakdown**:
 
-- ✅ Toxic examples: **1,260** (all Tagalog from syke9p3)
-- ✅ Clean examples: **1,400** (700 Tagalog + 700 Bisaya from jfernandez)
-- ✅ **Total: 2,660 annotations** (53.2% of 5,000 target)
+- ✅ Tagalog Toxic: **9,670** (1,260 from syke9p3 + 8,410 from jcblaise)
+- ✅ Tagalog Clean: **700** (from jfernandez)
+- ✅ Bisaya Toxic: **1,181** (translated from Tagalog)
+- ✅ Bisaya Clean: **700** (from jfernandez)
+- ✅ **Total: 12,251 annotations** (245% of 5,000 target! 🎉)
 
 ### ⏳ Available But Not Yet Included
 
-| Dataset                                   | Status         | Est. Size | Type  | Language | Priority    | Notes                                                             |
-| ----------------------------------------- | -------------- | --------- | ----- | -------- | ----------- | ----------------------------------------------------------------- |
-| **jcblaise/hatespeech_filipino**          | ⏳ **PENDING** | ~18,500   | TOXIC | Tagalog  | 🔴 **HIGH** | Largest Filipino hate speech dataset; use for more toxic examples |
-| **Jigsaw Toxic Comment** (HF)             | ⏳ **PENDING** | ~50,000   | TOXIC | English  | 🟡 MEDIUM   | Cross-lingual training; filter for transferable patterns          |
-| **Jession01/English-Cebuano-Translation** | ⏳ **PENDING** | ~103,000  | CLEAN | BIS      | 🟢 LOW      | Use sparingly; focus on diverse Bisaya examples                   |
+| Dataset                                   | Status         | Est. Size | Type  | Language | Priority | Notes                                                    |
+| ----------------------------------------- | -------------- | --------- | ----- | -------- | -------- | -------------------------------------------------------- |
+| **Jigsaw Toxic Comment** (HF)             | ⏳ **PENDING** | ~50,000   | TOXIC | English  | 🟢 LOW   | Cross-lingual training; filter for transferable patterns |
+| **Jession01/English-Cebuano-Translation** | ⏳ **PENDING** | ~103,000  | CLEAN | BIS      | 🟢 LOW   | Use sparingly; focus on diverse Bisaya examples          |
 
-### ❌ Not Suitable / Skip
+### ❌ Completed / No Longer Needed
 
-| Dataset                      | Reason                                                      |
-| ---------------------------- | ----------------------------------------------------------- |
-| Dengue Dataset (Cruz et al.) | Domain-specific (health); not relevant for general toxicity |
-| Jigsaw (Full 160k)           | Too large; English-only; use HF 50k version if needed       |
+| Dataset                          | Status          | Notes                                       |
+| -------------------------------- | --------------- | ------------------------------------------- |
+| **jcblaise/hatespeech_filipino** | ✅ **INCLUDED** | Downloaded and processed - 8,410 examples   |
+| Dengue Dataset (Cruz et al.)     | ❌ Skip         | Domain-specific (health); not relevant      |
+| Jigsaw (Full 160k)               | ❌ Skip         | Too large; English-only; use HF 50k version |
 
 ---
 
@@ -55,7 +59,7 @@ This document lists existing datasets suitable for training the JoSan content mo
 # Check what's already in the dataset
 npx tsx -e "
 const data = require('./data/existing-datasets/combined_annotations.json');
-const sources = [...new Set(data.map(d => d.metadata.originalDataset))];
+const sources = [...new Set(data.map(d => d.metadata.translatedFrom ? 'translated-from-' + d.metadata.translatedFrom : d.metadata.originalDataset))];
 console.log('Already included datasets:', sources);
 "
 ```
@@ -65,20 +69,38 @@ Expected output:
 ```
 Already included datasets: [
   'syke9p3/multilabel-tagalog-hate-speech',
-  'jfernandez/cebuano-filipino-sentences'
+  'jcblaise/hatespeech_filipino',
+  'jfernandez/cebuano-filipino-sentences',
+  'translated-from-tl'
 ]
 ```
 
 ### Next Steps (Recommended Priority):
 
-1. **🔴 HIGH PRIORITY**: Download `jcblaise/hatespeech_filipino` (~18.5k examples)
-   - Will add **more diverse toxic Tagalog examples**
-   - Balances the dataset (currently 1,260 toxic vs 1,400 clean)
-2. **🟡 MEDIUM**: Manually annotate **more Bisaya toxic examples** using annotation tool
-   - Currently only have 700 clean Bisaya, **zero toxic Bisaya**
-   - Target: 1,000-1,500 toxic Bisaya examples
-
+1. **� MEDIUM**: Review **Bisaya translated examples** for quality
+   - Run: `python data/existing-datasets/review_translations.py`
+   - Use annotation tool to spot-check translations
+   - Fix any obvious errors in the translations
+2. **🟡 MEDIUM**: Add more **clean examples** to balance the dataset
+   - Current ratio: 10,851 toxic vs 1,400 clean (very imbalanced!)
+   - Consider adding more clean examples from jfernandez or manual curation
 3. **🟢 LOW**: Consider English datasets (Jigsaw) only if needed for cross-lingual patterns
+
+### Translation Scripts Available:
+
+```bash
+# Translate Tagalog toxic examples to Bisaya (word mapping)
+npx tsx src/scripts/translate-tagalog-to-bisaya.ts
+
+# Translate with API (slower but better quality, rate limited)
+npx tsx src/scripts/translate-tagalog-to-bisaya.ts --use-api
+
+# Translate with limit
+npx tsx src/scripts/translate-tagalog-to-bisaya.ts --limit=100
+
+# Merge translations into main dataset
+npx tsx src/scripts/merge-bisaya-translations.ts
+```
 
 ---
 
@@ -240,17 +262,28 @@ def convert_tagalog_hatespeech_to_josan(input_csv: str, output_json: str):
 
 ## 📈 Estimated Training Data Distribution
 
-After importing existing datasets + manual annotation:
+Current dataset (after all imports and translations):
 
-| Source            | TL Examples | BIS Examples | EN Examples |
-| ----------------- | ----------- | ------------ | ----------- |
-| syke9p3 dataset   | ~2,100      | 0            | 0           |
-| jcblaise dataset  | ~10,000     | 0            | 0           |
-| Manual annotation | ~500        | ~1,000       | ~200        |
-| Google Forms      | ~300        | ~500         | ~100        |
-| **Total**         | **~12,900** | **~1,500**   | **~300**    |
+| Source                     | TL Examples | BIS Examples | EN Examples |
+| -------------------------- | ----------- | ------------ | ----------- |
+| syke9p3 dataset (toxic)    | 1,260       | 0            | 0           |
+| jcblaise dataset (toxic)   | 8,410       | 0            | 0           |
+| jfernandez dataset (clean) | 700         | 700          | 0           |
+| Translated from TL (toxic) | 0           | 1,181        | 0           |
+| **Current Total**          | **10,370**  | **1,881**    | **0**       |
 
-This exceeds the Phase 2 target of 5,000 examples!
+### Dataset Balance Analysis:
+
+| Metric         | Tagalog | Bisaya  | Total   |
+| -------------- | ------- | ------- | ------- |
+| Toxic examples | 9,670   | 1,181   | 10,851  |
+| Clean examples | 700     | 700     | 1,400   |
+| **Total**      | 10,370  | 1,881   | 12,251  |
+| Toxic/Clean %  | 93%/7%  | 63%/37% | 89%/11% |
+
+**Note**: The dataset is heavily skewed towards toxic examples. For better model training, consider adding more clean examples.
+
+This far exceeds the Phase 2 target of 5,000 examples! 🎉
 
 ---
 
