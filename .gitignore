@@ -16,6 +16,8 @@ dist-ssr
 .github/*
 !.github/workflows/
 !.github/workflows/**
+!.github/plans/
+!.github/plans/**
 
 # Environment variables
 .env
